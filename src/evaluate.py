@@ -81,9 +81,9 @@ ASSESSMENT: list[tuple[str, str, dict[str, tuple[str, str]]]] = [
             "tier_asha_*.txt and tier_mother_*_hi.txt exist, tier_clinician_*.txt does not; the "
             "nearest machine-readable form is shap_case_contributions.csv, which is data, not a caption."),
         "ASHA": ("Pass",
-            "`results/tables/tier_asha_<case>.txt` reproduces the card verbatim — band label and band "
-            "name, the driver list (empty on a routine card, as on the PNG), next step, accountability "
-            "line, disclaimer — so nothing on the PNG is image-only."),
+            "`results/tables/tier_asha_<case>.txt` reproduces the card verbatim — the band label, the "
+            "driver list (empty on a routine card, as on the PNG), next step, accountability line, "
+            "disclaimer — so nothing on the PNG is image-only."),
         "mother": ("Partial",
             "The spoken line has a deterministic transcript on disk (`tier_mother_<case>_hi.txt`), but "
             "render_mother() draws three ellipses and nothing else: no caption is rendered, so a deaf "
@@ -95,10 +95,10 @@ ASSESSMENT: list[tuple[str, str, dict[str, tuple[str, str]]]] = [
             "(BS +0.204, DiastolicBP -0.024 on boundary_mid); probability bars are labelled with "
             "class name and value, so the green/amber/red fill is redundant."),
         "ASHA": ("Pass",
-            "The header colour restates the header text, and the three-band unification kept it that "
-            "way: the band word is printed under the label ('band: AMBER', 'band: RED'), so the amber "
-            "and red states — which share the label 'ELEVATED — needs follow-up' — are still told apart "
-            "in text. Removing all colour loses no information."),
+            "The header text states the level itself — 'LOW — routine care', 'ELEVATED — needs "
+            "follow-up', 'HIGH — needs follow-up' — one distinct string per band, asserted distinct by "
+            "a self-check in render.py. Hue restates it and nothing more; render the card in greyscale "
+            "and no information is lost."),
         "mother": ("Partial",
             f"Hue is the primary cue. Two redundancies verified: lamp POSITION is fixed (red top / "
             f"amber middle / green bottom) and lit-vs-unlit differs by {_R['lamp_lit_vs_unlit']} in "
@@ -181,8 +181,8 @@ ASSESSMENT: list[tuple[str, str, dict[str, tuple[str, str]]]] = [
         "ASHA": ("Pass",
             "One band_for() call per case now drives the card header and the mother's lamp, so the two "
             "tiers cannot disagree: confident_high is RED in both, boundary_mid and failure_mode AMBER "
-            "in both, confident_low GREEN in both. The card prints the band name, so the shared "
-            "identity is legible and not merely chromatic."),
+            "in both, confident_low GREEN in both. The card's header names the level in words, so the "
+            "shared identity is legible and not merely chromatic."),
         "mother": ("Pass",
             "Three bands mapped consistently to the shared palette; the same band always renders the "
             "same lamp and the same sentence (boundary_mid and failure_mode produce byte-identical "
@@ -206,11 +206,12 @@ ASSESSMENT: list[tuple[str, str, dict[str, tuple[str, str]]]] = [
             "value and f(x). On boundary_mid the reader sees 0.487 vs 0.499 and knows immediately that "
             "the call is a coin flip."),
         "ASHA": ("Pass",
-            "Since banding was unified, the card inherits the mother tier's uncertainty rule: "
-            "confident_high (margin 1.000) prints 'band: RED' and boundary_mid (margin 0.012) prints "
-            "'band: AMBER', so the person making the referral can tell a confident call from a "
-            "knife-edge one. The margin itself is still not printed — deliberately, since the card is "
-            "the tier that must not turn into a probability read-out."),
+            "Since banding was unified, the card inherits the mother tier's uncertainty rule and states "
+            "the result of it in words: confident_high (margin 1.000) heads 'HIGH — needs follow-up' "
+            "while boundary_mid (margin 0.012) heads 'ELEVATED — needs follow-up', so the person making "
+            "the referral can tell a confident call from a knife-edge one. The margin itself is still "
+            "not printed — deliberately, since the card is the tier that must not turn into a "
+            "probability read-out."),
         "mother": ("Pass",
             "Status is exactly one lamp, and model uncertainty is what chooses it (see error prevention). "
             "By design the tier reports an action, not a state — which is the right 'status' for it."),
@@ -224,7 +225,9 @@ ASSESSMENT: list[tuple[str, str, dict[str, tuple[str, str]]]] = [
             "gates the direction word: a reading inside it is named plainly ('blood sugar'), only a "
             "reading outside it is called 'raised' or 'low'. BS 7.7 against a 7.5 median no longer "
             "reads as a concern; BS 9.0 on boundary_mid and 15.0 on confident_high still do. BodyTemp's "
-            "IQR is 0 on the clean set, so 102F is flagged as raised, which is the right behaviour."),
+            "IQR is 0 on the clean set, so 102F is flagged as raised, which is the right behaviour. Age "
+            "carries its own direction pair — failure_mode reads 'young age' for a 13-year-old, not "
+            "'low age', which is not something a health worker would say."),
         "mother": ("Pass",
             "A traffic light is a near-universal metaphor, and the sentence names the real institutions "
             "in her world — her ANM, the nearest health centre — and opens by telling her not to panic, "
@@ -324,9 +327,9 @@ CORRECTED = [
      "render_asha() banded binary (low vs not-low) while the mother tier banded three ways with the "
      "uncertainty rule, so confident_high rendered an AMBER card and a RED lamp — one prediction, two "
      "identities.",
-     "band_for() is computed once per case and passed to both tiers. The card prints the band name as "
-     "text under the label, so amber and red — which share the label 'ELEVATED — needs follow-up' — "
-     "stay distinguishable without colour."),
+     "band_for() is computed once per case and passed to both tiers, and each band carries its own "
+     "header wording ('LOW — routine care' / 'ELEVATED — needs follow-up' / 'HIGH — needs follow-up'), "
+     "so the three states stay distinguishable without colour."),
     ("Header ink is computed, not assumed",
      f"White header text was hardcoded. On the ELEVATED amber it measured {_R['asha_amber_was']}, under "
      f"even the 3:1 large-text minimum, and amber is the header for two of the four rendered cases; the "

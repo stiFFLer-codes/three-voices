@@ -29,6 +29,7 @@ python -m src.data          # P0 gate: pulls, caches, and reports the dataset
 python -m src.model         # P1: cross-validated metrics + saved model
 python -m src.explain       # P2: global + local SHAP, saved as data
 python -m src.render        # P3: the three tiers for one case
+python -m src.evaluate      # P4: WCAG 2.1 + Nielsen matrix over the three tiers
 ```
 
 The first run downloads the dataset and caches it to `data/raw/`. Every later
@@ -42,15 +43,21 @@ and voice text), and `results/audio/` (Hindi MP3).
 
 ## Roadmap
 
-| Phase | Deliverable |
-|------|-------------|
-| P0 | Reproducibility spine (`python -m src.data`) |
-| P1 | Model vehicle — LR / RF / XGBoost, stratified k-fold, SMOTE-in-fold, metrics |
-| P2 | SHAP engine — global + local SHAP for 4 criterion-selected cases |
-| P3 | Three-tier renderer — dashboard + ASHA card + Hindi voice + visual |
-| P4 | Heuristic evaluation — WCAG 2.1 + Nielsen (no human subjects) |
-| P5 | Manuscript — arXiv-ready |
-| P6 | Cold-run + submit (arXiv cs.HC) |
+| Phase | Deliverable | Status |
+|------|-------------|--------|
+| P0 | Reproducibility spine (`python -m src.data`) | done |
+| P1 | Model vehicle — LR / RF / XGBoost, stratified k-fold, SMOTE-in-fold, metrics | done |
+| P2 | SHAP engine — global + local SHAP for 4 criterion-selected cases | done |
+| P3 | Three-tier renderer — dashboard + ASHA card + Hindi voice + visual | done |
+| P4 | Heuristic evaluation — WCAG 2.1 + Nielsen (no human subjects) | done |
+| P5 | Manuscript — arXiv-ready | next |
+| P6 | Cold-run + submit (arXiv cs.HC) | |
+
+P4 is `results/tables/heuristic_evaluation.md`: 16 criteria across the three
+tiers, each rating grounded in a named artifact detail. It is a formative,
+single-evaluator, author-conducted assessment — not user testing. It found
+five defects in the P3 renderer, which were fixed; the gaps that remain are
+properties of the design and are recorded as limitations.
 
 See `CLAUDE.md` for the operating rules this repo is built on.
 

@@ -43,6 +43,7 @@ plus an honest heuristic evaluation and the manuscript.
 - `src/model.py`  — Phase 1 model vehicle + `python -m src.model` gate.
 - `src/explain.py`— Phase 2 SHAP engine + `python -m src.explain` gate.
 - `src/render.py` — Phase 3 three-tier renderer + `python -m src.render` gate.
+- `src/evaluate.py` — Phase 4 heuristic evaluation + `python -m src.evaluate` gate.
 - `results/`      — figures and tables (generated, reproducible).
 - `models/`       — saved model artifact(s).
 - `paper/`        — LaTeX manuscript.
@@ -56,4 +57,4 @@ plus an honest heuristic evaluation and the manuscript.
 - **P5** Manuscript — arXiv-ready PDF, repo linked.
 - **P6** Cold-run + submit — fresh env, tagged release, arXiv (cs.HC).
 
-## Current phase: P4
+## Current phase: P5

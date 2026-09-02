@@ -60,6 +60,10 @@ PLAIN_NAMES = {
     "Age": "age",
 }
 
+# Direction words, per feature. Age gets its own pair: nobody says "low age".
+DIRECTION_WORDS = {"Age": ("young", "older")}
+DIRECTION_DEFAULT = ("low", "raised")
+
 ASHA_NEXT_STEP = (
     "Arrange a clinic check-up soon and share these readings with the "
     "medical officer."
@@ -92,10 +96,12 @@ RED_MARGIN = 0.15  # top-2 probability margin required before the mother sees RE
 
 # One band drives the mother's lamp AND the ASHA header, so a case cannot be
 # amber in one tier and red in the next. GREEN <=> predicted low risk.
+# The label states the level in words — one distinct string per band — so the
+# card never leans on hue to tell the three states apart (WCAG 1.4.1).
 BAND_LABEL = {
-    "GREEN": "ROUTINE",
+    "GREEN": "LOW — routine care",
     "AMBER": "ELEVATED — needs follow-up",
-    "RED": "ELEVATED — needs follow-up",
+    "RED": "HIGH — needs follow-up",
 }
 
 # Direction words are attached only outside a deadband of this many IQRs
@@ -169,7 +175,8 @@ def direction_word(feature: str, value: float, ref: pd.DataFrame) -> str:
     name = PLAIN_NAMES[feature]
     if abs(value - med) <= dead:
         return name
-    return f"{'raised' if value > med else 'low'} {name}"
+    low, high = DIRECTION_WORDS.get(feature, DIRECTION_DEFAULT)
+    return f"{high if value > med else low} {name}"
 
 
 def top_drivers(contrib: pd.DataFrame, ref: pd.DataFrame, elevated: bool,
@@ -200,6 +207,8 @@ def _selfcheck() -> None:
     assert band_for("high risk", 0.90) == "RED"
     assert band_for("high risk", 0.012) == "AMBER"  # boundary_mid: near-tie
     assert band_for("mid risk", 0.90) == "AMBER"
+    # Each band must be distinguishable in text alone — hue is the backup cue.
+    assert len(set(BAND_LABEL.values())) == 3
     # Every band's header text must clear WCAG AA (4.5:1) on its own colour.
     for band, hexc in BAND_HEX.items():
         cr = contrast(hex_rgb(text_on(hexc)), hex_rgb(hexc))
@@ -215,7 +224,7 @@ def _selfcheck() -> None:
     )
     # BS has the largest |SHAP| but argues AGAINST the prediction — it must not
     # be listed; BS 7.7 against a 7.5 median is inside the deadband anyway.
-    assert top_drivers(df, ref, elevated=True) == ["raised body temperature", "low age"]
+    assert top_drivers(df, ref, elevated=True) == ["raised body temperature", "young age"]
     assert top_drivers(df, ref, elevated=False) == []
     assert direction_word("BS", 7.7, ref) == "blood sugar"
     assert direction_word("BS", 9.0, ref) == "raised blood sugar"
@@ -305,7 +314,7 @@ def render_asha(case: str, s: pd.Series, contrib: pd.DataFrame, ref: pd.DataFram
     next_step = ASHA_NEXT_STEP if elevated else ASHA_NEXT_STEP_ROUTINE
 
     text = "\n".join([
-        f"ASHA CARD — {label}  [band: {band}]",
+        f"ASHA CARD — {label}",
         "",
         heading,
         *[f"  • {d}" for d in drivers],
@@ -325,11 +334,9 @@ def render_asha(case: str, s: pd.Series, contrib: pd.DataFrame, ref: pd.DataFram
     ink = text_on(colour)  # AA-checked against this band, not assumed white
     ax.add_patch(plt.Rectangle((0.04, 0.05), 0.92, 0.9, fill=False, ec="#999", lw=1.5))
     ax.add_patch(plt.Rectangle((0.04, 0.79), 0.92, 0.16, color=colour))
-    ax.text(0.5, 0.885, label, ha="center", va="center", fontsize=17,
+    # The label itself carries the level, so hue is redundant, not load-bearing.
+    ax.text(0.5, 0.87, label, ha="center", va="center", fontsize=17,
             color=ink, fontweight="bold")
-    # Band as text as well as hue — the card must not lean on colour alone.
-    ax.text(0.5, 0.815, f"band: {band}", ha="center", va="center", fontsize=9,
-            color=ink)
 
     ax.text(0.09, 0.70, heading, fontsize=12, fontweight="bold")
     for i, d in enumerate(drivers):

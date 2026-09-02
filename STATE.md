@@ -8,7 +8,7 @@ _Last updated: 2026-09-02_
 
 ## Current phase
 
-**P3 done, P4 next (heuristic evaluation).**
+**P4 done (and fed back into P3); P5 next (manuscript).**
 
 ## Status by phase
 
@@ -24,13 +24,23 @@ _Last updated: 2026-09-02_
   per feature/class + four criterion-selected cases, values saved as data,
   five figures. Tables in `results/tables/shap_*.csv`, figures in
   `results/figures/shap_*.png`.
-- **P3 — three-tier renderer — DONE.** `python -m src.render [--case <tag>|all]`
-  (default `boundary_mid`). Reads the saved P2 CSVs — does NOT re-run SHAP.
-  Renders all four cases across three tiers; see "Artifacts on disk".
-  Re-run verified 2026-09-02: all PNG and TXT outputs are byte-identical;
-  the gTTS MP3s are NOT (same length, different bytes — see Decision Log
-  #10).
-- P4 heuristic eval, P5 manuscript, P6 cold-run/submit — not started.
+- **P3 — three-tier renderer — DONE, then revised by P4.** `python -m
+  src.render [--case <tag>|all]` (default `boundary_mid`). Reads the saved P2
+  CSVs — does NOT re-run SHAP. Renders all four cases across three tiers; see
+  "Artifacts on disk". Five defects found by P4 are fixed in it (Decision Log
+  #11). Re-run verified 2026-09-02: all PNG and TXT outputs are
+  byte-identical; the gTTS MP3s are NOT (same length, different bytes — see
+  Decision Log #10).
+- **P4 — heuristic evaluation — DONE.** `python -m src.evaluate`: 16 criteria
+  (WCAG 2.1 POUR + Nielsen) x 3 tiers = 48 cells, authored as data, each cell
+  grounded in a named artifact detail. Contrast ratios are computed at run
+  time from the palette in `src/render.py`. Outputs
+  `results/tables/heuristic_matrix.csv` and `heuristic_evaluation.md`.
+  Standing result after the P3 fixes: **28 Pass / 13 Partial / 1 Fail /
+  6 Deferred**; the one Fail is clinician 1.4.5 (images of text), the six
+  Deferred are operability + robustness, which a static artifact cannot
+  exercise. No human subjects.
+- P5 manuscript, P6 cold-run/submit — not started.
 
 ## Key data facts (UCI Maternal Health Risk, id=863)
 
@@ -74,6 +84,10 @@ _Last updated: 2026-09-02_
 
 - `results/tables/`: `p1_model_metrics.csv`, `shap_global_mean_abs.csv`,
   `shap_case_summary.csv` (4 rows), `shap_case_contributions.csv`.
+- **P4:** `results/tables/heuristic_matrix.csv` (48 rows, criterion x tier)
+  and `results/tables/heuristic_evaluation.md` (matrix, cell-by-cell
+  findings, defects-corrected list, inherent limitations, synthesis, and the
+  verbatim method-and-limitations note).
 - `results/figures/`: `shap_global_high.png`, `shap_case_confident_low.png`,
   `shap_case_confident_high.png`, `shap_case_boundary_mid.png`,
   `shap_case_failure_mode.png`.
@@ -97,10 +111,26 @@ _Last updated: 2026-09-02_
 | boundary_mid | high | 0.012 | AMBER |
 | failure_mode | high | 0.002 | AMBER |
 
-## Next step — P4
+Since Decision Log #11 the SAME band also drives the ASHA card header —
+GREEN → "LOW — routine care", AMBER → "ELEVATED — needs follow-up",
+RED → "HIGH — needs follow-up".
 
-Heuristic evaluation: WCAG 2.1 + Nielsen rubric matrix over the three tiers
-just rendered. No human subjects.
+## Next step — P5
+
+Manuscript. The three sections P4 hands it, ready to use:
+
+- **Evaluation section** — the matrix and synthesis in
+  `results/tables/heuristic_evaluation.md`. Frame it as formative and
+  single-evaluator, in the words of the verbatim method note in that file.
+- **Limitations** — the five inherent gaps in that file's "Inherent
+  limitations" section (mother-tier colour reliance, no rendered text
+  alternative for a deaf reader, clinician chart/English literacy, images of
+  text, ASHA tier English-only), plus the 35 conflicting-label rows, the
+  0.15 RED threshold as a stated design choice, and Decision Log #10 on gTTS
+  reproducibility.
+- **The design-process argument** — five defects were found by reading the
+  artifacts as their users, not from any model metric, and were fixed; the
+  "Defects found and corrected" section is the evidence.
 
 ## Decision Log (append-only)
 
@@ -159,3 +189,42 @@ just rendered. No human subjects.
   deterministic and is the reproducible record. Non-negotiable #6
   (determinism) is scoped to our pipeline, not to a third-party TTS
   endpoint; say so in the manuscript's reproducibility note.
+- **2026-09-02 #11 — P4 evaluated the artifacts, found five P3 defects, and
+  they were fixed rather than reported.** The first run of `src.evaluate`
+  against the original P3 outputs returned four Fails, three of them in the
+  ASHA tier. All are now corrected in `src/render.py`, the tiers re-rendered,
+  and the matrix re-rated against the corrected artifacts — the defects and
+  their fixes are recorded in the "Defects found and corrected" section of
+  `heuristic_evaluation.md` so the finding survives its own repair. What
+  changed: (a) **sign-blind driver list** — `top_drivers` ranked by |SHAP|
+  and could print a feature arguing AGAINST the prediction as a flag
+  (`failure_mode` listed blood sugar at −0.085); it now keeps only positive
+  contributions to the predicted class, and a predicted-low card lists none
+  at all and says so. This **supersedes Decision Log #8's** "top-2 by |SHAP|"
+  rule — the local-not-global principle in #8 stands, the ranking does not.
+  (b) **cross-tier colour** — `band_for` is computed once per case and drives
+  both the card header and the lamp, so a case can no longer be amber in one
+  tier and red in the next. (c) **header contrast** — white-on-amber measured
+  2.12:1; `text_on()` now picks ink or paper per band by measured contrast
+  (worst case 5.14:1) and a self-check asserts AA. (d) **direction-word
+  deadband** — "raised"/"low" attach only outside 0.25 IQR of the clean-set
+  median, so BS 7.7 against a 7.5 median is no longer worded as a concern;
+  still median-relative, NOT clinical. (e) **mother provenance** — the
+  transcript file now carries case, band and the disclaimer under an explicit
+  "written, not spoken" rule; the spoken line is unchanged, because appending
+  provenance to every message would bury the one action the tier exists to
+  deliver. Two later label refinements: Age carries its own direction pair
+  ("young"/"older", not "low"/"raised"), and each band's header states its
+  level in words ("LOW — routine care" / "ELEVATED — needs follow-up" /
+  "HIGH — needs follow-up") with the separate band-word line removed, so the
+  three states are distinguishable in text alone and hue is purely redundant
+  (WCAG 1.4.1). Neither refinement moved a rating.
+  **Preserved as Limitations, not fixed:** the mother tier leans on colour
+  (position and the lit/unlit luminance step are real redundancies, but a
+  colour-blind AND deaf reader has position alone); the voice-first mother
+  visual has no rendered text alternative (1.1.1) for a deaf reader; the
+  clinician tier assumes chart and English literacy; all tiers ship as images
+  of text; the ASHA tier is English-only. These are properties of the design,
+  and each trades against what makes its tier work — they go in the paper's
+  Limitations section, and closing them needs the user studies that are gated
+  on ethics clearance.
