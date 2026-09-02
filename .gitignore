@@ -17,6 +17,9 @@ models/*.joblib
 .DS_Store
 .ipynb_checkpoints/
 
+# Packaged skill zip (the live copy is .claude/commands/anti-ai.md)
+.claude/anti-ai.skill
+
 # Summer-school binaries (kept locally, not tracked). Do NOT add *.pdf —
 # a future manuscript PDF must stay trackable.
 *.pptx
