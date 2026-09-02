@@ -12,6 +12,12 @@ ONE prediction, rendered three ways, from the saved Phase-2 SHAP artifacts:
                       results/audio/tier_mother_<case>_hi.mp3,
                       results/tables/tier_mother_<case>_hi.txt
 
+One band, computed once per case by ``band_for``, drives BOTH the ASHA header
+and the mother's lamp: a prediction cannot be amber in one tier and red in the
+next. The ASHA driver list is SIGN-AWARE — only features pushing toward the
+elevated class are listed, and a routine card lists none at all (P4 found the
+old |SHAP| ranking printing a feature that argued against the prediction).
+
 INTEGRITY — this is an ILLUSTRATIVE rendering on PUBLIC data (UCI Maternal
 Health Risk, id=863). It is NOT a diagnosis, NOT medical advice, and NOT
 clinically validated. The model flags factors for follow-up; the referral
@@ -58,6 +64,13 @@ ASHA_NEXT_STEP = (
     "Arrange a clinic check-up soon and share these readings with the "
     "medical officer."
 )
+# A routine card must not ask for a check-up it has no reason to ask for.
+ASHA_NEXT_STEP_ROUTINE = (
+    "Continue routine antenatal care and share these readings at the next "
+    "scheduled visit."
+)
+ASHA_HEADING_ELEVATED = "What the model flagged for follow-up:"
+ASHA_HEADING_ROUTINE = "No specific risk factors flagged."
 ASHA_FOOTER = "The referral decision remains with the health worker and clinician."
 
 # Tier 3 message, one per band. Deterministic, no numbers, no disease names.
@@ -76,6 +89,54 @@ MOTHER_HI = {
 BAND_RGB = {"RED": (200, 40, 40), "AMBER": (235, 165, 20), "GREEN": (40, 160, 70)}
 BAND_HEX = {"RED": "#c82828", "AMBER": "#eba514", "GREEN": "#28a046"}
 RED_MARGIN = 0.15  # top-2 probability margin required before the mother sees RED
+
+# One band drives the mother's lamp AND the ASHA header, so a case cannot be
+# amber in one tier and red in the next. GREEN <=> predicted low risk.
+BAND_LABEL = {
+    "GREEN": "ROUTINE",
+    "AMBER": "ELEVATED — needs follow-up",
+    "RED": "ELEVATED — needs follow-up",
+}
+
+# Direction words are attached only outside a deadband of this many IQRs
+# around the clean-set median (see ``direction_word``).
+DEADBAND_IQRS = 0.25
+
+INK, PAPER = "#1a1a1a", "#ffffff"
+
+
+# ---------------------------------------------------------------------------
+# WCAG contrast (also imported by src.evaluate, so the palette has one source)
+# ---------------------------------------------------------------------------
+def hex_rgb(h: str) -> tuple[int, int, int]:
+    h = h.lstrip("#")
+    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))  # type: ignore[return-value]
+
+
+def _linear(channel: int) -> float:
+    c = channel / 255
+    return c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+
+
+def luminance(rgb: tuple[int, int, int]) -> float:
+    r, g, b = (_linear(c) for c in rgb)
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+
+def contrast(a: tuple[int, int, int], b: tuple[int, int, int]) -> float:
+    """WCAG 2.1 contrast ratio between two sRGB colours (1.0 – 21.0)."""
+    lo, hi = sorted((luminance(a), luminance(b)))
+    return (hi + 0.05) / (lo + 0.05)
+
+
+def text_on(bg_hex: str) -> str:
+    """Ink or paper — whichever contrasts more with this background.
+
+    Computed from the hex, so re-tuning a band colour cannot silently leave
+    unreadable text behind it.
+    """
+    bg = hex_rgb(bg_hex)
+    return INK if contrast(hex_rgb(INK), bg) >= contrast(hex_rgb(PAPER), bg) else PAPER
 
 
 # ---------------------------------------------------------------------------
@@ -96,18 +157,42 @@ def band_for(predicted: str, margin: float) -> str:
     return "AMBER"
 
 
-def top_drivers(contrib: pd.DataFrame, medians: pd.Series, k: int = 2) -> list[str]:
-    """Top-k LOCAL drivers by |SHAP| for the predicted class, as plain phrases.
+def direction_word(feature: str, value: float, ref: pd.DataFrame) -> str:
+    """Plain phrase for one reading: direction word only outside the deadband.
 
-    Direction word comes from the reading vs. the dataset median — a fixed
-    comparison, not a clinical threshold.
+    A reading within 0.25 IQR of the clean-set median is unremarkable, so it is
+    named plainly ("blood sugar") rather than editorialised ("raised blood
+    sugar"). The deadband is derived from the data, not from clinical
+    reference ranges — this preprint claims no clinical thresholds.
     """
-    top = contrib.reindex(contrib.shap_pred_class.abs().sort_values(ascending=False).index)
-    return [
-        f"{'raised' if r.feature_value > medians[r.feature] else 'low'} "
-        f"{PLAIN_NAMES[r.feature]}"
-        for r in top.head(k).itertuples()
-    ]
+    med, dead = ref.loc[feature, "median"], ref.loc[feature, "deadband"]
+    name = PLAIN_NAMES[feature]
+    if abs(value - med) <= dead:
+        return name
+    return f"{'raised' if value > med else 'low'} {name}"
+
+
+def top_drivers(contrib: pd.DataFrame, ref: pd.DataFrame, elevated: bool,
+                k: int = 2) -> list[str]:
+    """The top-k features PUSHING TOWARD an elevated prediction, as phrases.
+
+    Sign matters, and ranking by |SHAP| got it wrong: a feature arguing
+    AGAINST the prediction has a large magnitude and a negative sign, and
+    printing it under "flagged for follow-up" puts a false cue in front of the
+    person making the referral. So: keep only positive contributions to the
+    predicted class, rank by signed value descending.
+
+    A routine (predicted-low) card lists nothing at all. Its top contributors
+    are the reasons the model said LOW; naming them as "flagged" would invert
+    their meaning.
+    """
+    if not elevated:
+        return []
+    pos = contrib[contrib.shap_pred_class > 0].sort_values(
+        "shap_pred_class", ascending=False
+    )
+    return [direction_word(r.feature, r.feature_value, ref)
+            for r in pos.head(k).itertuples()]
 
 
 def _selfcheck() -> None:
@@ -115,12 +200,25 @@ def _selfcheck() -> None:
     assert band_for("high risk", 0.90) == "RED"
     assert band_for("high risk", 0.012) == "AMBER"  # boundary_mid: near-tie
     assert band_for("mid risk", 0.90) == "AMBER"
-    med = pd.Series({"BS": 7.5, "BodyTemp": 98.0})
-    df = pd.DataFrame(
-        {"feature": ["BS", "BodyTemp"], "feature_value": [9.0, 97.0],
-         "shap_pred_class": [0.20, -0.30]}
+    # Every band's header text must clear WCAG AA (4.5:1) on its own colour.
+    for band, hexc in BAND_HEX.items():
+        cr = contrast(hex_rgb(text_on(hexc)), hex_rgb(hexc))
+        assert cr >= 4.5, f"{band} header text is {cr:.2f}:1"
+
+    ref = pd.DataFrame(
+        {"median": {"BS": 7.5, "BodyTemp": 98.0, "Age": 25.0},
+         "deadband": {"BS": 0.25, "BodyTemp": 0.0, "Age": 4.0}}
     )
-    assert top_drivers(df, med) == ["low body temperature", "raised blood sugar"]
+    df = pd.DataFrame(
+        {"feature": ["BS", "BodyTemp", "Age"], "feature_value": [7.7, 102.0, 13.0],
+         "shap_pred_class": [-0.30, 0.20, 0.05]}
+    )
+    # BS has the largest |SHAP| but argues AGAINST the prediction — it must not
+    # be listed; BS 7.7 against a 7.5 median is inside the deadband anyway.
+    assert top_drivers(df, ref, elevated=True) == ["raised body temperature", "low age"]
+    assert top_drivers(df, ref, elevated=False) == []
+    assert direction_word("BS", 7.7, ref) == "blood sugar"
+    assert direction_word("BS", 9.0, ref) == "raised blood sugar"
 
 
 # ---------------------------------------------------------------------------
@@ -193,19 +291,26 @@ def render_clinician(case: str, s: pd.Series, contrib: pd.DataFrame, probs: pd.S
 # ---------------------------------------------------------------------------
 # Tier 2 — ASHA
 # ---------------------------------------------------------------------------
-def render_asha(case: str, s: pd.Series, contrib: pd.DataFrame, medians: pd.Series):
-    """Deterministic template over the local SHAP values. No LLM, ever."""
-    routine = s.predicted == "low risk"
-    band = "ROUTINE" if routine else "ELEVATED — needs follow-up"
-    drivers = top_drivers(contrib, medians)
+def render_asha(case: str, s: pd.Series, contrib: pd.DataFrame, ref: pd.DataFrame,
+                band: str):
+    """Deterministic template over the local SHAP values. No LLM, ever.
+
+    ``band`` is the same value the mother's lamp uses, so one prediction can
+    never be amber on the card and red on the lamp.
+    """
+    elevated = band != "GREEN"
+    label = BAND_LABEL[band]
+    drivers = top_drivers(contrib, ref, elevated)
+    heading = ASHA_HEADING_ELEVATED if elevated else ASHA_HEADING_ROUTINE
+    next_step = ASHA_NEXT_STEP if elevated else ASHA_NEXT_STEP_ROUTINE
 
     text = "\n".join([
-        f"ASHA CARD — {band}",
+        f"ASHA CARD — {label}  [band: {band}]",
         "",
-        "What the model flagged for follow-up:",
+        heading,
         *[f"  • {d}" for d in drivers],
         "",
-        f"Next step: {ASHA_NEXT_STEP}",
+        f"Next step: {next_step}",
         "",
         ASHA_FOOTER,
         DISCLAIMER,
@@ -216,19 +321,24 @@ def render_asha(case: str, s: pd.Series, contrib: pd.DataFrame, medians: pd.Seri
     fig = plt.figure(figsize=(7.5, 5))
     ax = fig.add_axes([0, 0, 1, 1])
     ax.axis("off")
-    colour = BAND_HEX["GREEN"] if routine else BAND_HEX["AMBER"]
+    colour = BAND_HEX[band]
+    ink = text_on(colour)  # AA-checked against this band, not assumed white
     ax.add_patch(plt.Rectangle((0.04, 0.05), 0.92, 0.9, fill=False, ec="#999", lw=1.5))
     ax.add_patch(plt.Rectangle((0.04, 0.79), 0.92, 0.16, color=colour))
-    ax.text(0.5, 0.87, band, ha="center", va="center", fontsize=17,
-            color="white", fontweight="bold")
+    ax.text(0.5, 0.885, label, ha="center", va="center", fontsize=17,
+            color=ink, fontweight="bold")
+    # Band as text as well as hue — the card must not lean on colour alone.
+    ax.text(0.5, 0.815, f"band: {band}", ha="center", va="center", fontsize=9,
+            color=ink)
 
-    ax.text(0.09, 0.70, "What the model flagged for follow-up:", fontsize=12,
-            fontweight="bold")
+    ax.text(0.09, 0.70, heading, fontsize=12, fontweight="bold")
     for i, d in enumerate(drivers):
         ax.text(0.12, 0.62 - 0.08 * i, f"•  {d}", fontsize=14)
 
-    ax.text(0.09, 0.38, "Next step", fontsize=12, fontweight="bold")
-    ax.text(0.09, 0.28, textwrap.fill(ASHA_NEXT_STEP, 52), fontsize=12,
+    # Close the gap the driver list would have occupied on a routine card.
+    y = 0.38 if drivers else 0.58
+    ax.text(0.09, y, "Next step", fontsize=12, fontweight="bold")
+    ax.text(0.09, y - 0.10, textwrap.fill(next_step, 52), fontsize=12,
             va="top", bbox=dict(fc="#f2f2f2", ec="none", pad=6))
     ax.text(0.09, 0.155, ASHA_FOOTER, fontsize=10, style="italic", color="#333")
     ax.text(0.09, 0.11, textwrap.fill(DISCLAIMER, 95), fontsize=7.5, va="top",
@@ -260,8 +370,20 @@ def render_mother(case: str, band: str):
     img.save(png)
 
     message = MOTHER_HI[band]
+    # The spoken line stays exactly as templated — provenance is written
+    # alongside it, NOT read aloud. A one-time spoken IVR framing is
+    # deployment work, not something to bolt onto every message.
     txt = config.TABLES_DIR / f"tier_mother_{case}_hi.txt"
-    txt.write_text(message, encoding="utf-8")
+    txt.write_text(
+        "\n".join([
+            message,
+            "",
+            "--- provenance (written, not spoken) ---",
+            f"case: {case}   band: {band}",
+            DISCLAIMER,
+        ]) + "\n",
+        encoding="utf-8",
+    )
 
     audio_dir = config.RESULTS_DIR / "audio"
     audio_dir.mkdir(parents=True, exist_ok=True)
@@ -280,7 +402,7 @@ def render_mother(case: str, band: str):
 
 # ---------------------------------------------------------------------------
 def render_case(case: str, summary: pd.DataFrame, contribs: pd.DataFrame,
-                medians: pd.Series) -> None:
+                ref: pd.DataFrame) -> None:
     s = summary.set_index("case").loc[case]
     contrib = contribs[contribs.case == case].reset_index(drop=True)
     probs = pd.Series(
@@ -292,7 +414,7 @@ def render_case(case: str, summary: pd.DataFrame, contribs: pd.DataFrame,
     print(f"\ncase '{case}' — row {s.row_index}: true {s.true}, predicted "
           f"{s.predicted} (top-2 margin {margin:.3f}) -> mother band {band}")
     print(f"  tier 1 -> {render_clinician(case, s, contrib, probs)}")
-    a_png, a_txt, a_text = render_asha(case, s, contrib, medians)
+    a_png, a_txt, a_text = render_asha(case, s, contrib, ref, band)
     print(f"  tier 2 -> {a_png}\n           {a_txt}")
     print("           " + a_text.splitlines()[0])
     m_png, m_txt, m_mp3, _ = render_mother(case, band)
@@ -306,8 +428,14 @@ def run(case: str = "boundary_mid") -> None:
 
     summary = pd.read_csv(config.TABLES_DIR / "shap_case_summary.csv")
     contribs = pd.read_csv(config.TABLES_DIR / "shap_case_contributions.csv")
+    # Reference stats for the direction words: median plus a deadband of
+    # 0.25 IQR. BodyTemp's IQR is 0 on the clean set (readings pile up at
+    # 98F), so any deviation there counts — which is the behaviour we want.
     X, _, _ = prepare_modeling_frame(*load_dataset())
-    medians = X.median()
+    ref = pd.DataFrame({
+        "median": X.median(),
+        "deadband": (X.quantile(0.75) - X.quantile(0.25)) * DEADBAND_IQRS,
+    })
 
     config.FIGURES_DIR.mkdir(parents=True, exist_ok=True)
     config.TABLES_DIR.mkdir(parents=True, exist_ok=True)
@@ -318,7 +446,7 @@ def run(case: str = "boundary_mid") -> None:
 
     cases = list(summary.case) if case == "all" else [case]
     for c in cases:
-        render_case(c, summary, contribs, medians)
+        render_case(c, summary, contribs, ref)
     print("\nOK")
 
 

@@ -1,1 +1,5 @@
 नमस्ते। आपकी जाँच सामान्य दिख रही है। कृपया अपनी नियमित जाँच जारी रखें।
+
+--- provenance (written, not spoken) ---
+case: confident_low   band: GREEN
+Illustrative rendering on public data (UCI Maternal Health Risk). Not a diagnosis, not medical advice, not clinically validated.

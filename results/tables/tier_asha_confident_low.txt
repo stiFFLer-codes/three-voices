@@ -1,10 +1,8 @@
-ASHA CARD — ROUTINE
+ASHA CARD — ROUTINE  [band: GREEN]
 
-What the model flagged for follow-up:
-  • raised blood sugar
-  • low upper blood pressure
+No specific risk factors flagged.
 
-Next step: Arrange a clinic check-up soon and share these readings with the medical officer.
+Next step: Continue routine antenatal care and share these readings at the next scheduled visit.
 
 The referral decision remains with the health worker and clinician.
 Illustrative rendering on public data (UCI Maternal Health Risk). Not a diagnosis, not medical advice, not clinically validated.

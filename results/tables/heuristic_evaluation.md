@@ -21,7 +21,7 @@ Scope notes, stated so no reader has to infer them:
 | **Fail** | Not satisfied; the defect is named and a fix is given. |
 | **Deferred** | A static artifact cannot exercise this. Relevant at deployment (an ANMOL-style app or an IVR call flow), recorded rather than faked. |
 
-Distribution across 48 cells: 22 Pass, 15 Partial, 5 Fail, 6 Deferred.
+Distribution across 48 cells: 28 Pass, 13 Partial, 1 Fail, 6 Deferred.
 
 ## Matrix
 
@@ -29,20 +29,20 @@ Distribution across 48 cells: 22 Pass, 15 Partial, 5 Fail, 6 Deferred.
 |---|---|---|---|
 | 1.1.1 Text alternative for non-text content | Partial | Pass | Partial |
 | 1.4.1 Use of colour (colour not the only cue) | Pass | Pass | Partial |
-| 1.4.3 Contrast (minimum) | Pass | Fail | Pass |
+| 1.4.3 Contrast (minimum) | Pass | Pass | Pass |
 | 1.4.5 Images of text | Fail | Partial | Pass |
 | 2.1 / 2.4 Keyboard, focus order, navigation | Deferred | Deferred | Deferred |
 | 3.1.1 / 3.1.2 Language of page and of parts | Pass | Partial | Partial |
 | 3.1.5 Reading level / plain language | Partial | Partial | Pass |
-| 3.2.4 Consistent identification | Pass | Fail | Pass |
+| 3.2.4 Consistent identification | Pass | Pass | Pass |
 | 4.1.2 Name, role, value | Deferred | Deferred | Deferred |
-| 1. Visibility of system status | Pass | Partial | Pass |
-| 2. Match between system and the real world | Pass | Partial | Pass |
-| 4. Consistency and standards | Pass | Fail | Pass |
-| 5. Error prevention | Pass | Partial | Pass |
+| 1. Visibility of system status | Pass | Pass | Pass |
+| 2. Match between system and the real world | Pass | Pass | Pass |
+| 4. Consistency and standards | Pass | Pass | Pass |
+| 5. Error prevention | Pass | Pass | Pass |
 | 6. Recognition rather than recall | Partial | Pass | Partial |
 | 8. Aesthetic and minimalist design | Partial | Pass | Pass |
-| 10. Help and documentation | Partial | Pass | Fail |
+| 10. Help and documentation | Partial | Pass | Partial |
 
 ## Findings, cell by cell
 
@@ -50,21 +50,21 @@ Distribution across 48 cells: 22 Pass, 15 Partial, 5 Fail, 6 Deferred.
 *Perceivable*
 
 - **clinician — Partial.** Every number is burned into the PNG and this is the only tier with no text sibling — tier_asha_*.txt and tier_mother_*_hi.txt exist, tier_clinician_*.txt does not; the nearest machine-readable form is shap_case_contributions.csv, which is data, not a caption.
-- **ASHA — Pass.** `results/tables/tier_asha_<case>.txt` reproduces the card verbatim — band, both drivers, next step, accountability line, disclaimer — so nothing on the PNG is image-only.
+- **ASHA — Pass.** `results/tables/tier_asha_<case>.txt` reproduces the card verbatim — band label and band name, the driver list (empty on a routine card, as on the PNG), next step, accountability line, disclaimer — so nothing on the PNG is image-only.
 - **mother — Partial.** The spoken line has a deterministic transcript on disk (`tier_mother_<case>_hi.txt`), but render_mother() draws three ellipses and nothing else: no caption is rendered, so a deaf or hard-of-hearing viewer gets no text alternative in the artifact she is handed.
 
 ### 1.4.1 Use of colour (colour not the only cue)
 *Perceivable*
 
 - **clinician — Pass.** Bar direction plus a signed numeric label carries every SHAP sign without hue (BS +0.204, DiastolicBP -0.024 on boundary_mid); probability bars are labelled with class name and value, so the green/amber/red fill is redundant.
-- **ASHA — Pass.** The header colour restates the header text — 'ROUTINE' on green, 'ELEVATED — needs follow-up' on amber; removing all colour loses no information.
+- **ASHA — Pass.** The header colour restates the header text, and the three-band unification kept it that way: the band word is printed under the label ('band: AMBER', 'band: RED'), so the amber and red states — which share the label 'ELEVATED — needs follow-up' — are still told apart in text. Removing all colour loses no information.
 - **mother — Partial.** Hue is the primary cue. Two redundancies verified: lamp POSITION is fixed (red top / amber middle / green bottom) and lit-vs-unlit differs by 3.97:1 in luminance, so which lamp is lit survives colour-vision deficiency; the spoken Hindi line is a second non-colour channel. Residual gap: a viewer who is both colour-blind and deaf has position only, and position assumes the traffic-light convention.
 
 ### 1.4.3 Contrast (minimum)
 *Perceivable*
 
 - **clinician — Pass.** Text is matplotlib near-black on white; the smallest element, the 8pt italic disclaimer at #555, measures 7.46:1. Bar fills measure 3.91:1 and 3.45:1 against white, clearing the 3:1 non-text threshold (1.4.11).
-- **ASHA — Fail.** White bold header text on the ELEVATED amber measures 2.12:1 — below the 3:1 large-text minimum. The ROUTINE green passes at 3.38:1. Amber is the header for three of the four rendered cases, so the failing state is the common one; near-black on the same amber would measure 8.23:1.
+- **ASHA — Pass.** Header ink is now chosen per band by render.text_on(), which compares both candidates against the band colour: near-black on amber 8.23:1, near-black on green 5.14:1, white on red 5.54:1. Worst case 5.14:1 clears the 4.5:1 normal-text minimum, not merely the 3:1 large-text one. Previously white was hardcoded and the amber header — the most common state — measured 2.12:1.
 - **mother — Pass.** No text to contrast. The perceivable object is the lit lamp, which measures 6.69:1 against the #2b2b2b housing. Caveat named honestly: the unlit lamps sit at 1.68:1 against the housing, so on a low-fidelity print or a dim screen the three-lamp layout that carries the position cue may read as one lamp on a dark slab.
 
 ### 1.4.5 Images of text
@@ -99,7 +99,7 @@ Distribution across 48 cells: 22 Pass, 15 Partial, 5 Fail, 6 Deferred.
 *Understandable*
 
 - **clinician — Pass.** Class colours (green/amber/red for low/mid/high) are the same palette the other tiers use, and identical across all four cases.
-- **ASHA — Fail.** The card band is binary — render_asha() colours by 'is the prediction low risk', collapsing mid and high — so confident_high renders an AMBER card while the SAME case renders a RED lamp to the mother. One prediction is identified by two different colours in two tiers.
+- **ASHA — Pass.** One band_for() call per case now drives the card header and the mother's lamp, so the two tiers cannot disagree: confident_high is RED in both, boundary_mid and failure_mode AMBER in both, confident_low GREEN in both. The card prints the band name, so the shared identity is legible and not merely chromatic.
 - **mother — Pass.** Three bands mapped consistently to the shared palette; the same band always renders the same lamp and the same sentence (boundary_mid and failure_mode produce byte-identical Hindi text, as they should).
 
 ### 4.1.2 Name, role, value
@@ -113,28 +113,28 @@ Distribution across 48 cells: 22 Pass, 15 Partial, 5 Fail, 6 Deferred.
 *Nielsen*
 
 - **clinician — Pass.** Shows true class, predicted class, all three probabilities to three decimals, the base value and f(x). On boundary_mid the reader sees 0.487 vs 0.499 and knows immediately that the call is a coin flip.
-- **ASHA — Partial.** The card states a band but never how certain the model was: boundary_mid (top-2 margin 0.012) and confident_high (margin 1.000) print the identical 'ELEVATED — needs follow-up' header. The ASHA is the person acting on it, and she gets no confidence signal.
+- **ASHA — Pass.** Since banding was unified, the card inherits the mother tier's uncertainty rule: confident_high (margin 1.000) prints 'band: RED' and boundary_mid (margin 0.012) prints 'band: AMBER', so the person making the referral can tell a confident call from a knife-edge one. The margin itself is still not printed — deliberately, since the card is the tier that must not turn into a probability read-out.
 - **mother — Pass.** Status is exactly one lamp, and model uncertainty is what chooses it (see error prevention). By design the tier reports an action, not a state — which is the right 'status' for it.
 
 ### 2. Match between system and the real world
 *Nielsen*
 
 - **clinician — Pass.** Raw clinical units on the axis (BS = 9, BodyTemp = 102, SystolicBP = 85), not model-space values — the final model uses no scaler, so the waterfall reads in the clinician's own units.
-- **ASHA — Partial.** The phrasing matches field speech, but the direction word is median-relative, not clinical: confident_low prints 'raised blood sugar' for BS = 7.7 against a dataset median of 7.5. An unremarkable reading is worded as a concern.
+- **ASHA — Pass.** Phrasing matches field speech, and a deadband of 0.25 IQR around the clean-set median now gates the direction word: a reading inside it is named plainly ('blood sugar'), only a reading outside it is called 'raised' or 'low'. BS 7.7 against a 7.5 median no longer reads as a concern; BS 9.0 on boundary_mid and 15.0 on confident_high still do. BodyTemp's IQR is 0 on the clean set, so 102F is flagged as raised, which is the right behaviour.
 - **mother — Pass.** A traffic light is a near-universal metaphor, and the sentence names the real institutions in her world — her ANM, the nearest health centre — and opens by telling her not to panic, which is how the news would be delivered in person.
 
 ### 4. Consistency and standards
 *Nielsen*
 
 - **clinician — Pass.** Layout, palette and label conventions are identical across all four rendered cases; the figure is generated by one code path with no per-case special-casing.
-- **ASHA — Fail.** The heading 'What the model flagged for follow-up:' is fixed text printed on every card, including the ROUTINE one — where the two features listed (raised blood sugar, low upper blood pressure on confident_low) are the top contributors TO the low-risk prediction. The same sentence means opposite things on different cards, and the ROUTINE card still tells the reader to arrange a check-up.
+- **ASHA — Pass.** The heading now follows the band rather than being fixed text: an elevated card reads 'What the model flagged for follow-up:' and lists drivers, while the routine card reads 'No specific risk factors flagged.' and lists none. The next step follows too — routine cards say continue antenatal care and share the readings at the next scheduled visit, not arrange a check-up. No sentence now means opposite things on different cards.
 - **mother — Pass.** One image and one sentence per band, fixed; nothing varies between cases that share a band.
 
 ### 5. Error prevention
 *Nielsen*
 
 - **clinician — Pass.** The tier surfaces its own failure rather than hiding it: on failure_mode the waterfall shows BodyTemp +0.216 driving a high-risk call in a 13-year-old while blood sugar argues against it, and true vs predicted are both printed in the title. A reader can catch the spurious flag from the figure alone.
-- **ASHA — Partial.** Strong on accountability — nothing is a diagnosis, the footer returns the referral decision to the human, the next step carries no medical timeframe. Weak on direction: top_drivers() ranks by |SHAP| with no sign filter, so a feature that argues AGAINST the prediction can be printed as a flag. Verified on failure_mode, where 'low blood sugar' is listed although its contribution to the predicted class is -0.085 — it pushed away from high risk.
+- **ASHA — Pass.** Strong on accountability — nothing is a diagnosis, the footer returns the referral decision to the human, the next step carries no medical timeframe — and the sign defect is closed: top_drivers() keeps only positive contributions to the predicted class and ranks by signed value. Verified on failure_mode, where BS (-0.085, arguing AGAINST high risk) is no longer listed despite its magnitude; the card now shows BodyTemp (+0.216) and Age (+0.056), the two features actually driving the call.
 - **mother — Pass.** The uncertainty-aware down-ranking is a genuine control, not a cosmetic one: RED requires predicted-high AND a top-2 margin >= 0.15, so boundary_mid (0.012) and failure_mode (0.002) both light AMBER. failure_mode is a true-low case, so the rule demonstrably suppressed a false red alarm to a mother. This is the strongest single design decision in the three tiers.
 
 ### 6. Recognition rather than recall
@@ -156,48 +156,62 @@ Distribution across 48 cells: 22 Pass, 15 Partial, 5 Fail, 6 Deferred.
 
 - **clinician — Partial.** The disclaimer is present on the figure, but there is no legend, no method note and no pointer to how the case was selected; the reader has to go to the repository.
 - **ASHA — Pass.** The card carries both the accountability line and the full disclaimer, so the person acting on it is told what it is and who decides.
-- **mother — Fail.** Nothing on the mother artifact says what it is, where it came from, or that it is not a diagnosis. The disclaimer that both other tiers carry is absent from the image, and the spoken line does not carry it either. A mother receiving lamp plus voice has no route to help beyond 'go to the ANM'. Deliberate (the tier is text-free by design) but a real gap; a short spoken provenance clause is the obvious fix.
+- **mother — Partial.** `tier_mother_<case>_hi.txt` now carries a provenance block — case, band and the full disclaimer — under a '(written, not spoken)' rule, so the artifact set is self-describing and a deployment inherits the text it must show. The gap that remains is real and deliberate: neither the image nor the audio carries it, so a mother handed lamp plus voice still has no route to help beyond 'go to the ANM'. A one-time spoken IVR framing at call setup is the deployment answer; appending it to every message was rejected as it would bury the one action the tier exists to deliver.
 
-## Accessibility gaps identified
+## Defects found and corrected
 
-Ranked by how much harm the gap can do to the person reading that tier.
+This evaluation was first run against the original P3 artifacts. These defects were found there, fixed in `src/render.py`, and the tiers re-rendered; every rating above describes the CORRECTED artifacts. Recorded so the finding survives its own repair.
 
-**1. ASHA driver list is sign-blind**
+**C1. ASHA driver list is now sign-aware**
 
-- *Evidence:* top_drivers() in src/render.py sorts by |SHAP| only, so a feature arguing against the prediction can be printed under 'What the model flagged for follow-up'. failure_mode lists 'low blood sugar' with a contribution of -0.085 to the predicted class; confident_low lists two features that are the reasons the model said LOW.
-- *Fix:* Filter to positive contributions for the predicted class, or word negative ones explicitly as 'argues against'. Highest priority: this is the one gap that can put a wrong cue in front of the person making the referral.
+- *Was:* top_drivers() ranked by |SHAP| with no sign filter, so a feature arguing AGAINST the prediction could be printed under 'What the model flagged for follow-up'. On failure_mode the card listed 'low blood sugar' whose contribution to the predicted class was -0.085 — it pushed away from high risk. The routine card was worse: confident_low listed the two features that were the reasons the model said LOW, under a heading announcing them as flags, above a next step telling the reader to arrange a check-up.
+- *Now:* Only positive contributions to the predicted class are listed, ranked by signed value. A predicted-low card lists nothing and says so ('No specific risk factors flagged.'), and its next step is to continue routine antenatal care. failure_mode now shows BodyTemp (+0.216) and Age (+0.056); confident_low shows no drivers. This was the highest-priority gap — the only one that could put a wrong cue in front of the person making the referral.
 
-**2. ASHA header text fails contrast in its most common state**
+**C2. One band across both tiers**
 
-- *Evidence:* White bold on the ELEVATED amber measures 2.12:1, under the 3:1 large-text minimum (WCAG 1.4.3); amber is the header for three of the four rendered cases.
-- *Fix:* Near-black header text on the same amber measures 8.23:1 — a one-constant change.
+- *Was:* render_asha() banded binary (low vs not-low) while the mother tier banded three ways with the uncertainty rule, so confident_high rendered an AMBER card and a RED lamp — one prediction, two identities.
+- *Now:* band_for() is computed once per case and passed to both tiers. The card prints the band name as text under the label, so amber and red — which share the label 'ELEVATED — needs follow-up' — stay distinguishable without colour.
 
-**3. Mother visual has no rendered text alternative**
+**C3. Header ink is computed, not assumed**
+
+- *Was:* White header text was hardcoded. On the ELEVATED amber it measured 2.12:1, under even the 3:1 large-text minimum, and amber is the header for two of the four rendered cases; the ROUTINE green managed only 3.38:1.
+- *Now:* render.text_on() picks ink or paper per band by measured contrast. Worst case across the three bands is now 5.14:1, clearing the 4.5:1 normal-text threshold; a self-check asserts it, so re-tuning a band colour cannot silently reintroduce the defect.
+
+**C4. Direction words have a deadband**
+
+- *Was:* 'Raised' and 'low' were attached whenever the reading differed from the dataset median at all, so confident_low printed 'raised blood sugar' for BS = 7.7 against a median of 7.5 — a trivial deviation worded like a concern.
+- *Now:* The word is attached only outside 0.25 IQR of the clean-set median; inside it the factor is named plainly ('blood sugar'). Still median-relative, not clinical — reference ranges would need clinical input this preprint deliberately does not claim.
+
+**C5. Mother tier carries written provenance**
+
+- *Was:* Neither the image, the audio, nor the transcript file said what the output was or that it is not a diagnosis, while both other tiers printed the disclaimer.
+- *Now:* tier_mother_<case>_hi.txt now carries case, band and the full disclaimer under an explicit '(written, not spoken)' rule. The spoken line is unchanged: appending provenance to every message would bury the single action the tier exists to deliver, so a one-time spoken framing at IVR call setup is recorded as deployment work.
+
+## Inherent limitations
+
+What remains after those fixes. These are properties of the design rather than bugs in it — each is a deliberate trade-off, ranked by how much harm it can do to the person reading that tier.
+
+**1. Mother visual has no rendered text alternative**
 
 - *Evidence:* The traffic light is text-free by design (Decision Log #6), so a deaf or hard-of-hearing mother has no channel: the Hindi transcript exists only as a file on disk, not on the artifact.
 - *Fix:* A rendered caption or an SMS companion carrying the same templated sentence. Future work — it reopens the literacy assumption the tier was built to avoid, so it needs user input, not a unilateral design call.
 
-**4. Mother tier carries no provenance in any channel**
+**2. The mother tier leans on colour**
 
-- *Evidence:* Neither the image nor the spoken line states that this is an illustrative, non-diagnostic output, while both other tiers print the disclaimer.
-- *Fix:* A short spoken provenance clause appended to each band's template — audio, so it costs no literacy.
+- *Evidence:* Hue is the primary cue in the lamp. Position and the lit/unlit luminance step are real redundancies, and the spoken line is a second channel, but a viewer who is both colour-blind and deaf has position alone — and position assumes the traffic-light convention.
+- *Fix:* Shape or iconography per band, tested with the intended users. Not a unilateral fix: it trades against the minimalism that makes the tier readable at all.
 
-**5. Same prediction, two colours across tiers**
+**3. The clinician tier assumes chart and English literacy**
 
-- *Evidence:* render_asha() bands binary (low vs not-low) while the mother tier bands three ways with an uncertainty rule, so confident_high is amber on the card and red on the lamp.
-- *Fix:* Give the ASHA card the same three-band function the mother tier uses, and show the band name as text as it already does.
+- *Evidence:* 'SHAP waterfall', 'base E[f(x)] = 0.250' and an English title are correct for the stated reader and unreadable to anyone else; the tier carries no simpler supplement of its own.
+- *Fix:* None within the tier — the supplement is the other two tiers, which is the architecture's point. Recorded so the scope is explicit rather than implied.
 
-**6. Everything is an image of text**
+**4. Everything is an image of text**
 
 - *Evidence:* All three tiers ship as rasterised PNG (WCAG 1.4.5); text cannot be resized or restyled. The ASHA and mother tiers have .txt siblings, the clinician tier has none.
 - *Fix:* Emit a `tier_clinician_<case>.txt` alongside the figure; treat SVG or in-app rendering as the deployment answer.
 
-**7. 'Raised' and 'low' are median-relative, not clinical**
-
-- *Evidence:* The direction word compares the reading to the dataset median (BS 7.7 vs 7.5 prints 'raised'), so a trivial deviation is worded like a concern.
-- *Fix:* A deadband around the median, or reference ranges — the latter needs clinical input this preprint deliberately does not claim.
-
-**8. ASHA tier is English-only**
+**5. ASHA tier is English-only**
 
 - *Evidence:* The mother tier is localised to Hindi; the tier between her and the clinician is not.
 - *Fix:* Translate the fixed template constants. Cheap, because the tier is template-based by design — there is no generated text to translate at inference.
@@ -232,14 +246,20 @@ red. Model uncertainty is rendered as caution rather than discarded at the tier
 where the reader has the least ability to discount it. That is the transfer worth
 carrying to other three-tier systems.
 
-**The weakest result is the ASHA tier**, and it is weak in an instructive way. Its
-two content defects — the sign-blind driver list (error prevention) and the fixed
-'flagged for follow-up' heading on a routine card (consistency, and the tier's one
-outright Fail on content rather than colour) — come from one root: the template
-renders |SHAP| magnitude while the sentence around it asserts direction. The
-template approach is right (deterministic, reproducible, no hallucination); this
-particular template is under-specified. That is a fixable defect, not an argument
-for a language model at inference.
+**The most useful result is what the first pass of this evaluation caught.** Run
+against the original artifacts it returned four Fails, three of them in the ASHA
+tier, and they shared one root: the template rendered |SHAP| magnitude while the
+sentence around it asserted direction. A routine card announced the reasons the
+model said LOW as things "flagged for follow-up" and told the reader to arrange a
+check-up; a false-positive card listed a feature that argued against its own
+prediction. Both are the kind of defect that reaches the person making a referral
+and neither is visible from the model metrics — only from reading the artifact as
+its user would. All four are now fixed in `src/render.py` and this document
+re-rates the corrected outputs; the defects and their fixes are recorded above so
+the finding is not lost by being repaired. The template approach was never the
+problem — a deterministic template is auditable in exactly the way that let a
+heuristic pass find these at all. It was under-specified, which is a fixable
+defect and not an argument for a language model at inference.
 
 6 of the 48 cells are Deferred, all of them operability and
 robustness. That is not evasion, it is the honest boundary of a static-artifact
