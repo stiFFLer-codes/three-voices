@@ -26,6 +26,8 @@ plus an honest heuristic evaluation and the manuscript.
    outputs: defensible, reproducible, no hallucination.
 6. **Determinism.** Call `config.set_seeds()` at the top of every script.
    Fixed seeds, pinned deps, cached data.
+7. Never add Co-Authored-By, 'Generated with Claude Code', or Claude-Session
+   trailers to any commit or PR.
 
 ## Repo map
 - `src/config.py` — paths, seeds, dataset constants.

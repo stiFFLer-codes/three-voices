@@ -16,3 +16,9 @@ models/*.joblib
 # OS / editor
 .DS_Store
 .ipynb_checkpoints/
+
+# Summer-school binaries (kept locally, not tracked). Do NOT add *.pdf —
+# a future manuscript PDF must stay trackable.
+*.pptx
+COG1_Submission_Maitreya.pdf
+three-voices-scaffold.zip
