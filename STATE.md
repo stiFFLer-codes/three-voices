@@ -8,7 +8,7 @@ _Last updated: 2026-09-02_
 
 ## Current phase
 
-**P2 complete. Next: P3 (three-tier renderer).**
+**P3 done, P4 next (heuristic evaluation).**
 
 ## Status by phase
 
@@ -24,7 +24,9 @@ _Last updated: 2026-09-02_
   per feature/class + four criterion-selected cases, values saved as data,
   five figures. Tables in `results/tables/shap_*.csv`, figures in
   `results/figures/shap_*.png`.
-- **P3 — three-tier renderer — NOT STARTED.**
+- **P3 — three-tier renderer — DONE.** `python -m src.render [--case <tag>|all]`
+  (default `boundary_mid`). Reads the saved P2 CSVs — does NOT re-run SHAP.
+  Renders all four cases across three tiers; see "Artifacts on disk".
 - P4 heuristic eval, P5 manuscript, P6 cold-run/submit — not started.
 
 ## Key data facts (UCI Maternal Health Risk, id=863)
@@ -74,13 +76,28 @@ _Last updated: 2026-09-02_
   `shap_case_failure_mode.png`.
 - `models/model.joblib` — gitignored; `{pipeline, features, classes,
   selection}`.
+- **P3, per case tag** `<c>` ∈ {boundary_mid, confident_low, confident_high,
+  failure_mode}:
+  - `results/figures/tier_clinician_<c>.png` — SHAP waterfall + probability
+    bar + raw feature table.
+  - `results/figures/tier_asha_<c>.png` + `results/tables/tier_asha_<c>.txt`.
+  - `results/figures/tier_mother_<c>.png` (traffic light),
+    `results/tables/tier_mother_<c>_hi.txt`,
+    `results/audio/tier_mother_<c>_hi.mp3`.
 
-## Next step — P3
+## P3 mother-tier bands (as rendered)
 
-One case → clinician dashboard PNG + ASHA plain-language card + Hindi MP3 +
-mother-to-be visual. Consume the saved P2 data (`shap_case_*.csv`), do not
-re-run SHAP. ASHA layer is deterministic template-over-SHAP — no LLM at
-inference. Likely start with `boundary_mid` (row 66) as the worked example.
+| case | predicted | top-2 margin | band |
+|---|---|---|---|
+| confident_low | low | 1.000 | GREEN |
+| confident_high | high | 1.000 | RED |
+| boundary_mid | high | 0.012 | AMBER |
+| failure_mode | high | 0.002 | AMBER |
+
+## Next step — P4
+
+Heuristic evaluation: WCAG 2.1 + Nielsen rubric matrix over the three tiers
+just rendered. No human subjects.
 
 ## Decision Log (append-only)
 
@@ -106,3 +123,26 @@ inference. Likely start with `boundary_mid` (row 66) as the worked example.
   Co-Authored-By / "Generated with Claude Code" / Claude-Session trailers.
   Enforced three ways: `.claude/settings.json`, CLAUDE.md non-negotiable #7,
   `.git/hooks/commit-msg` (local, untracked — re-add on fresh clones).
+- **2026-09-02 #6 — Mother tier caps at an ACTION, never a number.** Tier 3
+  shows a three-lamp traffic light and speaks one templated Hindi sentence.
+  No probability, no percentage, no disease name, no text required to read
+  it. The tier's job is "what do I do next", not "how likely is X".
+- **2026-09-02 #7 — Uncertainty-aware AMBER down-ranking.** Band rule:
+  GREEN if predicted low; RED only if predicted high AND top-2 probability
+  margin ≥ 0.15; AMBER otherwise. A knife-edge call must not reach a mother
+  as a red alarm. Consequence: `boundary_mid` (margin 0.012) and
+  `failure_mode` (margin 0.002) both light AMBER, not RED — the model's
+  own uncertainty is rendered as caution rather than alarm. The 0.15
+  threshold is a stated design choice, not an empirical one.
+- **2026-09-02 #8 — ASHA card uses LOCAL drivers, not global ones.** Top-2
+  features by |SHAP| for THIS case's predicted class, through a fixed
+  feature→phrase map, with "raised"/"low" from the reading vs. the dataset
+  median. Rejected: naming the global top-2 (BS, SystolicBP) on every card —
+  it would be constant text, explaining nothing about the individual.
+  The next-step sentence is deliberately generic (no medical timeframe).
+- **2026-09-02 #9 — `src/render.py` reads CSVs, not the model.** Everything
+  the three tiers need (probabilities, per-feature SHAP, raw values) is
+  already in the P2 tables; the waterfall's base value is recovered as
+  `p_pred − Σ SHAP` (TreeExplainer is additive in probability space). So P3
+  loads no `model.joblib` — one less artifact to keep in sync. The clean
+  frame is still loaded, but only for the six feature medians.
