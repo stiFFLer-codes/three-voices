@@ -5,6 +5,14 @@ prediction on a public maternal-health dataset, rendered three ways
 (clinician dashboard, ASHA plain-language card, mother-to-be voice + visual),
 plus an honest heuristic evaluation and the manuscript.
 
+## Session protocol — READ FIRST
+
+- **Start of session:** read `STATE.md`. It holds the current phase, what is
+  done, the append-only Decision Log, and the concrete next step.
+- **End of session:** update `STATE.md` (phase, status, next step) and
+  **append** any new entries to the Decision Log. Never edit or delete an
+  existing Decision Log entry — supersede it with a new dated one.
+
 ## Non-negotiables (do not re-litigate these each session)
 
 1. **The model is a vehicle, not the contribution.** The novelty is the
