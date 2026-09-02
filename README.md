@@ -4,8 +4,21 @@
 
 A single maternal-health risk prediction, rendered through three
 stakeholder-specific explanation layers — a clinician SHAP dashboard, an ASHA
-worker plain-language card, and a mother-to-be voice + non-numeric visual — in
-low-resource, non-English deployment contexts.
+worker plain-language card, and a mother-to-be voice + non-numeric visual —
+calibrated per tier to modality and literacy rather than to language alone.
+
+Each tier substitutes what its reader actually lacks. The mother tier
+substitutes **modality and language**: a non-reading user leaves no text
+channel, so the explanation becomes one spoken Hindi sentence and a
+three-lamp visual — language is central here, and the Hindi strings were
+authored and clinically reviewed by a native-speaking MBBS collaborator. The
+ASHA tier substitutes **detail for one action**: its contribution is
+cognitive-load reduction, and its language is incidental — the card ships in
+English as a scoped exposition choice, since every string is a fixed template
+constant and localisation is string substitution deferred to deployment. The
+claim is therefore modality- and literacy-calibrated rendering, with language
+localisation demonstrated in the tier where it is most essential — not
+non-English rendering everywhere.
 
 **The contribution is the explanation architecture, not the model.** The model
 is a vehicle for demonstrating the tiered rendering. This is a design framework
@@ -37,6 +50,15 @@ run reads the cache, so the pipeline is deterministic and network-independent.
 Two exceptions need network: the initial dataset download, and the Hindi
 speech synthesis in `src.render` (gTTS). Without it the renderer still writes
 the message text and skips only the MP3.
+
+gTTS is an **illustrative stand-in**, not the deployment answer. It is a
+general-purpose engine, it is not tuned for Indian-language health speech, it
+handles acronyms unpredictably (the reason `ANM` is written phonetically in
+Devanagari in the source string), and its audio is not byte-reproducible
+across runs. The deterministic record of the spoken message is the Hindi text
+in `results/tables/tier_mother_<case>_hi.txt`; the MP3 is a rendering of it.
+Deployment-grade Indian-language TTS (AI4Bharat / Bhashini) is the stated
+path.
 
 Outputs land in `results/figures/` (PNG), `results/tables/` (CSV + the card
 and voice text), and `results/audio/` (Hindi MP3).

@@ -78,7 +78,7 @@ FINAL_MODEL = ("random_forest", False)  # (name, use_smote)
 # ---------------------------------------------------------------------------
 # Data preparation  (fixed-rule, pre-split — leak-safe by construction)
 # ---------------------------------------------------------------------------
-def prepare_modeling_frame(X: pd.DataFrame, y: pd.Series):
+def prepare_modeling_frame(X: pd.DataFrame, y: pd.Series, dedup: bool = True):
     """Return (X_clean, y_clean, report) after fixed-rule cleaning.
 
     Steps, in order, each recorded in ``report``:
@@ -97,9 +97,11 @@ def prepare_modeling_frame(X: pd.DataFrame, y: pd.Series):
     df = df[df["HeartRate"] >= MIN_PLAUSIBLE_HR].copy()
     report["dropped_impossible_heartrate"] = hr_bad
 
-    # 2) exact duplicate rows
+    # 2) exact duplicate rows (dedup=False only for the leakage check below)
     n_before_dedup = len(df)
-    df = df.drop_duplicates().reset_index(drop=True)
+    if dedup:
+        df = df.drop_duplicates()
+    df = df.reset_index(drop=True)
     report["dropped_exact_duplicates"] = int(n_before_dedup - len(df))
 
     # diagnostic: same features, conflicting label (kept — genuine ambiguity)
@@ -289,7 +291,45 @@ def run() -> pd.DataFrame:
     except ImportError:  # pragma: no cover
         print("\n[warn] joblib not available — model not saved.")
 
+    duplicate_leakage_check()
+
     print("OK")
+    return table
+
+
+def duplicate_leakage_check() -> pd.DataFrame:
+    """Score FINAL_MODEL twice: duplicates dropped vs. kept.
+
+    55% of the raw rows are exact duplicates. Keeping them lets identical rows
+    land in both the train and test fold of the same split, so the classifier
+    is scored partly on rows it memorised. This quantifies that inflation and
+    is the reason our headline numbers sit below the published 83-88%.
+    """
+    config.set_seeds()
+    X_raw, y_raw = load_dataset()
+    spec = _model_factories()[FINAL_MODEL[0]]
+
+    records = []
+    for dedup in (True, False):
+        X, y, prep = prepare_modeling_frame(X_raw, y_raw, dedup=dedup)
+        metrics, _ = evaluate(spec, X, y, FINAL_MODEL[1])
+        records.append({
+            "duplicates": "dropped" if dedup else "kept",
+            "n_rows": prep["n_clean"],
+            "macro_recall": _fmt(metrics["macro_recall"]),
+            "macro_f1": _fmt(metrics["macro_f1"]),
+            "accuracy": _fmt(metrics["accuracy"]),
+            "recall_high": _fmt(metrics["recall_per_class"][CLASS_NAMES[2]]),
+        })
+
+    table = pd.DataFrame.from_records(records)
+    out_csv = config.TABLES_DIR / "p1_duplicate_leakage.csv"
+    table.to_csv(out_csv, index=False)
+    tag = "SMOTE" if FINAL_MODEL[1] else "none"
+    print()
+    print(f"Duplicate-leakage check ({FINAL_MODEL[0]} / {tag}):")
+    print(table.to_string(index=False))
+    print(f"leakage table -> {out_csv}")
     return table
 
 

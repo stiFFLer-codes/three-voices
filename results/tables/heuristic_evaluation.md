@@ -21,7 +21,7 @@ Scope notes, stated so no reader has to infer them:
 | **Fail** | Not satisfied; the defect is named and a fix is given. |
 | **Deferred** | A static artifact cannot exercise this. Relevant at deployment (an ANMOL-style app or an IVR call flow), recorded rather than faked. |
 
-Distribution across 48 cells: 28 Pass, 13 Partial, 1 Fail, 6 Deferred.
+Distribution across 48 cells: 29 Pass, 12 Partial, 1 Fail, 6 Deferred.
 
 ## Matrix
 
@@ -32,7 +32,7 @@ Distribution across 48 cells: 28 Pass, 13 Partial, 1 Fail, 6 Deferred.
 | 1.4.3 Contrast (minimum) | Pass | Pass | Pass |
 | 1.4.5 Images of text | Fail | Partial | Pass |
 | 2.1 / 2.4 Keyboard, focus order, navigation | Deferred | Deferred | Deferred |
-| 3.1.1 / 3.1.2 Language of page and of parts | Pass | Partial | Partial |
+| 3.1.1 / 3.1.2 Language of page and of parts | Pass | Partial | Pass |
 | 3.1.5 Reading level / plain language | Partial | Partial | Pass |
 | 3.2.4 Consistent identification | Pass | Pass | Pass |
 | 4.1.2 Name, role, value | Deferred | Deferred | Deferred |
@@ -85,8 +85,8 @@ Distribution across 48 cells: 28 Pass, 13 Partial, 1 Fail, 6 Deferred.
 *Understandable*
 
 - **clinician — Pass.** Single language throughout (English), consistent across all four cases, matching the tier's stated reader.
-- **ASHA — Partial.** English only. The tier's user is a community health worker who may read a regional language first, and the tier below her (mother) IS localised — so the middle tier is the one gap in the chain. The template design supports localisation: every string is a fixed constant (PLAIN_NAMES, ASHA_NEXT_STEP, ASHA_FOOTER) with no generation at inference.
-- **mother — Partial.** Hindi text with a matching Hindi TTS voice (lang='hi'), which is right. But the message embeds the Latin-script acronym 'ANM' inside Devanagari with no language-of-parts marking, and a Hindi engine may voice it unpredictably — the one wrinkle in an otherwise clean tier.
+- **ASHA — Partial.** English only, as a scoped exposition choice rather than a claim about deployment. This tier's contribution is cognitive-load reduction — less detail, one action — and its localisation is fixed-string substitution: every user-facing string is a constant (PLAIN_NAMES, ASHA_NEXT_STEP, ASHA_FOOTER) with no generation at inference, so there is nothing to translate that a translator could not translate once. Language is central in the mother tier, where a non-reading user forces a modality substitution; here it is incidental. Rated Partial because a Hindi-first ASHA still cannot read this card today.
+- **mother — Pass.** Hindi text with a matching Hindi TTS voice (lang='hi'), and no language-of-parts problem left in it: the one Latin-script token, the acronym 'ANM', is now written phonetically in Devanagari (ए-एन-एम) so the Hindi engine voices it rather than guessing. Strings authored and clinically reviewed by a native-speaking MBBS collaborator, not machine-translated.
 
 ### 3.1.5 Reading level / plain language
 *Understandable*
@@ -213,8 +213,13 @@ What remains after those fixes. These are properties of the design rather than b
 
 **5. ASHA tier is English-only**
 
-- *Evidence:* The mother tier is localised to Hindi; the tier between her and the clinician is not.
-- *Fix:* Translate the fixed template constants. Cheap, because the tier is template-based by design — there is no generated text to translate at inference.
+- *Evidence:* The mother tier is localised to Hindi; the tier between her and the clinician is not. This is a scoped exposition choice, not a claim that the architecture is English-first: the mother tier's contribution is modality AND language substitution, because a non-reading user leaves no other channel, whereas the ASHA tier's contribution is cognitive-load reduction and its language is incidental to that.
+- *Fix:* Translate the fixed template constants. Cheap, because the tier is template-based by design — there is no generated text to translate at inference, so localisation is string substitution deferred to deployment rather than a research question.
+
+**6. The Hindi voice uses a general-purpose TTS stand-in**
+
+- *Evidence:* Audio is synthesised with gTTS, a general-purpose engine reached over the network. It is illustrative: it is not tuned for Indian-language health speech, it handles acronyms and code-mixed tokens unpredictably (which is why 'ANM' had to be respelled phonetically in Devanagari), and its output is not byte-reproducible across runs — the deterministic record is the Hindi source string in results/tables/tier_mother_<case>_hi.txt, not the MP3.
+- *Fix:* Deployment-grade Indian-language TTS — AI4Bharat / Bhashini — which is built for these languages, runs offline, and covers the acronym handling this stand-in does not.
 
 ## Synthesis
 

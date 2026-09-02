@@ -86,6 +86,15 @@ def select_cases(
         way to high risk. On the current clean set this resolves to row 382
         (true low, predicted high at 0.451 / 0.453; a BodyTemp 101F reading
         in a 13-year-old drives the flip).
+
+        On that age: the dataset contains very low maternal ages, reflecting
+        adolescent pregnancy in the source population (rural Bangladesh). We
+        retain rather than filter those rows — excluding a group the system
+        would encounter is itself a harm — and this case shows the model
+        over-weighting a demographic feature, which is precisely why final
+        judgment stays with a human. All data is public (UCI Maternal Health
+        Risk); no real patient or child record is exposed. Decision Log #20
+        carries the wording the manuscript uses.
     """
     p_sorted = np.sort(proba, axis=1)
     margin = p_sorted[:, -1] - p_sorted[:, -2]

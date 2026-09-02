@@ -78,11 +78,16 @@ ASHA_HEADING_ROUTINE = "No specific risk factors flagged."
 ASHA_FOOTER = "The referral decision remains with the health worker and clinician."
 
 # Tier 3 message, one per band. Deterministic, no numbers, no disease names.
+# Provenance: the three Hindi strings were authored and clinically reviewed by
+# the project's clinical collaborator, an MBBS physician and native Hindi
+# speaker; the synthesised audio was checked against them. 'ANM' is written
+# phonetically in Devanagari (ए-एन-एम) rather than in Latin script, so a Hindi
+# TTS engine voices the acronym instead of guessing at it (WCAG 3.1.2).
 MOTHER_HI = {
     "GREEN": "नमस्ते। आपकी जाँच सामान्य दिख रही है। कृपया अपनी नियमित जाँच जारी रखें।",
     "AMBER": (
         "नमस्ते। आपकी जाँच में कुछ बातें ऐसी हैं जिन पर ध्यान देना ज़रूरी है। "
-        "घबराएँ नहीं, पर कृपया जल्दी ही अपनी ANM या नज़दीकी स्वास्थ्य केंद्र पर जाँच करवाएँ।"
+        "घबराएँ नहीं, पर कृपया जल्दी ही अपनी ए-एन-एम या नज़दीकी स्वास्थ्य केंद्र पर जाँच करवाएँ।"
     ),
     "RED": (
         "नमस्ते। आपकी जाँच में कुछ ज़रूरी बातें सामने आई हैं। "
