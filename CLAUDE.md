@@ -32,6 +32,7 @@ plus an honest heuristic evaluation and the manuscript.
 ## Repo map
 - `src/config.py` — paths, seeds, dataset constants.
 - `src/data.py`   — deterministic loader + `python -m src.data` gate.
+- `src/model.py`  — Phase 1 model vehicle + `python -m src.model` gate.
 - `results/`      — figures and tables (generated, reproducible).
 - `models/`       — saved model artifact(s).
 - `paper/`        — LaTeX manuscript.
@@ -45,4 +46,4 @@ plus an honest heuristic evaluation and the manuscript.
 - **P5** Manuscript — arXiv-ready PDF, repo linked.
 - **P6** Cold-run + submit — fresh env, tagged release, arXiv (cs.HC).
 
-## Current phase: P0
+## Current phase: P1
