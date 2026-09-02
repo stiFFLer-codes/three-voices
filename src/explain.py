@@ -15,11 +15,17 @@ consume it without re-running SHAP:
   results/figures/shap_global_high.png      global beeswarm, high-risk class
   results/figures/shap_case_<tag>.png       local waterfall per case
 
-Three representative cases, chosen DETERMINISTICALLY:
+Four cases, each chosen by a stated CRITERION (not a hardcoded index — the
+criterion is what reproduces; the row it resolves to will move if the data
+or model changes). See ``select_cases`` for the full definitions.
   * confident_low   — highest P(low risk)
   * confident_high  — highest P(high risk)
-  * ambiguous       — smallest margin between the top-2 predicted classes;
-                      the "in-between" case the explanation tiers exist for.
+  * boundary_mid    — true-mid, smallest top-2 margin, #1 SHAP driver is
+                      BS or SystolicBP. The paper's central teaching case.
+                      Resolves to row 66 on the current clean set.
+  * failure_mode    — true-low but predicted-high, smallest top-2 margin.
+                      The "confidently wrong" case for the Limitations
+                      section, not the main figures. Resolves to row 382.
 
 Run:
     python -m src.explain
@@ -54,14 +60,52 @@ def fit_final_model(X: pd.DataFrame, y: pd.Series):
     return clf
 
 
-def select_cases(proba: np.ndarray) -> dict:
-    """Return {tag: row_index} for the three representative cases."""
+def select_cases(
+    proba: np.ndarray, pred: np.ndarray, y: pd.Series, values: np.ndarray
+) -> dict:
+    """Return {tag: row_index}, each resolved from a defensible criterion.
+
+    confident_low / confident_high
+        Unchanged: the rows with the highest P(low risk) / P(high risk).
+
+    boundary_mid  (the paper's central teaching case)
+        Among rows whose TRUE label is mid risk, the one with the smallest
+        top-2 predicted-probability margin whose #1 SHAP driver (by |value|)
+        for the predicted class is BS or SystolicBP. This isolates a case
+        where the ground truth is the hard middle class, the model is
+        genuinely on the fence, AND the reason is a core clinical driver
+        rather than an outlier feature (e.g. a lone BodyTemp spike). On the
+        current clean set this resolves to row 66 — true mid, sitting on the
+        mid<->high boundary (0.487 / 0.499), BS-led. The CRITERION is what
+        is reproducible; the index moves if the data or model changes.
+
+    failure_mode  (Limitations section, not the main figures)
+        Among rows whose true label is low risk but whose predicted label is
+        high risk, the one with the smallest top-2 margin — the narrowest
+        call on which the model flipped a genuinely low-risk mother all the
+        way to high risk. On the current clean set this resolves to row 382
+        (true low, predicted high at 0.451 / 0.453; a BodyTemp 101F reading
+        in a 13-year-old drives the flip).
+    """
     p_sorted = np.sort(proba, axis=1)
     margin = p_sorted[:, -1] - p_sorted[:, -2]
+    y_arr = y.to_numpy()
+
+    def top_driver(i: int) -> str:
+        c = int(pred[i])
+        return FEATURES[int(np.argmax(np.abs(values[i, :, c])))]
+
+    mid_core = [
+        i for i in np.where(y_arr == 1)[0]
+        if top_driver(int(i)) in ("BS", "SystolicBP")
+    ]
+    lo_to_hi = np.where((y_arr == 0) & (pred == 2))[0]
+
     return {
         "confident_low": int(np.argmax(proba[:, 0])),
         "confident_high": int(np.argmax(proba[:, 2])),
-        "ambiguous": int(np.argmin(margin)),
+        "boundary_mid": int(min(mid_core, key=lambda i: margin[i])),
+        "failure_mode": int(min(lo_to_hi, key=lambda i: margin[i])),
     }
 
 
@@ -105,7 +149,7 @@ def run() -> None:
     plt.close()
 
     # ----- LOCAL: three representative cases --------------------------------
-    cases = select_cases(proba)
+    cases = select_cases(proba, pred, y, values)
     summary_rows = []
     contrib_rows = []
     for tag, i in cases.items():
