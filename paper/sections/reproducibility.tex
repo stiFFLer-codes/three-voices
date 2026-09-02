@@ -1,0 +1,15 @@
+% SOURCE: the five gates —
+%   python -m src.data      (P0: pull, cache, report; byte-identical)
+%   python -m src.model     (P1: CV, SMOTE in-fold, metrics, leakage audit)
+%   python -m src.explain   (P2: global + local SHAP, four criterion-chosen cases)
+%   python -m src.render    (P3: three tiers, four cases)
+%   python -m src.evaluate  (P4: the 48-cell matrix)
+% Plus: fixed seeds via config.set_seeds(), pinned deps, cached data.
+% Honest carve-outs: gTTS is a remote service and its MP3 output is not
+% reliably byte-reproducible (Decision Log #10, #18) — the deterministic
+% record is the Hindi source string in results/tables/tier_mother_*_hi.txt.
+% Decision Log #19: a cold run must clear results/audio/ before re-rendering,
+% or it can certify audio it did not regenerate.
+% STUB.
+\section{Reproducibility}
+\label{sec:repro}

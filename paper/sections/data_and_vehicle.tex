@@ -1,0 +1,183 @@
+% SOURCE: STATE.md "Key data facts" and "Model"; Decision Log #1 (dedup
+% before the split), #2 (macro-recall primary), #3 (RF/none hardcoded),
+% #12 (the measured dedup penalty), #20 (adolescent ages retained),
+% #21 (generic maternal-health risk only); related_work.md §5 (leakage
+% wording: quantification, not discovery); results/tables/p1_model_metrics.csv
+% and results/tables/p1_duplicate_leakage.csv.
+% Every number below is traceable to one of those two committed tables or
+% to a counted property of the cached raw CSV.
+\section{Data and the Model Vehicle}
+\label{sec:data}
+
+\subsection{Dataset}
+\label{sec:data-dataset}
+
+We use the UCI Maternal Health Risk dataset (repository id 863), released
+under CC BY 4.0. It contains 1014 records collected in rural Bangladesh,
+each with six features --- age, systolic and diastolic blood pressure, blood
+sugar, body temperature and heart rate --- and a three-level risk label:
+low, mid, high. It is public data and no other data is used anywhere in this
+work. No real patient record, de-identified or otherwise, appears in this
+paper or in the repository that accompanies it.
+
+The dataset supports \emph{generic maternal-health risk} and nothing
+narrower. It carries no label for any specific condition, and none of the
+laboratory, urinary or obstetric-history fields that would let one be
+inferred. We therefore use the generic term throughout, in the
+manuscript, in the code and in every rendered artifact, and no tier names a
+condition. This matters for the third tier in particular: a spoken message
+that named a diagnosis would be asserting something the data cannot support.
+
+The label itself is worth stating plainly. It is a risk stratification
+recorded alongside the readings, not a delivered outcome. Nothing in this
+paper --- no figure, no rendered card, no spoken message --- should be read
+as a prediction of what happens to any patient. What we demonstrate is an
+explanation design over a model that has been fit to this public dataset.
+
+\subsection{Deduplication, and why it happens before the split}
+\label{sec:data-dedup}
+
+Two preprocessing steps are applied, both before any train/test split, and
+both chosen so that neither learns a statistic from the data.
+
+First, two records report a heart rate of 7 beats per minute. These are
+physiologically impossible and are dropped, leaving 1012 rows. Second, the
+remaining set contains a large number of exactly repeated feature-and-label
+vectors: 561 of the 1012 rows are exact duplicates of an earlier row. We
+drop them, leaving \textbf{451 distinct records} --- 233 low, 106 mid, 112
+high, an imbalance of about 2.2:1 between the largest and smallest class.
+
+Both steps are fixed rules rather than fitted transformations, which is why
+performing them before the split introduces no leakage: nothing about the
+test fold informs what is dropped. Everything that \emph{does} learn from
+data --- feature scaling, and SMOTE where a configuration used it --- is
+fitted inside each cross-validation training fold only, through an
+\texttt{imblearn} pipeline, never on the full dataset. We considered instead
+retaining the duplicates and using group-aware cross-validation to keep
+identical rows on the same side of every split. That is a valid alternative
+and it preserves more rows; we rejected it because it adds machinery a
+vehicle model does not need, and because deduplication makes the resulting
+number directly comparable to what a reader would get from a plain
+\texttt{drop\_duplicates}.
+
+Deduplication does not resolve every ambiguity in the data, and we do not
+claim it does. Among the 451 distinct records there remain \textbf{35
+feature vectors that carry more than one risk label} --- identical six-value
+readings recorded against different levels of risk. This is irreducible with
+the features available: no model, however specified, can separate rows it
+cannot distinguish. We retain these rows rather than adjudicating between
+them, and we return to what they imply for the achievable ceiling in
+Section~\ref{sec:limitations}.
+
+\subsection{What the duplicates were worth}
+\label{sec:data-leakage}
+
+The duplicate rows are not merely untidy. Because a duplicated row can
+appear in a training fold and in the test fold of the same split, retaining
+them lets a model be scored partly on records it has already memorised. We
+measured the size of that effect directly, by scoring the identical model
+under the identical five-fold stratified cross-validation twice, changing
+only whether duplicates were dropped (Table~\ref{tab:leakage};
+\texttt{results/tables/p1\_duplicate\_leakage.csv}).
+
+\begin{table}[t]
+\centering
+\caption{The same model and the same cross-validation, scored with exact
+duplicate rows dropped and retained. Mean $\pm$ standard deviation across
+five stratified folds.}
+\label{tab:leakage}
+\begin{tabular}{lrrrr}
+\toprule
+Duplicates & $n$ & Macro-recall & Accuracy & High-risk recall \\
+\midrule
+Dropped & 451  & $0.580 \pm 0.027$ & $0.641 \pm 0.025$ & $0.723 \pm 0.054$ \\
+Kept    & 1012 & $0.859 \pm 0.026$ & $0.854 \pm 0.026$ & $0.908 \pm 0.031$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Retaining the duplicates moves accuracy from 0.641 to 0.854 and macro-recall
+from 0.580 to 0.859. The inflated figure sits inside the accuracy band
+typically reported for this dataset, and the reported range extends higher
+still: Maisoon et al.\ report 83.74\% and Mamun et al.\ report
+99.51\%~\citep{maisoon2026stratification,mamun2025identification}. Neither
+paper describes duplicate handling; the published preprocessing on this
+dataset is generally given as normalisation and the removal of
+inconsistencies, and both report $n = 1014$.
+
+We are careful about what this licenses us to say. Data leakage as a
+phenomenon is well documented --- Kapoor and Narayanan set out its taxonomy
+and its role in the reproducibility crisis across
+fields~\citep{kapoor2023leakage}, Rosenblatt et al.\ show specifically that
+leakage through repeated subjects inflates prediction performance and that
+the effect is worst on small datasets, which is exactly our
+situation~\citep{rosenblatt2024leakage}, and Bernett et al.\ give the
+practitioner's checklist for avoiding it~\citep{bernett2024guiding}. The
+contribution type is also established: re-analysing an inflated published
+result to recover the true number is what Eltawil et al.\ and Young et al.\
+do in their respective
+domains~\citep{eltawil2026comment,young2025leakage}. \textbf{We do not claim
+to be the first to notice these duplicates.} We searched for prior
+documentation of them in this benchmark and found none, but absence of
+evidence is weak here: a \texttt{drop\_duplicates} result is exactly the
+kind of thing noticed in a notebook and never written up. What we claim is
+the measurement. The published band on this dataset is recoverable only when
+identical rows are allowed to straddle the split; after deduplication,
+macro-recall on this vehicle is 0.580. We report the deduplicated figures
+throughout and state the comparison here, up front, so that our lower
+headline number is legible as hygiene rather than as a weaker model. It is
+reproducible in either direction from the committed table.
+
+\subsection{The model is a vehicle}
+\label{sec:data-model}
+
+We compared logistic regression, random forest and XGBoost, each with and
+without in-fold SMOTE, under five-fold stratified cross-validation
+(\texttt{results/tables/p1\_model\_metrics.csv}). The primary metric is
+\textbf{macro-recall}, with macro-F1, per-class recall, one-versus-rest
+ROC-AUC and the confusion matrix as support. Macro-recall is the right
+primary here because the costs are asymmetric: failing to flag a high-risk
+mother is the error that matters, and headline accuracy on an imbalanced
+three-class problem conceals exactly that failure.
+
+The final model is a \textbf{random forest with no resampling}
+(\texttt{n\_estimators=300}, \texttt{random\_state=42}). It ties the
+SMOTE-resampled random forest on macro-recall at 0.580, and we broke the tie
+deliberately rather than by argmax: the unresampled model has tighter
+variance across folds ($\pm 0.027$ versus $\pm 0.040$), the better
+high-risk recall (0.723), and no dependence on a synthetic-oversampling
+step. It also lets SHAP run on the six raw clinical features in their own
+units, which is what makes the ASHA and mother tiers expressible as
+templates over attributions at all. The selection is fixed as a constant in
+the code, and the model-selection script still prints the argmax winner so
+the tie is visible rather than papered over.
+
+Macro-recall of 0.580 is the honest post-deduplication number on this
+dataset, and we present it as the premise of the paper rather than as a
+shortfall to be excused. The design question this work addresses --- how an
+uncertain prediction should be rendered to readers of differing power ---
+only exists because models on data like this are uncertain. A model that was
+right 99\% of the time would not need the machinery we describe. The
+attributions themselves are stable and unremarkable: blood sugar is the
+leading global driver for every class, with systolic blood pressure second,
+and diastolic pressure and heart rate close to noise
+(\texttt{results/tables/shap\_global\_mean\_abs.csv}). We say ``blood sugar
+and systolic pressure'' rather than ``the blood-pressure features''
+throughout, because the data supports the first and not the second.
+
+\subsection{Maternal age}
+\label{sec:data-age}
+
+One property of the dataset requires comment at first mention, because a
+reader will otherwise meet it in a figure. The dataset contains very low
+maternal ages --- 95 of the 451 distinct records are under 18, and the
+minimum is 10 --- reflecting adolescent pregnancy in the source population.
+We retain rather than filter these rows: excluding a group the system would
+encounter is itself a harm. One consequence surfaces later in the paper. Our
+designated failure case is a 13-year-old whose recorded body temperature of
+101\,\textdegree F drives a true-low record to a predicted-high output, with
+blood sugar and systolic pressure both arguing against that flip. That case
+shows the model over-weighting a demographic feature, which is precisely why
+final judgment stays with a human, and why the rendering rules of
+Section~\ref{sec:tiers} exist. All data here is public (UCI Maternal Health
+Risk); no real patient or child record is exposed.

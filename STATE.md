@@ -4,13 +4,15 @@ Read this at the start of every session. Update it at the end (phase, status,
 next step) and **append** to the Decision Log — never edit or delete an
 existing entry; supersede it with a new dated one.
 
-_Last updated: 2026-09-02_
+_Last updated: 2026-09-03_
 
 ## Current phase
 
-**P5 in progress (manuscript).** P4 done and fed back into P3. P5 framing,
-figure budget and related work are settled (Decision Log #13, #17, #22);
-`paper/` holds `related_work.md` and no manuscript source yet.
+**P5 in progress (manuscript).** The LaTeX skeleton exists and two sections
+are drafted: Related Work and Data & Vehicle. Six sections are stubs carrying
+their source map in a comment block. `paper/refs.bib` holds 29 entries, every
+DOI resolved against Crossref in-session. Intro and Abstract are deliberately
+NOT drafted — they are written last, from the pinned contribution stack.
 
 ## Status by phase
 
@@ -38,11 +40,17 @@ figure budget and related work are settled (Decision Log #13, #17, #22);
   grounded in a named artifact detail. Contrast ratios are computed at run
   time from the palette in `src/render.py`. Outputs
   `results/tables/heuristic_matrix.csv` and `heuristic_evaluation.md`.
-  Standing result after the P3 fixes: **28 Pass / 13 Partial / 1 Fail /
-  6 Deferred**; the one Fail is clinician 1.4.5 (images of text), the six
+  Standing result after the P3 fixes and the Decision Log #15 Devanagari
+  fix: **29 Pass / 12 Partial / 1 Fail / 6 Deferred**; the one Fail is
+  clinician 1.4.5 (images of text), the six
   Deferred are operability + robustness, which a static artifact cannot
   exercise. No human subjects.
-- P5 manuscript, P6 cold-run/submit — not started.
+- **P5 — manuscript — IN PROGRESS.** `paper/main.tex` + eight
+  `paper/sections/*.tex` + `paper/refs.bib` (29 Crossref-resolved entries).
+  Drafted: Related Work, Data & Vehicle. Stubs: Three Tiers, Evaluation,
+  Limitations, Reproducibility, Intro, Abstract. Not compiled — no local
+  LaTeX toolchain; compilation is a P6 / Overleaf step.
+- P6 cold-run/submit — not started.
 
 ## Key data facts (UCI Maternal Health Risk, id=863)
 
@@ -117,9 +125,17 @@ Since Decision Log #11 the SAME band also drives the ASHA card header —
 GREEN → "LOW — routine care", AMBER → "ELEVATED — needs follow-up",
 RED → "HIGH — needs follow-up".
 
-## Next step — P5
+## Next step — P5, continued
 
-Manuscript. The three sections P4 hands it, ready to use:
+Two sections are drafted and awaiting review. The next drafting session takes
+**Three Tiers** and **Evaluation**, in that order; each stub's comment block
+names its source. Intro and Abstract stay last.
+
+Standing items before submission, unchanged: pull Mamun et al. 2025 (#23),
+answer calibration in one sentence (#24a), and decide on Clark et al. (#24b),
+which is still quarantined.
+
+### Reference material P4 hands the remaining sections:
 
 - **Evaluation section** — the matrix and synthesis in
   `results/tables/heuristic_evaluation.md`. Frame it as formative and
@@ -406,3 +422,49 @@ Decision Log entries named.
   audience-aware display. Cite and distinguish Okolo 2024 + Solano-Kamaiko
   2024; concede Suresh 2021 on role-based tiering.
 - **Leakage wording (#23).** Claim the quantification, not the discovery.
+
+- **2026-09-03 #25 — P5 skeleton laid down; two sections drafted, Intro and
+  Abstract deliberately last.** `paper/main.tex` (single-column arXiv-style
+  article) `\input`s eight section files under `paper/sections/`. Three
+  comment blocks at the top of `main.tex` are the session-to-session
+  contract and must not be deleted: the **outline map** (each section names
+  its SOURCE, so no section is ever written from memory), the **contribution
+  stack** (exactly three claims, plus the three occupied territories named
+  as explicitly NOT claimed), and the **oversell firewall** (banned phrase,
+  no clinical-validity claim, generic maternal-risk only, formative framing,
+  numbers traceable, citations DOI-resolved). Drafted this session:
+  `sections/related_work.tex` (five subsections, each folding in its
+  concession) and `sections/data_and_vehicle.tex`. The other six are stubs
+  that carry only their source map — the outline is visible without any
+  prose being invented ahead of its evidence. No LaTeX toolchain is
+  installed locally; compilation is a P6 / Overleaf step and was not
+  attempted. A structural check (balanced braces, matched environments,
+  every `\input` target present, every `\cite` key defined) passes.
+
+- **2026-09-03 #26 — refs.bib is Crossref-generated, and three citations
+  were dropped rather than guessed.** All 29 entries were resolved against
+  `api.crossref.org/works/<doi>` and their BibTeX bodies emitted by
+  Crossref's own transform endpoint, so no author list, year or venue is
+  typed by hand. Two years moved against `related_work.md` §6 and the paper
+  follows Crossref: **Kim et al. is 2024**, not 2023 (IJHCS,
+  10.1016/j.ijhcs.2023.103160), and **Hendrickx et al. is 2024**, not 2021
+  (Machine Learning, 10.1007/s10994-024-06534-x — the 2021 date was the
+  preprint). **Dropped for want of any Crossref record, and flagged rather
+  than invented:** Arya et al. 2019 (AIX360, arXiv only) — §3.1's canonical
+  "one explanation does not fit all" anchor, whose role is now carried by
+  Imrie 2023 and Kim 2024; Mozannar & Sontag 2020 (PMLR only) — the
+  learning-to-defer lineage, now carried by the Hendrickx reject-option
+  survey; and Franc et al. 2021 (JMLR only), which was optional depth. The
+  §7 quarantine holds: Liao 2020, Clark 2022 and the Kilkari/mMitra
+  references are cited nowhere, and the reason is recorded in the refs.bib
+  header — resolving a DOI is necessary but not sufficient, §7 also requires
+  the paper to have been read.
+
+- **2026-09-03 #27 — two files named `related_work.md` exist and only one is
+  the P5 source.** `./related_work.md` (root) is the Consensus-based sweep
+  with the §1–§8 numbering the P5 brief refers to; **it is canonical for the
+  manuscript** and is what `sections/related_work.tex` was drafted from.
+  `paper/related_work.md` is an earlier web-search sweep with different
+  numbering; its DOIs are sound and it is kept for provenance, but it is not
+  the section's source. Not merged or deleted this session — flagged so the
+  duplication is a known state rather than a trap for the next reader.

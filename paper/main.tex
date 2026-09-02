@@ -1,0 +1,106 @@
+% =====================================================================
+% One Prediction, Three Voices
+% arXiv preprint (cs.HC). Single-column article.
+%
+% Compile:  pdflatex main && bibtex main && pdflatex main && pdflatex main
+% Not compiled locally at P5 — compilation is a P6 / Overleaf step.
+% =====================================================================
+%
+% ---------------------------------------------------------------------
+% OUTLINE MAP — every section names its SOURCE, so provenance is explicit.
+% Do not write a section from memory; write it from the source named here.
+%
+%   Related Work      <- related_work.md §3.1–§3.5 stubs + §6 bibliography
+%                        (concessions folded in per §4)          [DRAFTED]
+%   Data & Vehicle    <- STATE.md "Key data facts" + Decision Log #1/#2/#3
+%                        + #12 (dedup, leakage) + #20 (adolescent ages)
+%                        + results/tables/p1_*.csv
+%                        + related_work.md §5 (leakage wording)   [DRAFTED]
+%   Three Tiers       <- STATE.md Decision Log #5, #6, #7, #8, #11
+%                        (+ #14 Hindi provenance, #17 per-tier claim)  [STUB]
+%   Evaluation        <- results/tables/heuristic_evaluation.md,
+%                        DEFECTS FIRST — never lead with the Pass count  [STUB]
+%   Limitations       <- heuristic_evaluation.md "Inherent limitations"
+%                        + related_work.md §4 concessions
+%                        + 35 conflicting-label rows, 0.15 threshold,
+%                        calibration (Decision Log #24a), gTTS (#10/#18) [STUB]
+%   Reproducibility   <- the five gates: python -m src.{data,model,explain,
+%                        render,evaluate}; Decision Log #10/#18/#19       [STUB]
+%   Introduction      <- LAST. Must state the contribution stack below.   [STUB]
+%   Abstract          <- LAST. Must state the stack AND the disclaimers.  [STUB]
+%
+% ---------------------------------------------------------------------
+% CONTRIBUTION STACK — pinned. Claim exactly three (related_work.md §8).
+%
+%   1. HEADLINE. Vulnerability-differentiated abstention: one uncertain
+%      prediction rendered as graded per-stakeholder action-signals, most
+%      conservative for the least-powerful reader. Positioned against BOTH
+%      stakeholder-XAI AND reject-option/selective prediction; we claim the
+%      INTERSECTION only.
+%   2. Deterministic, auditable templating over SHAP as an explicit
+%      alternative to LLM-mediated tiering (foil: Bello et al. 2025).
+%   3. A quantified leakage audit of this benchmark. QUANTIFICATION, not
+%      discovery (Decision Log #23).
+%
+% EXPLICITLY NOT CLAIMED AS NOVEL — the paper must say so in these words:
+%   * Tiered / stakeholder-tailored XAI (Kim; Imrie; the AIX360 line).
+%   * Uncertainty gating as a MECHANISM (reject-option, learning to defer;
+%     Hendrickx et al.). Our 0.15-margin rule is a hand-set instance of a
+%     fifty-year-old mechanism. Do not claim the mechanism.
+%   * ML + SHAP on the UCI Maternal Health Risk dataset (Mamun; Maisoon;
+%     and four more). Saturated. There is no ML novelty here.
+%
+% ---------------------------------------------------------------------
+% OVERSELL FIREWALL — enforced repo-wide, checked before every commit.
+%   * Banned phrase: the two words novel + framework, adjacent, must
+%     never appear in any .tex file. Checked by grep before every commit.
+%   * No clinical-validity claim: nothing states or implies this predicts
+%     real patients' outcomes. It demonstrates an explanation design.
+%   * Generic "maternal-health risk" only. No named condition, in any
+%     tier or any caption (Decision Log #21) — that entry names the
+%     specific term this manuscript must never contain.
+%   * Formative framing everywhere: no user study exists. The heuristic
+%     matrix is an instrument that found five defects in our own artifact,
+%     NOT evidence the tiers help anyone.
+%   * Every number traceable to a committed table under results/tables/.
+%   * Every citation DOI-resolved via Crossref before entering refs.bib.
+% ---------------------------------------------------------------------
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+
+\graphicspath{{../results/figures/}}
+
+\title{One Prediction, Three Voices:\
+Rendering an Uncertain Maternal-Health Risk Prediction\
+for a Clinician, a Community Health Worker, and a Mother-to-Be}
+
+\author{Maitreya Sapariya}
+\date{}
+
+\begin{document}
+\maketitle
+
+\input{sections/abstract}
+
+\input{sections/intro}
+\input{sections/related_work}
+\input{sections/data_and_vehicle}
+\input{sections/three_tiers}
+\input{sections/evaluation}
+\input{sections/limitations}
+\input{sections/reproducibility}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}

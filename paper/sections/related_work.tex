@@ -1,0 +1,191 @@
+% SOURCE: related_work.md §3.1–§3.5 (stubs), §4 (concessions to fold in),
+% §6 (the only bibliography this section may draw from).
+% Citation gate: §7 quarantine papers are NOT cited here. Two §6 entries
+% were dropped for want of a resolvable Crossref DOI — Arya et al. 2019
+% (arXiv only) and Mozannar & Sontag 2020 (PMLR only); see refs.bib header.
+\section{Related Work}
+\label{sec:related}
+
+This work sits at the meeting point of two mature literatures. Each has
+settled a question we depend on, and neither has asked the question we ask.
+We set out both, and in each subsection we state plainly what is already
+occupied territory.
+
+\subsection{Stakeholder-tailored explanation}
+\label{sec:rw-stakeholder}
+
+That different audiences need different explanations of the same model
+output is established, not open. Imrie et al.\ show that stakeholders in
+healthcare impose genuinely divergent interpretability requirements rather
+than differing degrees of the same
+requirement~\citep{imrie2023multiple}, and Kim et al.\ build and compare
+stakeholder-tailored explanation interfaces directly, including the
+clinician-versus-patient split that two of our three tiers
+reproduce~\citep{kim2024stakeholder}. Bello et al.\ go further and propose a
+\emph{three-level} pipeline from technical explanation to natural language,
+which is our structural twin~\citep{bello2025threelevel}. \textbf{We
+therefore claim no novelty for the idea that explanations should be
+audience-specific, nor for tiering as an architecture.} Both predate us.
+
+Our contrast with Bello et al.\ is one of mechanism rather than structure,
+and it is one of our stated contributions. Their mediator is a large
+language model. Ours is a fixed set of templates applied to SHAP
+attributions, so every string a health worker or a mother receives is
+determined by the case's attributions and can be regenerated, diffed and
+audited. Nothing is generated at inference time and there is nothing to
+hallucinate. That is a deliberate trade: we give up fluency and coverage to
+gain a rendering an auditor can check line by line.
+
+Suresh et al.\ present the sharpest challenge to how we have organised this
+paper. They argue explicitly for moving \emph{beyond} role labels, on the
+grounds that a stakeholder's role does not determine the knowledge they
+bring or the interpretability task they face, and they offer a typology that
+decouples the two~\citep{suresh2021beyond}. Our tiers are named by role:
+clinician, ASHA, mother-to-be. We concede the point rather than wait for it
+to be made. The names are shorthand; what actually varies across our tiers
+is what each reader lacks --- reading modality, literacy and numeracy, and
+authority over the decision --- and each tier is designed against that
+deficit, not against a job title. In this particular deployment the two
+happen to track each other closely: the ASHA is a specific,
+minimally-schooled cadre, and the mother may not read at all. Szymanski et
+al.\ report that role and expertise co-vary in practice while remaining
+analytically separable~\citep{szymanski2025disentangling}, which supports
+role as a serviceable proxy here without rescuing it as a general axis.
+Where the two come apart --- a literate mother, an ASHA with more schooling
+than the cadre's median --- our design has nothing to say, and a deployment
+would have to select the rendering by the deficit rather than by the role.
+
+\subsection{Uncertainty communication, abstention, and selective prediction}
+\label{sec:rw-uncertainty}
+
+The second literature is where our claim lives, so we are precise about its
+boundary. Withholding or hedging a prediction when the model is not
+confident is a long-settled mechanism. Hendrickx et al.\ survey machine
+learning with a reject option and name the case we implement: rejection
+under \emph{ambiguity}, where two classes are close, as distinct from
+rejection under novelty~\citep{hendrickx2024reject}. Our rule --- decline to
+raise the highest-severity signal when the top-two class probabilities are
+separated by less than a fixed margin --- is a hand-set instance of that
+mechanism. \textbf{We claim none of it.} Kompa et al.\ supply the clinical
+framing: in medical machine learning, abstaining on high-uncertainty cases
+is a safety property rather than a shortfall in
+coverage~\citep{kompa2021second}. That is the argument we borrow to justify
+derating a signal instead of issuing it.
+
+Bhatt et al.\ are the nearest ancestor of our headline
+claim~\citep{bhatt2021uncertainty}. They treat uncertainty as itself a form
+of transparency, and they consider explicitly how uncertainty should be
+\emph{communicated to different stakeholders}, drawing across machine
+learning, visualisation, design and decision-making. Our delta is narrow and
+we state it in one sentence: Bhatt et al.\ make the \emph{display} of
+uncertainty audience-aware, whereas we make the \emph{suppression} of an
+assertion audience-aware. In our design the mother does not receive the
+uncertainty rendered more gently; she receives a different assertion
+altogether, while the clinician receives the split probabilities in full and
+unmodified. The abstention decision is taken once, from the model's own
+output, and then rendered differently per audience --- graded so that the
+reader with the least power to interrogate the system receives the most
+conservative signal. We find no prior work that makes the abstention
+\emph{rendering} a function of stakeholder vulnerability, and that
+intersection --- and only that intersection --- is what we claim.
+
+\subsection{Explainable AI for community health workers in the Global South}
+\label{sec:rw-chw}
+
+Okolo et al.'s systematic review of explainable AI in the Global South
+records how little of this work reaches the people it describes: across the
+corpus they surveyed, deployment with actual users is close to
+absent~\citep{okolo2022makingai}. That is the gap this paper sits in, and we
+say so before describing what we did instead.
+
+Three studies define our context and, honestly read, our principal exposure.
+Okolo et al.\ interviewed community health workers in rural India about
+AI-enabled mobile health tools and about explanations
+specifically~\citep{okolo2021cannot,okolo2024easy}; Solano-Kamaiko et al.\
+built and studied an explorable explanation interface with the same
+cadre~\citep{solanokamaiko2024explorable}. Srinidhi et al.\ document ASHA
+Kirana, a deployment in which ASHAs collect data that feeds an algorithm and
+returns a report for a doctor~\citep{srinidhi2021asha} --- our data flow
+exactly, minus the tiering and minus the uncertainty gate.
+
+Two concessions follow, and both weaken us. First, this literature does not
+report that simplification suffices. Okolo et al.\ and Solano-Kamaiko et
+al.\ both find community health workers struggling to interpret AI
+explanations even when those explanations have been
+simplified~\citep{okolo2024easy,solanokamaiko2024explorable}. The
+comprehensibility of our ASHA card is therefore an open empirical question
+and not an assumption we are entitled to make, and that finding is the
+clearest statement of why a user study is the necessary next step rather
+than an optional one. Second, and more simply: every paper named in this
+subsection has users, and this paper has none. We are not claiming to know
+better than these studies what a community health worker needs. We propose a
+rendering rule and evaluate the artifact that implements it, and the
+evidence we offer is of a different and weaker kind than theirs.
+
+\subsection{Communicating risk without numeracy}
+\label{sec:rw-riskcomm}
+
+Our third tier renders to a reader who may not read, and the
+risk-communication literature is both its warrant and its sharpest critic.
+Galesic et al.\ show that icon arrays let low-numeracy readers extract risk
+information they otherwise miss~\citep{galesic2009icon}, and
+Garc\'{i}a-Retamero and Cokely's systematic review concludes that visual
+aids improve risk literacy, with the largest benefit among exactly the
+vulnerable readers our tier targets~\citep{garciaretamero2017visual}.
+Richter et al.\ add the negative result that matters most for a voice
+channel: purely verbal communication of benefits and harms performs poorly
+for patients with limited health literacy~\citep{richter2023communication},
+which is why our spoken message is paired with a visual rather than shipped
+alone. Peters et al.\ collect current best practice for conveying numeric
+risk to patients~\citep{peters2025numeric}, and Bradley et al.\ test risk
+presentation in the maternity setting
+specifically~\citep{bradley2025birth}.
+
+The tension is direct and we do not step around it. This literature
+generally recommends conveying \emph{magnitude} transparently --- an icon
+array, a frequency, a denominator made visible. Our mother tier strips
+magnitude entirely and renders an ordinal band plus a single action. Read
+flatly, we are doing what the field advises against.
+
+The resolution turns on a precondition those recommendations assume. An icon
+array communicates a magnitude the sender is entitled to assert. Our
+headline case is precisely the one where the model is not so entitled: a
+top-two probability split of $0.487$ against $0.499$. Rendering that as
+roughly fifty chances in a hundred would convey a precision the model does
+not possess, to the reader least equipped to discount it. The departure is
+therefore justified \emph{by} this literature rather than in spite of it:
+where the magnitude is trustworthy, show it; where the uncertainty gate has
+fired, an ordinal band plus an action is the honest rendering and a number
+is not. This is the argument of Section~\ref{sec:rw-uncertainty} arriving
+from the health-communication side. It remains an argument, not a result:
+whether the band is understood as intended is untested here.
+
+\subsection{Machine learning on the UCI Maternal Health Risk dataset}
+\label{sec:rw-dataset}
+
+Supervised classification with SHAP attributions on this dataset is
+saturated. Mamun et al.~\citep{mamun2025identification}, Maisoon et
+al.~\citep{maisoon2026stratification}, Widyawati et
+al.~\citep{widyawati2025ensemble}, Rahman et al.~\citep{rahman2023xai},
+Maheswari et al.~\citep{maheswari2024smote} and Hossen et
+al.~\citep{hossen2024driven} all report the same broad construction: tree
+ensembles, resampling for class imbalance, cross-validation, and SHAP for
+post-hoc attribution. \textbf{There is no machine learning contribution
+available here and we do not claim one.} Our model is a vehicle for the
+rendering question, and that framing is forced by the field rather than
+chosen out of modesty.
+
+Maisoon et al.\ are our closest methodological neighbour and deserve
+explicit separation~\citep{maisoon2026stratification}. They use the same
+dataset with the same two-row outlier removal, random forests and gradient
+boosting with SMOTE, stratified five-fold cross-validation, SHAP, and the
+same low-resource framing --- and they report the same leading features we
+do. Everything upstream of the explanation is substantially their pipeline.
+What is ours lies downstream: deduplicating the dataset before splitting and
+reporting what that costs (Section~\ref{sec:data}), gating the rendering on
+the model's own uncertainty, and rendering the gated output three ways. The
+convergence on feature importance is worth noting in its own right --- their
+attributions and Widyawati et al.'s independently rank blood sugar and
+systolic blood pressure at the top~\citep{maisoon2026stratification,widyawati2025ensemble},
+as ours do --- but that is corroboration of the attributions, not a finding
+of ours.
