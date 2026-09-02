@@ -68,6 +68,12 @@ TARGET = config.TARGET_COLUMN
 CLASSES = [0, 1, 2]  # low, mid, high
 CLASS_NAMES = [config.INT_TO_RISK[i] for i in CLASSES]
 
+# Final model for the paper + the saved artifact. RF tied RF/SMOTE on
+# macro-recall (0.580) with tighter variance and the best high-risk recall,
+# and SMOTE bought nothing measurable at this imbalance. Hardcoded on purpose
+# — not a 4th-decimal argmax tie-break.
+FINAL_MODEL = ("random_forest", False)  # (name, use_smote)
+
 
 # ---------------------------------------------------------------------------
 # Data preparation  (fixed-rule, pre-split — leak-safe by construction)
@@ -221,11 +227,13 @@ def run() -> pd.DataFrame:
         print("  [warn] xgboost not installed — skipping that model.\n")
 
     records = []
+    cms = {}  # (name, use_smote) -> summed confusion matrix
     best = None  # (macro_recall_mean, name, resample, spec, use_smote)
     for name, spec in factories.items():
         for use_smote in (False, True):
             metrics, cm = evaluate(spec, X, y, use_smote)
             tag = "SMOTE" if use_smote else "none"
+            cms[(name, use_smote)] = cm
             mr_mean = metrics["macro_recall"][0]
             records.append(
                 {
@@ -253,13 +261,19 @@ def run() -> pd.DataFrame:
     print("-" * 60)
     print(f"metrics table -> {out_csv}")
 
-    # ----- refit the macro-recall winner on the full clean set, save it -----
-    _, best_name, best_tag, best_spec, best_smote, best_cm = best
-    print(f"\nPrimary-metric winner (macro-recall): {best_name} / {best_tag}")
-    print("Summed confusion matrix (rows=true, cols=pred; order low/mid/high):")
-    print(pd.DataFrame(best_cm, index=CLASS_NAMES, columns=CLASS_NAMES).to_string())
+    # ----- report the argmax winner (transparency), then refit + save the
+    #       deliberately hardcoded final model (see FINAL_MODEL) --------------
+    _, arg_name, arg_tag, _, _, _ = best
+    print(f"\nArgmax macro-recall winner: {arg_name} / {arg_tag}")
 
-    final = _build_pipeline(best_spec, best_smote)
+    final_name, final_smote = FINAL_MODEL
+    final_tag = "SMOTE" if final_smote else "none"
+    final_cm = cms[(final_name, final_smote)]
+    print(f"Final model (hardcoded for the paper): {final_name} / {final_tag}")
+    print("Summed confusion matrix (rows=true, cols=pred; order low/mid/high):")
+    print(pd.DataFrame(final_cm, index=CLASS_NAMES, columns=CLASS_NAMES).to_string())
+
+    final = _build_pipeline(factories[final_name], final_smote)
     final.fit(X, y)
     config.MODELS_DIR.mkdir(parents=True, exist_ok=True)
     model_path = config.MODELS_DIR / "model.joblib"
@@ -268,7 +282,7 @@ def run() -> pd.DataFrame:
 
         joblib.dump(
             {"pipeline": final, "features": FEATURES, "classes": CLASS_NAMES,
-             "selection": {"model": best_name, "resample": best_tag}},
+             "selection": {"model": final_name, "resample": final_tag}},
             model_path,
         )
         print(f"\nsaved model -> {model_path}")

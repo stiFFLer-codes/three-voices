@@ -1,0 +1,4 @@
+case,row_index,true,predicted,p_low,p_mid,p_high
+confident_low,196,low risk,low risk,1.0,0.0,0.0
+confident_high,16,high risk,high risk,0.0,0.0,1.0
+ambiguous,382,low risk,high risk,0.4507420634920636,0.09666666666666666,0.45259126984126974

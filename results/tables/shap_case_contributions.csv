@@ -1,0 +1,19 @@
+case,feature,feature_value,shap_pred_class,pred_class
+confident_low,Age,21.0,0.036235486944892065,low risk
+confident_low,SystolicBP,75.0,0.12215698911002593,low risk
+confident_low,DiastolicBP,50.0,0.0699803995007399,low risk
+confident_low,BS,7.7,0.1479134604799051,low risk
+confident_low,BodyTemp,98.0,0.08564627768667245,low risk
+confident_low,HeartRate,60.0,0.022538930993213132,low risk
+confident_high,Age,50.0,0.016209199536841575,high risk
+confident_high,SystolicBP,140.0,0.3435319517476839,high risk
+confident_high,DiastolicBP,90.0,0.012490664236806762,high risk
+confident_high,BS,15.0,0.3469088934973405,high risk
+confident_high,BodyTemp,98.0,-0.004912853241763847,high risk
+confident_high,HeartRate,90.0,0.03625255811814191,high risk
+ambiguous,Age,13.0,0.056266054002485334,high risk
+ambiguous,SystolicBP,90.0,-0.03280889710681446,high risk
+ambiguous,DiastolicBP,65.0,0.02294643959160964,high risk
+ambiguous,BS,7.5,-0.08489589323854184,high risk
+ambiguous,BodyTemp,101.0,0.2162171881966505,high risk
+ambiguous,HeartRate,80.0,0.02534679229092932,high risk
