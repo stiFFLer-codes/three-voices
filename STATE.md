@@ -27,6 +27,9 @@ _Last updated: 2026-09-02_
 - **P3 — three-tier renderer — DONE.** `python -m src.render [--case <tag>|all]`
   (default `boundary_mid`). Reads the saved P2 CSVs — does NOT re-run SHAP.
   Renders all four cases across three tiers; see "Artifacts on disk".
+  Re-run verified 2026-09-02: all PNG and TXT outputs are byte-identical;
+  the gTTS MP3s are NOT (same length, different bytes — see Decision Log
+  #10).
 - P4 heuristic eval, P5 manuscript, P6 cold-run/submit — not started.
 
 ## Key data facts (UCI Maternal Health Risk, id=863)
@@ -146,3 +149,13 @@ just rendered. No human subjects.
   `p_pred − Σ SHAP` (TreeExplainer is additive in probability space). So P3
   loads no `model.joblib` — one less artifact to keep in sync. The clean
   frame is still loaded, but only for the six feature medians.
+- **2026-09-02 #10 — gTTS output is not byte-reproducible.** A clean re-run
+  of `python -m src.render` regenerates every PNG and TXT byte-identically,
+  but `tier_mother_*_hi.mp3` comes back the same length with different
+  bytes: gTTS is a remote service, so the audio is outside our seed control.
+  Consequence: the tracked MP3s dirty the working tree on every re-run. They
+  stay tracked — a reader without network still gets the artifact, and the
+  Hindi source string in `results/tables/tier_mother_*_hi.txt` IS
+  deterministic and is the reproducible record. Non-negotiable #6
+  (determinism) is scoped to our pipeline, not to a third-party TTS
+  endpoint; say so in the manuscript's reproducibility note.

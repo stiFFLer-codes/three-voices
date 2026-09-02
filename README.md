@@ -25,11 +25,20 @@ visual (green / amber / red).
 ```bash
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-python -m src.data          # Phase 0 gate: pulls, caches, and reports the dataset
+python -m src.data          # P0 gate: pulls, caches, and reports the dataset
+python -m src.model         # P1: cross-validated metrics + saved model
+python -m src.explain       # P2: global + local SHAP, saved as data
+python -m src.render        # P3: the three tiers for one case
 ```
 
 The first run downloads the dataset and caches it to `data/raw/`. Every later
 run reads the cache, so the pipeline is deterministic and network-independent.
+Two exceptions need network: the initial dataset download, and the Hindi
+speech synthesis in `src.render` (gTTS). Without it the renderer still writes
+the message text and skips only the MP3.
+
+Outputs land in `results/figures/` (PNG), `results/tables/` (CSV + the card
+and voice text), and `results/audio/` (Hindi MP3).
 
 ## Roadmap
 
@@ -37,7 +46,7 @@ run reads the cache, so the pipeline is deterministic and network-independent.
 |------|-------------|
 | P0 | Reproducibility spine (`python -m src.data`) |
 | P1 | Model vehicle — LR / RF / XGBoost, stratified k-fold, SMOTE-in-fold, metrics |
-| P2 | SHAP engine — global + local SHAP for 3 representative cases |
+| P2 | SHAP engine — global + local SHAP for 4 criterion-selected cases |
 | P3 | Three-tier renderer — dashboard + ASHA card + Hindi voice + visual |
 | P4 | Heuristic evaluation — WCAG 2.1 + Nielsen (no human subjects) |
 | P5 | Manuscript — arXiv-ready |
