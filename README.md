@@ -100,7 +100,7 @@ the MP3.
 | `results/` | Every figure, table and audio file the paper cites, all regenerable from the five gates |
 | `data/` | Provenance and licence for the dataset. The cached CSV is gitignored; `python -m src.data` recreates it |
 | `related_work.md` | The literature sweep the Related Work section was drafted from. `main.tex` cites it by section number as the source for each claim |
-| `STATE.md` | **The design-decision log.** Forty-five dated, append-only entries recording what was decided, what was rejected and why |
+| `STATE.md` | **The design-decision log.** Dated, append-only entries recording what was decided, what was rejected and why. Existing entries are never edited; a changed decision is superseded by a new dated one |
 
 `STATE.md` is provenance, and it is where several of the paper's more awkward
 admissions come from. It records that keeping the dataset's 561 duplicate rows

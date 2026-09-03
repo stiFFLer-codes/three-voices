@@ -4,7 +4,7 @@ Read this at the start of every session. Update it at the end (phase, status,
 next step) and **append** to the Decision Log — never edit or delete an
 existing entry; supersede it with a new dated one.
 
-_Last updated: 2026-09-03_
+_Last updated: 2026-09-04_
 
 ## Current phase
 
@@ -889,4 +889,56 @@ Decision Log entries named.
   the compile actually proved). **This closes no other P6 gate.** Nobody has
   read the PDF end to end (Gate A) and no cold run has happened (Gate B); both
   still block the v1.0.0 tag.
+
+- **2026-09-04 #46 — repo made public-ready; CLAUDE.md untracked, STATE.md
+  deliberately kept.** The repository goes public alongside the arXiv
+  submission, so the tree was sorted into what a public reader needs, what is
+  provenance, and what is working scaffolding.
+  **STATE.md stays tracked, and this is the load-bearing decision.** It is the
+  design-decision record the paper's honesty rests on: it is where the leakage
+  measurement, the 0.15 threshold's status as a design constant, the once-moved
+  grade-inflation guard (#16) and the five in-role defects (#11) are recorded
+  with their rejected alternatives. A reader who wants to know whether a number
+  was reasoned into place or reverse-engineered has to be able to read it, so
+  the new README points at it by name and frames it as provenance.
+  **CLAUDE.md untracked and gitignored**, history retained. It is the operating
+  contract for the assistant rather than something a public reader needs, and
+  every constraint in it that bears on the paper is already restated in
+  STATE.md or in the `main.tex` header blocks. Untracked rather than deleted:
+  `git log` still shows the rules the work was done under, so the process stays
+  auditable. **`.claude/commands/anti-ai.md` and `.claude/settings.json` stay
+  tracked by author decision** — `settings.json` is one of the three
+  enforcement points for #5 (no AI-attribution trailers) and `anti-ai.md` is
+  the gate CLAUDE.md #8 ran prose through, so both are mechanism behind a
+  process the paper describes.
+  **`related_work.md` (root) stays tracked, and this is no longer a judgment
+  call.** `main.tex` names it by section number in six comment lines, including
+  the outline map #25 forbids deleting, and four section files cite it as their
+  SOURCE. It is cited by the paper, so the no-removal guardrail settles it.
+  #31 already deleted the duplicate that used to sit in `paper/`.
+  Also removed: four zero-byte `.gitkeep` placeholders made redundant by
+  tracked content in their directories, and an empty untracked `agents/`.
+  `models/.gitkeep` was KEPT — `models/*.joblib` is gitignored, so it is the
+  only thing holding that directory. `.gitignore` broadened to cover editor and
+  OS junk and to replace the single scaffold filename with `*.zip` / `*.tar.gz`,
+  which also catches the arXiv upload tarball.
+  **README rewritten** for a reader arriving from the preprint: the thesis in
+  the paper's own terms, the four disclaimers up front, links (paper, an
+  explicit `arXiv:XXXX.XXXXX` placeholder to fill after submission, the Zenodo
+  concept DOI, the dataset), the five gates with the determinism guarantee and
+  the gTTS exception, a repo map, CRediT roles and licences. The old Roadmap
+  table was dropped: P0–P6 is internal project structure and STATE.md carries
+  it in more detail. Passed `/anti-ai` — eight negative-parallel constructions
+  cut to the two that encode real technical distinctions, three prose em-dashes
+  removed, one sermonising closer trimmed; the firewall grep returns zero hits
+  and every number traces to a committed table. The README states no count of
+  Decision Log entries, deliberately, because such a count invalidates itself
+  on the next entry.
+  **Nothing cited by the paper was touched:** zero content diff across
+  `paper/main.tex`, `refs.bib`, `main.bbl`, `main.pdf`, `paper/sections/` and
+  all of `results/`. The clean-checkout arXiv build was re-run after the
+  cleanup and still passes — 15 files, `pdflatex` alone, 17 pp, 0 errors, 0
+  overfull boxes, 0 warnings, PDF byte-size unchanged. Tracked files 73 -> 68.
+  **This closes no P6 gate.** Gate A (the author read) and Gate B (the cold
+  run) remain untouched and still block the v1.0.0 tag.
 
