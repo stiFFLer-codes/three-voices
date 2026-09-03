@@ -114,6 +114,13 @@ def prepare_modeling_frame(X: pd.DataFrame, y: pd.Series, dedup: bool = True):
         for k, v in df[TARGET].value_counts().sort_index().items()
     }
 
+    # Cohort composition. Reported because the manuscript cites these counts:
+    # adolescent rows are RETAINED, not filtered (Decision Log #20), so the
+    # reader needs the number to check the claim rather than take it on trust.
+    report["age_min"] = int(df["Age"].min())
+    report["age_max"] = int(df["Age"].max())
+    report["n_age_under_18"] = int((df["Age"] < 18).sum())
+
     X_clean = df[FEATURES].reset_index(drop=True)
     y_clean = df[TARGET].reset_index(drop=True)
     return X_clean, y_clean, report
@@ -223,6 +230,19 @@ def run() -> pd.DataFrame:
     for k, v in prep.items():
         print(f"  {k}: {v}")
     print("=" * 60)
+
+    # Persist the preparation report so every cohort number the manuscript
+    # quotes has a committed file behind it, not just stdout.
+    config.TABLES_DIR.mkdir(parents=True, exist_ok=True)
+    cohort_rows = []
+    for k, v in prep.items():
+        if isinstance(v, dict):
+            cohort_rows += [{"field": f"{k}.{ik}", "value": iv} for ik, iv in v.items()]
+        else:
+            cohort_rows.append({"field": k, "value": v})
+    cohort_csv = config.TABLES_DIR / "p1_cohort_summary.csv"
+    pd.DataFrame(cohort_rows).to_csv(cohort_csv, index=False)
+    print(f"cohort summary -> {cohort_csv}")
 
     factories = _model_factories()
     if not _HAS_XGB:

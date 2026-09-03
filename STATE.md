@@ -12,10 +12,9 @@ _Last updated: 2026-09-03_
 Vehicle, Three Tiers, Evaluation, Limitations, Reproducibility. Title,
 authors, ORCID, CRediT and the Zenodo concept DOI are in place.
 `paper/refs.bib` holds 31 entries, every identifier resolved in-session.
-Remaining: the #29 voice audit on the two earliest sections, then Intro and
-Abstract last. **The 8 pp body line is breached** — 5841 words (~9.7 pp)
-before Intro and Abstract; see the measured budget block in `main.tex` and
-Decision Log #32.
+The #29 voice audit and the #32 compression are DONE. Remaining: Intro and
+Abstract, last, written to the stabilised body. Body is 5315 words (~8.9 pp)
+before those two; see the measured budget block in `main.tex`.
 
 ## Status by phase
 
@@ -130,17 +129,12 @@ RED → "HIGH — needs follow-up".
 
 ## Next step — P5, continued
 
-Six sections drafted and awaiting review. Next, in order:
+Six sections drafted, voice-levelled and compressed. One drafting session
+left: **Intro and Abstract**, written from the pinned contribution stack in
+`main.tex` to a body that is now stable.
 
-1. The **Decision Log #29 voice audit** on `related_work.tex` and
-   `data_and_vehicle.tex`, which predate the /anti-ai gate.
-2. **Trim to the page line**, or decide to accept ~10 pp. The overrun sits
-   almost entirely in those same two sections (#32).
-3. **Intro and Abstract last**, from the pinned contribution stack in
-   `main.tex`.
-
-Also open: the third planned figure (`failure_mode` triptych) is currently
-unallocated — see #33.
+Also open: the third planned figure (`failure_mode` triptych) is still
+unallocated — see #33. Nothing else in the body is expected to move.
 
 Standing items before submission, unchanged: pull Mamun et al. 2025 (#23),
 answer calibration in one sentence (#24a), and decide on Clark et al. (#24b),
@@ -580,3 +574,47 @@ Decision Log entries named.
   #19 is stated in the section itself, because a cold run that certifies
   audio it did not regenerate is exactly the failure a reproducibility
   section exists to prevent.
+
+- **2026-09-03 #35 — voice pass and compression done together on the two
+  earliest sections.** `related_work.tex` and `data_and_vehicle.tex` predated
+  the /anti-ai gate and read differently from the four newer sections. Both
+  now match. Em-dashes went 16 to 2 in Related Work, keeping only the pair
+  that frames *One Explanation Does Not Fit All*, which is correct usage, and
+  13 to 0 in Data & Vehicle. Rhetorical triples softened; genuine lists (the
+  six features, the model names, the three contributions) left alone.
+  Compression in the same pass: 1602 to 1424 words and 1373 to 1244, about
+  526 words or 0.9 pp across the body, which now stands at 5315 w (~8.9 pp).
+  **Verified mechanically that nothing was lost:** the cited-key set is
+  identical to the previous commit (31 keys, none added, none removed), and a
+  multiset diff of every numeric token in both sections shows no number
+  dropped. That check earned its keep — a first pass had silently swallowed
+  the sentence carrying the leakage claim itself ("recoverable only when
+  identical rows are allowed to straddle the split"), which the number diff
+  caught and which was restored. Compression stops here: further cuts start
+  removing content that earns its place, so the residual overrun is accepted
+  rather than squeezed.
+
+- **2026-09-03 #36 — cohort counts are now a committed artifact.**
+  `prepare_modeling_frame()` already computed the row counts, the duplicate
+  count and the 35 conflicting vectors but only printed them. It now also
+  records age min, age max and the count under 18, and `run()` writes the
+  whole preparation report to `results/tables/p1_cohort_summary.csv`. Reason:
+  the Reproducibility section promises any number in the paper can be checked
+  against the file that produced it, and the adolescent-age counts in Data &
+  Vehicle (95 under 18, minimum 10) were the one claim with no committed file
+  behind it. The new table also backs 1014, 2, 561, 451, the 233/106/112 class
+  split and the 35 conflicting vectors, so every cohort number in the
+  manuscript is now checkable. Verified that `p1_model_metrics.csv` and
+  `p1_duplicate_leakage.csv` come back byte-identical after the change, so no
+  existing P1 artifact moved. The Reproducibility gate list was updated to
+  name the new file — the only edit made outside the two sections in scope,
+  made because leaving it unnamed would have made that section describe its
+  own gate inaccurately.
+
+- **2026-09-03 #37 — stale citation-gate comment in `related_work.tex`
+  fixed.** Its header still said Arya 2019 and Mozannar & Sontag 2020 had
+  been dropped for want of a Crossref DOI. Both were restored under the
+  broadened gate in #28 and are cited in the body. The comment now states the
+  broadened gate and records that both identifiers were resolved in-session,
+  so a future session cannot re-drop them by trusting the comment over the
+  text.

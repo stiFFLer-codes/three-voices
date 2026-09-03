@@ -1,0 +1,12 @@
+field,value
+n_start,1014
+dropped_impossible_heartrate,2
+dropped_exact_duplicates,561
+conflicting_label_feature_vectors,35
+n_clean,451
+class_distribution_clean.low risk,233
+class_distribution_clean.mid risk,106
+class_distribution_clean.high risk,112
+age_min,10
+age_max,70
+n_age_under_18,95

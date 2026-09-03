@@ -23,8 +23,9 @@ commands.
   \item[\texttt{python -m src.model}] Runs five-fold stratified
     cross-validation over three classifiers with and without SMOTE, fitting
     scaling and resampling inside each training fold. Writes
-    \texttt{p1\_model\_metrics.csv} and \texttt{p1\_duplicate\_leakage.csv},
-    and saves the selected model.
+    \texttt{p1\_model\_metrics.csv}, \texttt{p1\_duplicate\_leakage.csv} and
+    \texttt{p1\_cohort\_summary.csv}, which carries every cohort count this
+    paper quotes. Saves the selected model.
   \item[\texttt{python -m src.explain}] Computes global mean absolute SHAP
     per feature per class and local SHAP for the four criterion-selected
     cases. Writes three CSVs and five figures.
