@@ -8,12 +8,14 @@ _Last updated: 2026-09-03_
 
 ## Current phase
 
-**P5 in progress (manuscript).** Four sections drafted: Related Work, Data &
-Vehicle, Three Tiers, Evaluation. Title, authors, ORCID, CRediT and the
-Zenodo concept DOI are in place. `paper/refs.bib` holds 31 entries, every
-identifier resolved in-session. Remaining: Limitations, Reproducibility,
-then Intro and Abstract last. Body budget is 8 pp and each section carries
-its page allowance in `main.tex`.
+**P5 in progress (manuscript).** Six sections drafted: Related Work, Data &
+Vehicle, Three Tiers, Evaluation, Limitations, Reproducibility. Title,
+authors, ORCID, CRediT and the Zenodo concept DOI are in place.
+`paper/refs.bib` holds 31 entries, every identifier resolved in-session.
+Remaining: the #29 voice audit on the two earliest sections, then Intro and
+Abstract last. **The 8 pp body line is breached** — 5841 words (~9.7 pp)
+before Intro and Abstract; see the measured budget block in `main.tex` and
+Decision Log #32.
 
 ## Status by phase
 
@@ -48,9 +50,9 @@ its page allowance in `main.tex`.
   exercise. No human subjects.
 - **P5 — manuscript — IN PROGRESS.** `paper/main.tex` + nine
   `paper/sections/*.tex` + `paper/refs.bib` (31 entries). Drafted: Related
-  Work, Data & Vehicle, Three Tiers, Evaluation. Stubs: Limitations,
-  Reproducibility, Intro, Abstract. Not compiled — no local LaTeX toolchain;
-  compilation is a P6 / Overleaf step.
+  Work, Data & Vehicle, Three Tiers, Evaluation, Limitations,
+  Reproducibility. Stubs: Intro, Abstract. Not compiled — no local LaTeX
+  toolchain; compilation is a P6 / Overleaf step.
 - P6 cold-run/submit — not started.
 
 ## Key data facts (UCI Maternal Health Risk, id=863)
@@ -128,13 +130,17 @@ RED → "HIGH — needs follow-up".
 
 ## Next step — P5, continued
 
-Four sections drafted and awaiting review. The next drafting session takes
-**Limitations** and **Reproducibility**; each stub's comment block names its
-source. Intro and Abstract stay last, written from the pinned contribution
-stack in `main.tex`.
+Six sections drafted and awaiting review. Next, in order:
 
-Watch the page budget: 8 pp of body. Three Tiers is 919 words plus one
-full-width figure and Evaluation is 609 words, both inside allowance.
+1. The **Decision Log #29 voice audit** on `related_work.tex` and
+   `data_and_vehicle.tex`, which predate the /anti-ai gate.
+2. **Trim to the page line**, or decide to accept ~10 pp. The overrun sits
+   almost entirely in those same two sections (#32).
+3. **Intro and Abstract last**, from the pinned contribution stack in
+   `main.tex`.
+
+Also open: the third planned figure (`failure_mode` triptych) is currently
+unallocated — see #33.
 
 Standing items before submission, unchanged: pull Mamun et al. 2025 (#23),
 answer calibration in one sentence (#24a), and decide on Clark et al. (#24b),
@@ -528,3 +534,49 @@ Decision Log entries named.
   name with different section numbering is a trap for the next reader.
   Recoverable from git history at commit cdb52b4. Supersedes #27, which
   flagged the duplication without resolving it.
+
+- **2026-09-03 #32 — the 8 pp body line is breached, and the overrun is in
+  the first two sections.** Measured at roughly 600 words per page for this
+  class and these margins: Related Work 1669 w (~2.8 pp against 1.5
+  allowed), Data & Vehicle 1467 w (~2.4 against 1.5), Three Tiers 919 w plus
+  a full-width figure (~1.9 against 2.0), Evaluation 609 w (~1.0 against
+  1.0), Limitations 672 w (~1.1), Reproducibility 505 w (~0.85). Body total
+  5841 w, about 9.7 pp, before Intro and Abstract exist. Two sections drafted
+  this session are close to allowance; the two drafted first are not.
+  **Reproducibility's allowance was raised deliberately** from 0.25 to ~0.85
+  pp: five named gates, a stated determinism guarantee and one honest
+  exception are a differentiator, and compressing that to a boilerplate
+  sentence would discard the strongest evidence the paper has that its
+  numbers are checkable. **Not cut this session.** Trimming reviewed prose is
+  a review decision, not a drafting one, so the arithmetic is recorded in the
+  `main.tex` budget block and handed back rather than acted on.
+
+- **2026-09-03 #33 — the third planned figure was not placed, on the
+  accountability test.** The figure budget set on 2026-09-03 called for three
+  figures, the third being a `failure_mode` triptych in Limitations. Applying
+  this session's test — what breaks if this is removed? — the answer was
+  nothing: the case is already carried numerically in Data & Vehicle (13-year
+  old, 101°F body temperature, true-low predicted high, blood sugar and
+  systolic pressure both arguing against the flip), and a triptych would
+  restate it visually without adding evidence. Given #32 it would also cost
+  roughly a third of a page the paper does not have. Left unplaced rather
+  than dropped: if the trim in #32 frees space and a reader wants to see the
+  model be wrong rather than read that it was, Limitations is still its home.
+
+- **2026-09-03 #34 — Limitations and Reproducibility drafted; collection and
+  receipts only, no new claim.** Limitations groups every logged limitation
+  into five clusters — no users (which carries comprehension, the 0.15
+  constant, the magnitude omission and role-as-proxy as its four
+  dependents), what one public dataset supports (including calibration per
+  #24a and the 35 conflicting vectors), who the renderings still exclude,
+  the TTS stand-in, and nothing deployed. Each is stated once with its
+  resolution named; none is new, and the three citations it uses were
+  already in `refs.bib` and already cited in Related Work. Reproducibility
+  names the five gates by exact command, states the seed/pins/cache
+  guarantee, and gives the one honest exception. Precision check made this
+  session: `src/data.py` contains no random component at all, so the text
+  says the seed is applied in each script that touches randomness rather
+  than claiming the loader calls `set_seeds()` — it does not. Decision Log
+  #19 is stated in the section itself, because a cold run that certifies
+  audio it did not regenerate is exactly the failure a reproducibility
+  section exists to prevent.

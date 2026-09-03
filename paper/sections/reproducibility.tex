@@ -1,15 +1,82 @@
-% SOURCE: the five gates —
-%   python -m src.data      (P0: pull, cache, report; byte-identical)
-%   python -m src.model     (P1: CV, SMOTE in-fold, metrics, leakage audit)
-%   python -m src.explain   (P2: global + local SHAP, four criterion-chosen cases)
-%   python -m src.render    (P3: three tiers, four cases)
-%   python -m src.evaluate  (P4: the 48-cell matrix)
-% Plus: fixed seeds via config.set_seeds(), pinned deps, cached data.
-% Honest carve-outs: gTTS is a remote service and its MP3 output is not
-% reliably byte-reproducible (Decision Log #10, #18) — the deterministic
-% record is the Hindi source string in results/tables/tier_mother_*_hi.txt.
-% Decision Log #19: a cold run must clear results/audio/ before re-rendering,
-% or it can certify audio it did not regenerate.
-% STUB.
+% SOURCE: RECEIPTS ONLY — every command, path and constant verified against
+% the committed source this session.
+%   src/config.py: RANDOM_SEED = 42; set_seeds() seeds PYTHONHASHSEED,
+%     random, numpy. Called first in model.py, explain.py, render.py,
+%     evaluate.py. data.py contains no random component at all (verified by
+%     grep), so the loader needs no seeding — do NOT claim it calls it.
+%   requirements.txt: exact-version pins.
+%   Decision Log #10/#18 (gTTS not reliably byte-reproducible), #19 (a cold
+%     run must clear results/audio/ first).
+%   Zenodo concept DOI 10.5281/zenodo.22252076, confirmed via the Zenodo API.
+% No new claim. No new citation.
 \section{Reproducibility}
 \label{sec:repro}
+
+Every figure, table and rendered artifact in this paper regenerates from five
+commands.
+
+\begin{description}
+  \item[\texttt{python -m src.data}] Fetches the dataset once from the UCI
+    repository, caches it to \texttt{data/raw/}, and reports row count,
+    duplicate count and missing values without modifying anything. Every
+    later run reads the cache, so the rest of the pipeline needs no network.
+  \item[\texttt{python -m src.model}] Runs five-fold stratified
+    cross-validation over three classifiers with and without SMOTE, fitting
+    scaling and resampling inside each training fold. Writes
+    \texttt{p1\_model\_metrics.csv} and \texttt{p1\_duplicate\_leakage.csv},
+    and saves the selected model.
+  \item[\texttt{python -m src.explain}] Computes global mean absolute SHAP
+    per feature per class and local SHAP for the four criterion-selected
+    cases. Writes three CSVs and five figures.
+  \item[\texttt{python -m src.render}] Renders the three tiers. It reads the
+    saved SHAP tables rather than the model, so the renderer and the
+    explainer cannot drift apart. \texttt{-{}-case all} does all four cases.
+  \item[\texttt{python -m src.evaluate}] Rates the rendered artifacts across
+    the 48 cells and writes \texttt{heuristic\_matrix.csv} and
+    \texttt{heuristic\_evaluation.md}. Contrast ratios are computed from the
+    renderer's own palette constants at run time.
+\end{description}
+
+\subsection{Determinism}
+
+One seed, fixed at 42 in \texttt{src/config.py}, is applied to Python's hash
+randomisation, the standard library generator and NumPy by a \texttt{set\_seeds()}
+call at the top of each script that touches randomness. The loader contains
+no random component and needs none. Dependencies are pinned to exact
+versions, and the dataset is cached after first download rather than
+re-fetched. Re-running the pipeline reproduces every PNG, CSV and text output
+byte for byte.
+
+\subsection{The exception}
+
+Speech synthesis is not ours to seed. The Hindi audio is produced by a remote
+service, and re-running the renderer on unchanged input returns files that
+are sometimes byte-identical and sometimes not. We state that as it is rather
+than rounding it to either extreme. The determinism guarantee above covers
+our pipeline and stops at that endpoint.
+
+What is deterministic, and what we therefore treat as the artifact of record,
+is the Hindi source string. It lives in
+\texttt{results/tables/tier\_mother\_<case>\_hi.txt}, it is committed, and it
+reproduces exactly. The MP3 is a rendering of that string.
+
+One operational consequence is worth recording, because we were caught by it.
+Re-rendering over an existing audio file can leave the previous file in place
+while still reporting success and updating its timestamp. A cold run must
+empty \texttt{results/audio/} before re-rendering, or it can certify audio it
+did not regenerate.
+
+\subsection{Artifacts}
+
+The dataset is public and CC BY 4.0. Code, all rendered artifacts for four
+cases across three tiers, the cross-validation and SHAP tables, and the
+evaluation matrix are archived at
+\url{https://doi.org/10.5281/zenodo.22252076}, which is the concept DOI and
+resolves to the latest release; development history is at
+\url{https://github.com/stiFFLer-codes/three-voices}. The paper cites the
+committed tables directly, so any number in it can be checked against the
+file that produced it. The two-row leakage comparison in
+Table~\ref{tab:leakage} is one of those files rather than a separate
+analysis: \texttt{p1\_duplicate\_leakage.csv} is written by the same command
+that writes the main metrics table, from the same cross-validation, so the
+comparison re-runs whenever the model does.

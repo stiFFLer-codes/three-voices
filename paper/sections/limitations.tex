@@ -1,18 +1,92 @@
-% SOURCE: heuristic_evaluation.md "Inherent limitations" (six entries:
-% mother-tier colour reliance; no rendered text alternative for a deaf
-% reader; clinician chart/English literacy; images of text; ASHA tier
-% English-only; gTTS as an illustrative stand-in) + related_work.md §4
-% concessions (role-based tiers vs. Suresh; ASHA comprehensibility
-% unproven; no users; mother tier omits magnitude; Maisoon near-identical
-% pipeline; the dataset supports no named condition, per Decision Log #21).
-% Plus: the 35 conflicting-label feature vectors; the 0.15 threshold as a
-% declared design choice with no empirical basis; calibration —
-% random-forest class probabilities are uncalibrated votes and the margin
-% is a design constant, not a probability statement (Decision Log #24a);
-% gTTS non-reproducibility (#10, #18).
-% Figure: failure_mode triptych. The adolescent-age paragraph from
-% Decision Log #20 appears at the case's FIRST appearance, which is in
-% Data & Vehicle, not here.
-% STUB.
+% SOURCE: COLLECTION ONLY — no limitation here is new. Each traces to
+% heuristic_evaluation.md "Inherent limitations" (six entries), to
+% related_work.md §4 concessions (six entries), or to a Decision Log entry:
+% #7 (0.15 as design choice), #10/#18 (gTTS), #17 (ASHA English-only),
+% #20 (adolescent ages), #21 (no named condition), #24a (calibration).
+% Numbers: 451 / 35 conflicting vectors / 0.580 macro-recall, all from
+% results/tables/p1_model_metrics.csv and the cached frame.
+% RULE: state each once, name what resolves it, do not re-litigate. A
+% limitation hedged three times reads weaker than one stated cleanly.
 \section{Limitations}
 \label{sec:limitations}
+
+\subsection{Nobody has used this}
+
+No mother, health worker or clinician has seen any of these renderings. That
+is the limitation the rest depend on, and it bounds what the paper is allowed
+to conclude: we have a design and a formative critique of our own artifact,
+not evidence that the design works.
+
+Four claims sit downstream of it. Whether a health worker reads the card as
+intended is assumed rather than shown, and the nearest evidence argues
+against assuming it, since community health workers in India have been
+reported struggling with AI explanations even after
+simplification~\citep{okolo2024easy,solanokamaiko2024explorable}. Whether
+withholding magnitude from the mother helps or harms her is an argument from
+the model's uncertainty, and Section~\ref{sec:rw-riskcomm} makes it, but the
+risk-communication literature it departs from is empirical and our departure
+is not. The $0.15$ margin is a design constant with no experiment behind it,
+as Section~\ref{sec:tiers} states. And role remains a proxy: we design
+against what each reader lacks in modality, literacy and decision authority,
+but we recruit nobody to check that the proxy holds, which is the substance
+of the objection Suresh et al.\ raise against role-based
+tiering~\citep{suresh2021beyond}.
+
+All four resolve the same way. Studies with mothers, community health workers
+and clinicians, gated on ethics clearance, which this preprint does not have
+and does not claim.
+
+\subsection{What one public dataset can support}
+
+The work uses the UCI Maternal Health Risk dataset and nothing else. It is
+public, it carries generic three-level risk labels, and it names no clinical
+condition, so neither do we. Nothing here is clinically validated and nothing
+predicts an outcome for a real patient.
+
+Two properties bound the vehicle. Macro-recall is $0.580$ after
+deduplication, which we report as the honest figure rather than the inflated
+one (Section~\ref{sec:data-leakage}); and 35 of the 451 distinct records are
+feature vectors carrying more than one risk label, an ambiguity no model can
+resolve from these six features. That is a ceiling on the data, not a
+shortfall in the classifier.
+
+One assumption inside the gate deserves naming. The margin rule thresholds a
+difference between random-forest class probabilities, and those are vote
+fractions rather than calibrated posteriors. We treat $0.15$ as a design
+constant on an ordering, not as a statement about probability. Calibrating
+the model, and then asking whether the threshold should move, is future work.
+
+\subsection{Who the renderings still exclude}
+
+Each tier assumes something about its reader, and stating the assumption is
+what makes the gap findable.
+
+The mother's visual carries no rendered text, so a deaf or hard-of-hearing
+mother gets nothing from it; the spoken sentence is her only channel and she
+cannot hear it. A rendered caption or an SMS companion would close this, and
+it reopens the literacy assumption the tier exists to avoid, so it needs user
+input rather than a unilateral design call. Colour is the lamp's primary cue.
+Position and the lit-versus-unlit luminance step are real redundancies and
+the spoken line is a second channel, but a reader who is both colour-blind
+and deaf is left with position alone, and position assumes the traffic-light
+convention. The clinician view needs chart literacy and English. The health
+worker's card is English-only, which is a scoped exposition choice rather
+than a claim about the architecture, since every string is a fixed template
+constant and localising it is substitution deferred to deployment. All three
+tiers ship as rasterised images of text.
+
+\subsection{The voice is a stand-in}
+
+Audio is synthesised with a general-purpose engine reached over the network.
+It is not tuned for Indian-language health speech, it handles acronyms
+unpredictably, and it needs connectivity that the setting this design
+describes may not have. Deployment-grade Indian-language synthesis
+(AI4Bharat, Bhashini) is the stated path. What we treat as the artifact is
+the Hindi source string, not the audio file.
+
+\subsection{Nothing is deployed}
+
+This is a design and feasibility artifact evaluated on a workstation. We make
+no field claim, no claim about performance under real clinic conditions, and
+no claim that the renderings have been carried to anyone by any delivery
+channel.
