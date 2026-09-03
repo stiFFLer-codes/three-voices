@@ -9,9 +9,16 @@ _Last updated: 2026-09-03_
 ## Current phase
 
 **P5 CLOSED 2026-09-03. Now in P6 — pre-submission pass.** The manuscript is
-written, compiled and pushed. What remains is not writing: it is reading,
-verifying and packaging. See "Next step" for the ordered gate list, and #43
-for what closing P5 does and does not assert.
+written, compiled and pushed. What remains is reading, verifying and
+packaging. See "Next step" for the ordered gate list, and #43 for what closing
+P5 does and does not assert.
+
+**Gate C packaging is done (#45):** the arXiv `\graphicspath` blocker is
+closed, the 15-file upload compiles standalone with `pdflatex` alone at 17 pp
+and zero errors, References now opens on its own page, and
+`paper/ARXIV_SUBMISSION.md` holds every field the arXiv form asks for. **Gate A
+(author read) and Gate B (cold run) remain untouched and still block the
+v1.0.0 tag.**
 
 **P5 manuscript COMPLETE.** All eight sections plus back matter are written:
 Abstract, Introduction, Related Work, Data & Vehicle, Three Tiers,
@@ -72,7 +79,12 @@ sits at the top of page 6 with its reference below it on the same page.
   under the abstract, and a two-line CRediT statement (#42). **Not yet read
   end to end by either author — that is the first P6 gate, not a P5
   leftover.**
-- **P6 — cold-run + submit — IN PROGRESS (entered 2026-09-03).** Nothing done yet; the gate list is under "Next step".
+- **P6 — cold-run + submit — IN PROGRESS (entered 2026-09-03).** Gate C's
+  packaging items are done ahead of Gates A and B, deliberately: they are
+  mechanical, they touch no prose, and #44 was a live blocker worth closing
+  before it could bite. See #45. **Gate A (the author read) and Gate B (the
+  cold run) are still untouched and still blocking the tag.** The gate list is
+  under "Next step".
 
 ## Key data facts (UCI Maternal Health Risk, id=863)
 
@@ -199,19 +211,21 @@ tagging before the cold run tags something unverified.
 
 ### Gate C — package, release, submit
 
-12. **arXiv packaging blocker, found 2026-09-03 and not yet fixed:**
-    `main.tex:138` sets `\graphicspath{{../results/figures/}}`, which points
-    OUTSIDE `paper/`. arXiv builds from a self-contained upload and a `../`
-    path escapes the submission root, so the upload will fail to find all
-    three PNGs. Fix at packaging time by copying the three committed PNGs
-    into the upload beside the sources and dropping or repointing
-    `\graphicspath` — do NOT restructure the repo for this, and do NOT
-    re-render the PNGs.
-13. Ship `main.bbl` in the upload. arXiv runs LaTeX but not BibTeX, so the
-    `.bbl` is the bibliography. It is already tracked for this reason.
-14. Final firewall grep before upload: no "novel framework", no
-    clinical-validity claim, no named condition (#21), every number traceable
-    to a committed table under `results/tables/`.
+12. **arXiv packaging blocker — CLOSED 2026-09-03 (#45).** `main.tex` now sets
+    `\graphicspath{{./}{../results/figures/}}`, so the archive root matches
+    before the `../` entry is ever consulted and the upload needs no source
+    edit. The repo is unrestructured and the PNGs are not re-rendered, per
+    #44. Packaging is now a pure copy; the commands are in
+    `paper/ARXIV_SUBMISSION.md`. **Re-run the standalone compile after the
+    Gate B cold run**, since a re-rendered PNG is a changed figure.
+13. Ship `main.bbl` in the upload — DONE and verified in the standalone
+    compile (#45). arXiv runs LaTeX but not BibTeX, so the `.bbl` is the
+    bibliography. It is already tracked for this reason.
+14. Final firewall grep before upload — **run 2026-09-03 (#45), clean**: no
+    "novel framework", no clinical-validity claim, no named condition (#21),
+    31/31/31 citations with zero orphans, every numeric token in the abstract
+    and introduction present in a body section. Re-run if any prose moves in
+    Gate A.
 15. Tag `v1.0.0`, push the tag, confirm Zenodo minted the version under the
     concept DOI 10.5281/zenodo.22252076 (the concept DOI is what the paper
     cites, deliberately, so it tracks later releases).
@@ -836,4 +850,43 @@ Decision Log entries named.
   determinism guarantee the Reproducibility section makes. The source PNGs are
   not re-rendered for this. Recorded now because it is invisible until an
   upload fails and easy to misdiagnose as a missing-figure error.
+
+- **2026-09-03 #45 — #44 closed by graphicspath ORDER, not by a packaging-time
+  edit; arXiv package verified by standalone compile.** `main.tex` now sets
+  `\graphicspath{{./}{../results/figures/}}`. Both of #44's constraints hold and
+  the packaging step gets simpler than #44 anticipated. In the repository `./`
+  (= `paper/`) holds no PNGs, so the figures still resolve from the renderer's
+  committed output and no second copy is tracked — the determinism guarantee is
+  untouched and #44's rejection of restructuring stands. In an arXiv upload the
+  three PNGs sit beside the sources, `./` matches first, and the `../` entry is
+  never consulted, so nothing escapes the submission root. **Consequence: the
+  upload needs no source edit at all**, superseding #44's "drop or repoint
+  `\graphicspath` there" instruction while leaving its decision intact.
+  Rejected: committing the PNGs under `paper/`, for exactly #44's reason.
+  **Verified, not asserted.** The twelve tracked sources plus the three PNGs,
+  fifteen files, were copied into an empty directory holding no `.aux`, `.log`, `.out` or
+  `.pdf`, and compiled with `pdflatex` alone, three passes, no BibTeX run —
+  what arXiv actually does. Result: 17 pp, 0 errors, 0 overfull boxes, no LaTeX
+  warnings, all 31 citations resolving from the shipped `.bbl`, and a PDF
+  byte-size identical to the in-repo build. Also this session: `\clearpage`
+  before the bibliography, so References opens at the top of p14 instead of at
+  the foot of p13 — still 17 pp, so the page came free. `main.bbl` was NOT
+  rebuilt; a BibTeX run returned it byte-identical, because no citation moved.
+  `refs.bib` stays at 31 entries and the three source PNGs are byte-unchanged.
+  Sweeps run and clean: 31 cite keys = 31 `refs.bib` entries = 31 `\bibitem`,
+  zero orphans either way; no absolute path in any `.tex`; no `\input` outside
+  `paper/`; eleven packages, all standard TeX Live; every numeric token in
+  `abstract.tex` and `intro.tex` also present in a body section; the oversell
+  grep returns only the two known false positives. `paper/ARXIV_SUBMISSION.md`
+  written — categories, licence, plain-text title/authors/abstract, file list,
+  build commands and the known-warnings note. Its abstract is a de-LaTeX'd
+  transcription, verified word-for-word identical to `sections/abstract.tex`
+  after stripping `$` and `\emph{}`, and pure ASCII with straight quotes. The
+  Zenodo concept DOI is deliberately kept OUT of the arXiv DOI field, which is
+  for a journal DOI of this same article; it stays in the back matter. The file
+  passed `/anti-ai` (five negative-parallel constructions cut to one, prose
+  em-dashes to zero, and one overclaim about arXiv's TeX Live narrowed to what
+  the compile actually proved). **This closes no other P6 gate.** Nobody has
+  read the PDF end to end (Gate A) and no cold run has happened (Gate B); both
+  still block the v1.0.0 tag.
 

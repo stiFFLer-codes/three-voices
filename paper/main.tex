@@ -135,7 +135,13 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage[numbers,sort&compress]{natbib}
 
-\graphicspath{{../results/figures/}}
+% Two roots, in this order, so ONE main.tex serves both builds (#44).
+% In the repo, ./ (= paper/) holds no PNGs, so the figures resolve from the
+% renderer's committed output — no duplicated copy that can drift.
+% In an arXiv upload the three PNGs sit beside the sources, ./ matches first,
+% and the ../ root is never consulted — so nothing has to escape the
+% submission root and no source edit is needed at packaging time.
+\graphicspath{{./}{../results/figures/}}
 
 \title{\bfseries A Coin Flip Is Not a Red Light:\\
 Grading a Maternal-Health Risk Alarm for Mothers,\\
@@ -166,6 +172,8 @@ Community Health Workers, and Clinicians}
 \input{sections/reproducibility}
 \input{sections/backmatter}
 
+% References start on their own page, not at the foot of the last body page.
+\clearpage
 \bibliographystyle{plainnat}
 \bibliography{refs}
 
