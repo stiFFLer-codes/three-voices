@@ -15,7 +15,18 @@ models/*.joblib
 
 # OS / editor
 .DS_Store
+Thumbs.db
+desktop.ini
 .ipynb_checkpoints/
+.vscode/
+.idea/
+*.swp
+*~
+
+# Assistant working notes. Untracked from 2026-09-03 for the public release;
+# the full history is still in git, so the constraints this repo was built
+# under stay auditable. STATE.md is the record that stays tracked.
+CLAUDE.md
 
 # Packaged skill zip (the live copy is .claude/commands/anti-ai.md)
 .claude/anti-ai.skill
@@ -24,7 +35,10 @@ models/*.joblib
 # a future manuscript PDF must stay trackable.
 *.pptx
 COG1_Submission_Maitreya.pdf
-three-voices-scaffold.zip
+
+# Scaffold / packaging archives, including the arXiv upload tarball.
+*.zip
+*.tar.gz
 
 # LaTeX build artifacts (main.pdf and main.bbl stay tracked: the bbl is what
 # arXiv wants, and the PDF is the reviewable deliverable)
