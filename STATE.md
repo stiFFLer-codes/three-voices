@@ -20,9 +20,10 @@ with the Introduction, plus a 235-word abstract and one table. Pushed to
 composite, built LaTeX-native from the three committed PNGs (#40), and the
 manuscript has compiled: **17 pages**, zero errors, zero undefined citations
 or references, zero overfull boxes. A local MiKTeX toolchain now exists on
-the author's machine (#41). Figure 1 lands on page 9 as a float page
-immediately after its reference on page 8; Table 1 sits at the top of page 6
-with its reference below it on the same page.
+the author's machine (#41). A cosmetic pass then reclaimed Figure 1's float
+page and added front-matter polish (#42). Still 17 pages, still a clean log.
+Figure 1 is a top float on page 9 with Section 4.4 flowing beneath it; Table 1
+sits at the top of page 6 with its reference below it on the same page.
 
 ## Status by phase
 
@@ -61,7 +62,9 @@ with its reference below it on the same page.
   `paper/main.pdf`, 17 pages: 13 pp body and front matter, 4 pp references.
   Clean log — no errors, no undefined refs, no overfull boxes. Four underfull
   hboxes remain (loose lines in `\texttt{}`-heavy list items); cosmetic,
-  deliberately deferred. Not yet read end to end by an author.
+  deliberately deferred. Front matter carries a bold title, a keywords line
+  under the abstract, and a two-line CRediT statement (#42). Not yet read end
+  to end by an author.
 - P6 cold-run/submit — not started.
 
 ## Key data facts (UCI Maternal Health Risk, id=863)
@@ -717,4 +720,28 @@ Decision Log entries named.
   `refs.bib` (`June`/`July`/`Sept` are undefined in BibTeX; `Jun`/`Jul`/`Sep`
   are the defined ones). This is a metadata field only — no key, title,
   author, year or DOI changed, and the file stays at 31 entries.
+
+- **2026-09-03 #42 — Cosmetic/layout pass; no claim, number or citation
+  touched.** Five items, all verified against the rendered PDF rather than
+  the log alone. (a) Figure 1 moved from `[tbp]` to `[t!]`. It fills ~85% of
+  the text block, which exceeds `\floatpagefraction`, so LaTeX had been
+  giving it a page of its own with the lower third blank; `!` overrides the
+  placement fractions and makes it a top float with Section 4.4 flowing
+  beneath. Kept — the reclaimed space is real and the figure did not shrink
+  or split. (b) Title set `\bfseries`, size left at the class default; three
+  bold lines read solid, not heavy, so no compensating change was made.
+  (c) CRediT reformatted to one line per author with CRediT capitalization.
+  NOTE for the authors: of Aditi Patil's four roles only *Validation* is an
+  official CRediT term; *Clinical domain expertise*, *Hindi authoring and
+  review* and *ASHA-tier design input* are custom descriptors. Left exactly
+  as the authors worded them — a co-author's attribution is not a layout
+  decision. (d) Keywords line added inside the `abstract` environment so it
+  keeps the abstract's measure; `article` has no keyword hook, so it is a
+  bold run-in label. Six terms, each tracing to a real section. Passed
+  `/anti-ai`, clean, no rewrite needed. (e) `microtype` was ALREADY in the
+  preamble and had been since the first draft, so there was nothing to add
+  and the four underfull hboxes are its output, not its absence — the count
+  is unchanged at four and this line supersedes any expectation that loading
+  it would drop them. Page count unchanged at 17; log still shows zero
+  errors, zero warnings, zero overfull boxes.
 
