@@ -109,8 +109,26 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+% Scalable Type1 outlines: T1 alone falls back to bitmap EC fonts,
+% which microtype cannot expand and arXiv rejects.
+\usepackage{lmodern}
 \usepackage[margin=1in]{geometry}
 \usepackage{graphicx}
+\usepackage{subcaption}
+% Figure 1 is a tall three-panel composite; the stock 0.7 topfraction
+% would banish it to a float page, away from its reference.
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\bottomfraction}{0.6}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.8}
+% Figure 1 fills ~85% of the text block, so it takes a float page.
+% Stock \@fptop centres a float page vertically, which opens a dead
+% band above the figure; pin it to the top margin instead.
+\makeatletter
+\setlength{\@fptop}{0pt}
+\makeatother
+% Unbreakable \texttt{} filenames push three lines past the margin.
+\setlength{\emergencystretch}{3em}
 \usepackage{booktabs}
 \usepackage{amsmath}
 \usepackage{microtype}

@@ -25,3 +25,11 @@ models/*.joblib
 *.pptx
 COG1_Submission_Maitreya.pdf
 three-voices-scaffold.zip
+
+# LaTeX build artifacts (main.pdf and main.bbl stay tracked: the bbl is what
+# arXiv wants, and the PDF is the reviewable deliverable)
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.blg
+paper/*.synctex.gz

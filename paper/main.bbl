@@ -1,0 +1,336 @@
+\begin{thebibliography}{31}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Arya et~al.(2019)Arya, Bellamy, Chen, Dhurandhar, Hind, Hoffman,
+  Houde, Liao, Luss, Mojsilović, Mourad, Pedemonte, Raghavendra, Richards,
+  Sattigeri, Shanmugam, Singh, Varshney, Wei, and Zhang]{arya2019explanation}
+Vijay Arya, Rachel K.~E. Bellamy, Pin-Yu Chen, Amit Dhurandhar, Michael Hind,
+  Samuel~C. Hoffman, Stephanie Houde, Q.~Vera Liao, Ronny Luss, Aleksandra
+  Mojsilović, Sami Mourad, Pablo Pedemonte, Ramya Raghavendra, John Richards,
+  Prasanna Sattigeri, Karthikeyan Shanmugam, Moninder Singh, Kush~R. Varshney,
+  Dennis Wei, and Yunfeng Zhang.
+\newblock One explanation does not fit all: A toolkit and taxonomy of ai
+  explainability techniques, 2019.
+\newblock URL \url{https://arxiv.org/abs/1909.03012}.
+
+\bibitem[Bello et~al.(2025)Bello, Bello, García, Nowé, Sevillano-García, and
+  Herrera]{bello2025threelevel}
+Marilyn Bello, Rafael Bello, María-Matilde García, Ann Nowé, Iván
+  Sevillano-García, and Francisco Herrera.
+\newblock A three-level framework for llm-enhanced explainable ai: From
+  technical explanations to natural language.
+\newblock \emph{Information Systems Frontiers}, December 2025.
+\newblock ISSN 1572-9419.
+\newblock \doi{10.1007/s10796-025-10668-1}.
+\newblock URL \url{http://dx.doi.org/10.1007/s10796-025-10668-1}.
+
+\bibitem[Bernett et~al.(2024)Bernett, Blumenthal, Grimm, Haselbeck, Joeres,
+  Kalinina, and List]{bernett2024guiding}
+Judith Bernett, David~B. Blumenthal, Dominik~G. Grimm, Florian Haselbeck, Roman
+  Joeres, Olga~V. Kalinina, and Markus List.
+\newblock Guiding questions to avoid data leakage in biological machine
+  learning applications.
+\newblock \emph{Nature Methods}, 21\penalty0 (8):\penalty0 1444–1453, August
+  2024.
+\newblock ISSN 1548-7105.
+\newblock \doi{10.1038/s41592-024-02362-y}.
+\newblock URL \url{http://dx.doi.org/10.1038/s41592-024-02362-y}.
+
+\bibitem[Bhatt et~al.(2021)Bhatt, Antorán, Zhang, Liao, Sattigeri, Fogliato,
+  Melançon, Krishnan, Stanley, Tickoo, Nachman, Chunara, Srikumar, Weller, and
+  Xiang]{bhatt2021uncertainty}
+Umang Bhatt, Javier Antorán, Yunfeng Zhang, Q.~Vera Liao, Prasanna Sattigeri,
+  Riccardo Fogliato, Gabrielle Melançon, Ranganath Krishnan, Jason Stanley,
+  Omesh Tickoo, Lama Nachman, Rumi Chunara, Madhulika Srikumar, Adrian Weller,
+  and Alice Xiang.
+\newblock Uncertainty as a form of transparency: Measuring, communicating, and
+  using uncertainty.
+\newblock In \emph{Proceedings of the 2021 AAAI/ACM Conference on AI, Ethics,
+  and Society}, AIES ’21, page 401–413. ACM, July 2021.
+\newblock \doi{10.1145/3461702.3462571}.
+\newblock URL \url{http://dx.doi.org/10.1145/3461702.3462571}.
+
+\bibitem[Bradley et~al.(2025)Bradley, Hunt, Bunni, Kingdon, Finikarides,
+  Bonnett, Cunningham, Burden, Ficquet, Parry‐Smith, Oteroromero, Rezvani,
+  Black, Clayton, Smith, Lawlor, Heron, and Merriel]{bradley2025birth}
+Victoria Bradley, Alexandra Hunt, Eve Bunni, Carol Kingdon, Leila Finikarides,
+  Laura Bonnett, Caroline Cunningham, Christy Burden, Jo~Ficquet, William
+  Parry‐Smith, Elena Oteroromero, Arezou Rezvani, Mairead Black, Gemma
+  Clayton, Gordon C.~S. Smith, Deborah Lawlor, Jon Heron, and Abi~and Merriel.
+\newblock How should we communicate information regarding birth choices to
+  women?: An online randomised survey.
+\newblock \emph{BJOG: An International Journal of Obstetrics \&amp;
+  Gynaecology}, 132\penalty0 (13):\penalty0 2177–2185, July 2025.
+\newblock ISSN 1471-0528.
+\newblock \doi{10.1111/1471-0528.18314}.
+\newblock URL \url{http://dx.doi.org/10.1111/1471-0528.18314}.
+
+\bibitem[Eltawil et~al.(2026)Eltawil, Byham-Gray, Jia, Mistry, Parrott, and
+  Gohel]{eltawil2026comment}
+Mohamed Eltawil, Laura Byham-Gray, Yuane Jia, Neil Mistry, James Parrott, and
+  Suril Gohel.
+\newblock Comment on iacobescu et al. evaluating binary classifiers for
+  cardiovascular disease prediction: Enhancing early diagnostic capabilities.
+  j. cardiovasc. dev. dis. 2024, 11, 396.
+\newblock \emph{Journal of Cardiovascular Development and Disease}, 13\penalty0
+  (1):\penalty0 46, January 2026.
+\newblock ISSN 2308-3425.
+\newblock \doi{10.3390/jcdd13010046}.
+\newblock URL \url{http://dx.doi.org/10.3390/jcdd13010046}.
+
+\bibitem[Galesic et~al.(2009)Galesic, Garcia-Retamero, and
+  Gigerenzer]{galesic2009icon}
+Mirta Galesic, Rocio Garcia-Retamero, and Gerd Gigerenzer.
+\newblock Using icon arrays to communicate medical risks: Overcoming low
+  numeracy.
+\newblock \emph{Health Psychology}, 28\penalty0 (2):\penalty0 210–216, 2009.
+\newblock ISSN 0278-6133.
+\newblock \doi{10.1037/a0014474}.
+\newblock URL \url{http://dx.doi.org/10.1037/a0014474}.
+
+\bibitem[Garcia-Retamero and Cokely(2017)]{garciaretamero2017visual}
+Rocio Garcia-Retamero and Edward~T. Cokely.
+\newblock Designing visual aids that promote risk literacy: A systematic review
+  of health research and evidence-based design heuristics.
+\newblock \emph{Human Factors: The Journal of the Human Factors and Ergonomics
+  Society}, 59\penalty0 (4):\penalty0 582–627, February 2017.
+\newblock ISSN 1547-8181.
+\newblock \doi{10.1177/0018720817690634}.
+\newblock URL \url{http://dx.doi.org/10.1177/0018720817690634}.
+
+\bibitem[Hendrickx et~al.(2024)Hendrickx, Perini, Van~der Plas, Meert, and
+  Davis]{hendrickx2024reject}
+Kilian Hendrickx, Lorenzo Perini, Dries Van~der Plas, Wannes Meert, and Jesse
+  Davis.
+\newblock Machine learning with a reject option: a survey.
+\newblock \emph{Machine Learning}, 113\penalty0 (5):\penalty0 3073–3110,
+  March 2024.
+\newblock ISSN 1573-0565.
+\newblock \doi{10.1007/s10994-024-06534-x}.
+\newblock URL \url{http://dx.doi.org/10.1007/s10994-024-06534-x}.
+
+\bibitem[Hossen et~al.(2024)Hossen, Shaha, Saiduzzaman, Shovon, Akhi, and
+  Iqbal]{hossen2024driven}
+Md.~Sabbir Hossen, Pabon Shaha, Md. Saiduzzaman, Md. Shovon, Aklima~Khatun
+  Akhi, and Md.~Sadiq Iqbal.
+\newblock An explainable ai driven machine learning approach for maternal
+  health risk analysis.
+\newblock In \emph{2024 27th International Conference on Computer and
+  Information Technology (ICCIT)}, page 1135–1140. IEEE, December 2024.
+\newblock \doi{10.1109/iccit64611.2024.11022383}.
+\newblock URL \url{http://dx.doi.org/10.1109/iccit64611.2024.11022383}.
+
+\bibitem[Imrie et~al.(2023)Imrie, Davis, and van~der Schaar]{imrie2023multiple}
+Fergus Imrie, Robert Davis, and Mihaela van~der Schaar.
+\newblock Multiple stakeholders drive diverse interpretability requirements for
+  machine learning in healthcare.
+\newblock \emph{Nature Machine Intelligence}, 5\penalty0 (8):\penalty0
+  824–829, August 2023.
+\newblock ISSN 2522-5839.
+\newblock \doi{10.1038/s42256-023-00698-2}.
+\newblock URL \url{http://dx.doi.org/10.1038/s42256-023-00698-2}.
+
+\bibitem[Kapoor and Narayanan(2023)]{kapoor2023leakage}
+Sayash Kapoor and Arvind Narayanan.
+\newblock Leakage and the reproducibility crisis in machine-learning-based
+  science.
+\newblock \emph{Patterns}, 4\penalty0 (9):\penalty0 100804, September 2023.
+\newblock ISSN 2666-3899.
+\newblock \doi{10.1016/j.patter.2023.100804}.
+\newblock URL \url{http://dx.doi.org/10.1016/j.patter.2023.100804}.
+
+\bibitem[Kim et~al.(2024)Kim, Kim, Kim, Song, and Kim]{kim2024stakeholder}
+Minjung Kim, Saebyeol Kim, Jinwoo Kim, Tae-Jin Song, and Yuyoung Kim.
+\newblock Do stakeholder needs differ? - designing stakeholder-tailored
+  explainable artificial intelligence (xai) interfaces.
+\newblock \emph{International Journal of Human-Computer Studies}, 181:\penalty0
+  103160, January 2024.
+\newblock ISSN 1071-5819.
+\newblock \doi{10.1016/j.ijhcs.2023.103160}.
+\newblock URL \url{http://dx.doi.org/10.1016/j.ijhcs.2023.103160}.
+
+\bibitem[Kompa et~al.(2021)Kompa, Snoek, and Beam]{kompa2021second}
+Benjamin Kompa, Jasper Snoek, and Andrew~L. Beam.
+\newblock Second opinion needed: communicating uncertainty in medical machine
+  learning.
+\newblock \emph{npj Digital Medicine}, 4\penalty0 (1), January 2021.
+\newblock ISSN 2398-6352.
+\newblock \doi{10.1038/s41746-020-00367-3}.
+\newblock URL \url{http://dx.doi.org/10.1038/s41746-020-00367-3}.
+
+\bibitem[Maheswari et~al.(2024)Maheswari, Dixit, and Karn]{maheswari2024smote}
+B.~Uma Maheswari, Aniket Dixit, and Alok~Kumar Karn.
+\newblock Machine learning algorithm for maternal health risk classification
+  with smote and explainable ai.
+\newblock In \emph{2024 IEEE 9th International Conference for Convergence in
+  Technology (I2CT)}, page 1–6. IEEE, April 2024.
+\newblock \doi{10.1109/i2ct61223.2024.10543709}.
+\newblock URL \url{http://dx.doi.org/10.1109/i2ct61223.2024.10543709}.
+
+\bibitem[Maisoon et~al.(2026)Maisoon, Pradeep, and
+  Chakith]{maisoon2026stratification}
+Manaal Maisoon, Sushma Pradeep, and M.~R.~Sai Chakith.
+\newblock Maternal health risk stratification in low-resource settings:
+  Comparative analysis of machine learning models with xai.
+\newblock \emph{IEEE Access}, 14:\penalty0 102905–102919, 2026.
+\newblock ISSN 2169-3536.
+\newblock \doi{10.1109/access.2026.3710610}.
+\newblock URL \url{http://dx.doi.org/10.1109/access.2026.3710610}.
+
+\bibitem[Mamun et~al.(2025)Mamun, Chowdhury, Faruq, Azad, Biswas, Hussain, and
+  Hossain]{mamun2025identification}
+Mohammad Mamun, Safiul~Haque Chowdhury, Md.~Omar Faruq, Mir~Mohammad Azad,
+  Bishakha~Rani Biswas, Mohammed~Ibrahim Hussain, and Muhammad~Minoar Hossain.
+\newblock Identification of maternal health risk from optimal features using
+  explainable machine learning.
+\newblock \emph{Engineering Reports}, 7\penalty0 (11), November 2025.
+\newblock ISSN 2577-8196.
+\newblock \doi{10.1002/eng2.70491}.
+\newblock URL \url{http://dx.doi.org/10.1002/eng2.70491}.
+
+\bibitem[Mozannar and Sontag(2020)]{mozannar2020consistent}
+Hussein Mozannar and David Sontag.
+\newblock Consistent estimators for learning to defer to an expert.
+\newblock In Hal~Daumé III and Aarti Singh, editors, \emph{Proceedings of the
+  37th International Conference on Machine Learning}, volume 119 of
+  \emph{Proceedings of Machine Learning Research}, pages 7076--7087. PMLR,
+  2020.
+\newblock URL \url{https://proceedings.mlr.press/v119/mozannar20b.html}.
+
+\bibitem[Okolo et~al.(2021)Okolo, Kamath, Dell, and Vashistha]{okolo2021cannot}
+Chinasa~T. Okolo, Srujana Kamath, Nicola Dell, and Aditya Vashistha.
+\newblock “it cannot do all of my work”: Community health worker
+  perceptions of ai-enabled mobile health applications in rural india.
+\newblock In \emph{Proceedings of the 2021 CHI Conference on Human Factors in
+  Computing Systems}, CHI ’21, page 1–20. ACM, May 2021.
+\newblock \doi{10.1145/3411764.3445420}.
+\newblock URL \url{http://dx.doi.org/10.1145/3411764.3445420}.
+
+\bibitem[Okolo et~al.(2022)Okolo, Dell, and Vashistha]{okolo2022makingai}
+Chinasa~T. Okolo, Nicola Dell, and Aditya Vashistha.
+\newblock Making ai explainable in the global south: A systematic review.
+\newblock In \emph{ACM SIGCAS/SIGCHI Conference on Computing and Sustainable
+  Societies (COMPASS)}, COMPASS ’22, page 439–452. ACM, June 2022.
+\newblock \doi{10.1145/3530190.3534802}.
+\newblock URL \url{http://dx.doi.org/10.1145/3530190.3534802}.
+
+\bibitem[Okolo et~al.(2024)Okolo, Agarwal, Dell, and Vashistha]{okolo2024easy}
+Chinasa~T. Okolo, Dhruv Agarwal, Nicola Dell, and Aditya Vashistha.
+\newblock “if it is easy to understand then it will have value”: Examining
+  perceptions of explainable ai with community health workers in rural india.
+\newblock \emph{Proceedings of the ACM on Human-Computer Interaction},
+  8\penalty0 (CSCW1):\penalty0 1–28, April 2024.
+\newblock ISSN 2573-0142.
+\newblock \doi{10.1145/3637348}.
+\newblock URL \url{http://dx.doi.org/10.1145/3637348}.
+
+\bibitem[Peters et~al.(2025)Peters, Han, and Lee]{peters2025numeric}
+Ellen Peters, Paul K.~J. Han, and Clara~N. Lee.
+\newblock Communicating numeric risk information to patients.
+\newblock \emph{Journal of General Internal Medicine}, 40\penalty0
+  (13):\penalty0 3228–3231, April 2025.
+\newblock ISSN 1525-1497.
+\newblock \doi{10.1007/s11606-025-09520-8}.
+\newblock URL \url{http://dx.doi.org/10.1007/s11606-025-09520-8}.
+
+\bibitem[Rahman and Rabiul~Alam(2023)]{rahman2023xai}
+Anika Rahman and Md.~Golam Rabiul~Alam.
+\newblock Explainable ai based maternal health risk prediction using machine
+  learning and deep learning.
+\newblock In \emph{2023 IEEE World AI IoT Congress (AIIoT)}, page 0013–0018.
+  IEEE, June 2023.
+\newblock \doi{10.1109/aiiot58121.2023.10174540}.
+\newblock URL \url{http://dx.doi.org/10.1109/aiiot58121.2023.10174540}.
+
+\bibitem[Richter et~al.(2023)Richter, Jansen, Bongaerts, Damman, Rademakers,
+  and van~der Weijden]{richter2023communication}
+Romy Richter, Jesse Jansen, Iris Bongaerts, Olga Damman, Jany Rademakers, and
+  Trudy van~der Weijden.
+\newblock Communication of benefits and harms in shared decision making with
+  patients with limited health literacy: A systematic review of risk
+  communication strategies.
+\newblock \emph{Patient Education and Counseling}, 116:\penalty0 107944,
+  November 2023.
+\newblock ISSN 0738-3991.
+\newblock \doi{10.1016/j.pec.2023.107944}.
+\newblock URL \url{http://dx.doi.org/10.1016/j.pec.2023.107944}.
+
+\bibitem[Rosenblatt et~al.(2024)Rosenblatt, Tejavibulya, Jiang, Noble, and
+  Scheinost]{rosenblatt2024leakage}
+Matthew Rosenblatt, Link Tejavibulya, Rongtao Jiang, Stephanie Noble, and
+  Dustin Scheinost.
+\newblock Data leakage inflates prediction performance in connectome-based
+  machine learning models.
+\newblock \emph{Nature Communications}, 15\penalty0 (1), February 2024.
+\newblock ISSN 2041-1723.
+\newblock \doi{10.1038/s41467-024-46150-w}.
+\newblock URL \url{http://dx.doi.org/10.1038/s41467-024-46150-w}.
+
+\bibitem[Solano-Kamaiko et~al.(2024)Solano-Kamaiko, Mishra, Dell, and
+  Vashistha]{solanokamaiko2024explorable}
+Ian~René Solano-Kamaiko, Dibyendu Mishra, Nicola Dell, and Aditya Vashistha.
+\newblock Explorable explainable ai: Improving ai understanding for community
+  health workers in india.
+\newblock In \emph{Proceedings of the CHI Conference on Human Factors in
+  Computing Systems}, CHI ’24, page 1–21. ACM, May 2024.
+\newblock \doi{10.1145/3613904.3642733}.
+\newblock URL \url{http://dx.doi.org/10.1145/3613904.3642733}.
+
+\bibitem[Srinidhi et~al.(2021)Srinidhi, Karachiwala, Iyer, Reddy, Mathrani,
+  Madhiwalla, Periodi, Sreevathsa, Viswanatha, and Sen]{srinidhi2021asha}
+V~Srinidhi, Baneen Karachiwala, Aditi Iyer, Bhavya Reddy, Vinalini Mathrani,
+  Neha Madhiwalla, Vani Periodi, Anuradha Sreevathsa, Lakshmi Viswanatha, and
+  Gita Sen.
+\newblock Asha kirana: when digital technology empowered front-line health
+  workers.
+\newblock \emph{BMJ Global Health}, 6\penalty0 (Suppl 5):\penalty0 e005039,
+  September 2021.
+\newblock ISSN 2059-7908.
+\newblock \doi{10.1136/bmjgh-2021-005039}.
+\newblock URL \url{http://dx.doi.org/10.1136/bmjgh-2021-005039}.
+
+\bibitem[Suresh et~al.(2021)Suresh, Gomez, Nam, and
+  Satyanarayan]{suresh2021beyond}
+Harini Suresh, Steven~R. Gomez, Kevin~K. Nam, and Arvind Satyanarayan.
+\newblock Beyond expertise and roles: A framework to characterize the
+  stakeholders of interpretable machine learning and their needs.
+\newblock In \emph{Proceedings of the 2021 CHI Conference on Human Factors in
+  Computing Systems}, CHI ’21, page 1–16. ACM, May 2021.
+\newblock \doi{10.1145/3411764.3445088}.
+\newblock URL \url{http://dx.doi.org/10.1145/3411764.3445088}.
+
+\bibitem[Szymanski et~al.(2025)Szymanski, Vanden~Abeele, and
+  Verbert]{szymanski2025disentangling}
+Maxwell Szymanski, Vero Vanden~Abeele, and Katrien Verbert.
+\newblock Disentangling stakeholder role and expertise in user-centered
+  explainable ai.
+\newblock In \emph{Proceedings of the 33rd ACM Conference on User Modeling,
+  Adaptation and Personalization}, UMAP ’25, page 32–39. ACM, June 2025.
+\newblock \doi{10.1145/3699682.3728351}.
+\newblock URL \url{http://dx.doi.org/10.1145/3699682.3728351}.
+
+\bibitem[Widyawati and Sulistianingsih(2025)]{widyawati2025ensemble}
+Lilik Widyawati and Neny Sulistianingsih.
+\newblock Explainable ensemble learning for maternal health risk in
+  low-resource settings.
+\newblock \emph{Jurnal RESTI (Rekayasa Sistem dan Teknologi Informasi)},
+  9\penalty0 (5):\penalty0 1121–1130, October 2025.
+\newblock ISSN 2580-0760.
+\newblock \doi{10.29207/resti.v9i5.6765}.
+\newblock URL \url{http://dx.doi.org/10.29207/resti.v9i5.6765}.
+
+\bibitem[Young et~al.(2025)Young, Gates, Garcia, and
+  Salardini]{young2025leakage}
+Vanessa~M. Young, Samantha Gates, Layla~Y. Garcia, and Arash Salardini.
+\newblock Data leakage in deep learning for alzheimer’s disease diagnosis: A
+  scoping review of methodological rigor and performance inflation.
+\newblock \emph{Diagnostics}, 15\penalty0 (18):\penalty0 2348, September 2025.
+\newblock ISSN 2075-4418.
+\newblock \doi{10.3390/diagnostics15182348}.
+\newblock URL \url{http://dx.doi.org/10.3390/diagnostics15182348}.
+
+\end{thebibliography}

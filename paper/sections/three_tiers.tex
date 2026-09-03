@@ -57,15 +57,31 @@ mid and high. The top-two margin is $0.012$. Blood sugar contributes $+0.204$
 to the predicted class and body temperature $+0.094$; the remaining four
 features contribute negatively and together amount to less than $0.05$.
 
-\begin{figure}[t]
+\begin{figure}[tbp]
 \centering
-\includegraphics[width=\textwidth]{tier_clinician_boundary_mid.png}
-\caption{The hero case rendered for the clinician: SHAP decomposition,
-class probabilities, and the raw readings. The health worker's card and the
-mother's lamp for the same prediction are rendered separately
-(\texttt{tier\_asha\_boundary\_mid.png},
-\texttt{tier\_mother\_boundary\_mid.png}); all four cases across all three
-tiers are in the archived repository.}
+\subcaptionbox{Clinician: signed SHAP contributions, all three class
+  probabilities, and the raw readings.\label{fig:tiers-clinician}}%
+  {\includegraphics[width=0.94\linewidth]{tier_clinician_boundary_mid.png}}
+
+\vspace{1.2em}
+
+\subcaptionbox{Community health worker: the band header, the two factors
+  pushing toward the prediction, and one next step.\label{fig:tiers-asha}}%
+  {\includegraphics[height=52mm]{tier_asha_boundary_mid.png}}%
+\hspace{0.05\linewidth}%
+\subcaptionbox{Mother-to-be: amber lit, red
+  dark.\label{fig:tiers-mother}}%
+  {\includegraphics[height=52mm]{tier_mother_boundary_mid.png}}
+
+\caption{Row 66 of the deduplicated set, rendered for all three readers.
+The record is true mid-risk; the model calls it high risk, at
+$0.013 / 0.487 / 0.499$ across low, mid and high, a top-two margin of
+$0.012$. The clinician panel carries that margin intact, $0.487$ against
+$0.499$, so the near-tie stays visible. The other two panels carry the
+derated band instead: the mother receives amber, and the red she would
+otherwise have received is withheld from her channel and from no other.
+Amber still tells her to get checked. All four cases across all three tiers
+are in the archived repository.}
 \label{fig:tiers}
 \end{figure}
 
