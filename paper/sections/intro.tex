@@ -1,7 +1,102 @@
-% SOURCE: written LAST, from the contribution stack pinned in main.tex.
-% Must state the three claims and, in the same passage, disclaim the three
-% occupied territories (tiered XAI; uncertainty gating as a mechanism;
-% ML+SHAP on this dataset).
-% STUB.
+% SOURCE: written LAST, from the contribution stack pinned in main.tex and
+% related_work.md §1, §2, §8. Every number already appears in the body.
+% Citations are anchors already used in Three Tiers and Related Work; none
+% is new and refs.bib is unchanged at 31 keys.
+% FIREWALL: honest frame stated UP FRONT, not deferred to Limitations. The
+% three occupied territories are disclaimed in the same passage as the three
+% claims. No banned phrase, no clinical-validity claim, generic risk only.
 \section{Introduction}
 \label{sec:intro}
+
+A risk score computed at a rural antenatal visit is read by at least three
+people. A clinician wants the decomposition and can argue with it. A
+community health worker wants to know whether to refer this mother and what
+to write down. The mother wants to know what to do next, and she may not read
+at all, in which case the score reaches her as a colour and a spoken sentence
+or it does not reach her.
+
+Most work on explaining a model to several audiences varies how much of the
+explanation each one gets. That is the right instinct, and it leaves one
+question open. When the model is not confident, what is each reader
+\emph{entitled to be told}?
+
+Consider a case from the dataset we use. The model puts it at $0.013$,
+$0.487$ and $0.499$ across low, mid and high risk. The top two are separated
+by $0.012$, and the model is wrong: the record is true mid-risk. A clinician
+shown that split can see the call was nearly a tie. The mother, at the end of
+the same pipeline, has no way to discount anything, and if the rendering
+follows the argmax alone she is the one who receives an emergency generated
+by a coin flip.
+
+Our response is to make the abstention decision part of the rendering rather
+than part of the model. One band is computed per prediction from the class
+probabilities, and the highest-severity signal is raised only when the model
+is not on a knife edge. Below the threshold the mother's channel is derated
+while the clinician's is untouched. \textbf{The derate is red to amber, never
+red to green.} Amber still says \emph{needs follow-up} and still sends her to
+a health worker. Nothing in this design removes a mother from care, and a
+reader who takes ``not an emergency'' to mean ``not a concern'' has read it
+backwards.
+
+\subsection{What we claim, and what we do not}
+
+We claim three things.
+
+First, and this is the headline, \textbf{abstention differentiated by
+stakeholder vulnerability}. The decision to withhold is taken once, from the
+model's output, then rendered as different assertions for different readers,
+graded so that the reader with the least power to interrogate the system
+receives the most conservative signal.
+
+Second, \textbf{deterministic templating over SHAP attributions}. Every
+string a health worker or a mother receives is a fixed template filled from
+the case's attributions. No language model runs at inference, so the
+rendering can be regenerated, diffed and audited, and there is nothing in it
+to hallucinate.
+
+Third, \textbf{a quantified leakage audit} of a widely used benchmark. The
+UCI Maternal Health Risk dataset contains 561 exact duplicate rows. Scoring
+the same model under the same cross-validation with those rows retained moves
+macro-recall from $0.580$ to $0.859$, which lands inside the accuracy band
+the literature reports for this dataset.
+
+The disclaimers belong in the same breath. \textbf{We do not claim that
+explanations should be audience-specific}, which is settled and was settled
+before us~\citep{arya2019explanation,imrie2023multiple,kim2024stakeholder}.
+\textbf{We do not claim the gating mechanism.} Declining to answer under
+uncertainty has a long lineage in selective prediction and learning to defer,
+and our fixed-margin rule is a hand-set and cruder instance of
+it~\citep{hendrickx2024reject,mozannar2020consistent}. \textbf{We do not
+claim a modelling contribution.} Fitting a classifier with SHAP attributions
+to this dataset is saturated~\citep{mamun2025identification,
+maisoon2026stratification}, and our model is a vehicle for the rendering
+question. On the audit we claim the measurement and not the discovery: the
+duplicates are the kind of thing noticed in a notebook and never written up,
+and we report what they cost rather than asserting we found them first.
+
+\subsection{What kind of evidence this is}
+
+This is a design and feasibility artifact, and we would rather say so here
+than let a reader discover it in Section~\ref{sec:limitations}. No mother, no
+community health worker and no clinician has used any of these renderings.
+
+Our evaluation is a formative, single-evaluator heuristic critique conducted
+on our own artifact. It found five defects, including a driver list that
+could print a reading arguing against its own prediction under a heading
+announcing it as a flag, and all five were fixed before this paper was
+written. That is what the evaluation is: an instrument that improved the
+design. It is not evidence that any tier helps anyone, and the nearest
+empirical work argues against assuming so, since community health workers in
+India have been reported struggling with AI explanations even after
+simplification~\citep{okolo2024easy,solanokamaiko2024explorable}. Studies
+with the three groups are the next step, gated on ethics clearance. The data
+here is public, the task is generic maternal-health risk, and nothing in this
+paper predicts an outcome for a real patient.
+
+Section~\ref{sec:related} places the work against the two literatures it sits
+between, Section~\ref{sec:data} covers the dataset and the leakage
+measurement, and Section~\ref{sec:tiers} gives the rendering rule and the
+three tiers. Section~\ref{sec:eval} reports the evaluation defects first,
+Section~\ref{sec:limitations} collects what the design cannot yet support,
+and Section~\ref{sec:repro} gives the commands that regenerate every artifact
+here.

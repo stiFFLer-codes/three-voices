@@ -1,8 +1,36 @@
-% SOURCE: written LAST. Must state the three-item contribution stack from
-% main.tex AND the three disclaimers, in the abstract itself.
-% Must contain, in plain words: no user study exists; the evaluation is
-% formative and single-evaluator; user studies with ASHAs, mothers and
-% clinicians are the stated next step, gated on ethics clearance.
-% STUB — do not draft before the body sections are settled.
+% SOURCE: written LAST, to the stabilised body. Every number here already
+% appears in a drafted section and traces to a committed table:
+%   0.487/0.499       -> shap_case_summary.csv (Three Tiers)
+%   561, 0.580, 0.859 -> p1_duplicate_leakage.csv, p1_cohort_summary.csv
+%   five defects      -> heuristic_evaluation.md (Evaluation)
+% No claim, number or citation is introduced that the body does not deliver.
+% FIREWALL: derate direction stated explicitly; no user study claimed; no
+% clinical validity; generic maternal-health risk only.
 \begin{abstract}
+A maternal-health risk model splits a case $0.487$ against $0.499$ between
+two adjacent risk levels. A clinician can read that margin and discount it; a
+mother handed a red alarm for the same prediction cannot. Rendering a coin
+flip as an emergency to the reader least able to interrogate it is the
+failure we address.
+
+We render one prediction for three readers and gate the rendering on the
+model's own uncertainty: below a fixed top-two margin the highest-severity
+signal is withheld from the mother's channel and from no other. The derate is
+red to amber, never red to green, and amber still says \emph{needs
+follow-up}.
+
+Three claims, each bounded. Abstention rendered by stakeholder vulnerability
+rather than uniformly, which is an intersection of two established
+literatures and not the gating mechanism. Deterministic templating over SHAP
+attributions, with no language model at inference. And a leakage audit:
+retaining this benchmark's 561 duplicate rows moves macro-recall from $0.580$
+to $0.859$, a measurement we report rather than a problem we claim to have
+found.
+
+This is a design and feasibility artifact. Our evaluation is a formative
+single-evaluator critique of our own renderings: it found five defects and is
+not evidence that the tiers help anyone. Nobody in the three groups has used
+the system, and user studies are the next step, gated on ethics. The data is
+public, the task is generic maternal-health risk, and we make no
+clinical-validity claim.
 \end{abstract}

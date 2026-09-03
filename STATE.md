@@ -8,13 +8,15 @@ _Last updated: 2026-09-03_
 
 ## Current phase
 
-**P5 in progress (manuscript).** Six sections drafted: Related Work, Data &
-Vehicle, Three Tiers, Evaluation, Limitations, Reproducibility. Title,
-authors, ORCID, CRediT and the Zenodo concept DOI are in place.
-`paper/refs.bib` holds 31 entries, every identifier resolved in-session.
-The #29 voice audit and the #32 compression are DONE. Remaining: Intro and
-Abstract, last, written to the stabilised body. Body is 5315 words (~8.9 pp)
-before those two; see the measured budget block in `main.tex`.
+**P5 drafting COMPLETE.** All eight sections plus back matter are written:
+Abstract, Introduction, Related Work, Data & Vehicle, Three Tiers,
+Evaluation, Limitations, Reproducibility. Title, authors, ORCID, CRediT and
+the Zenodo concept DOI are in place. `paper/refs.bib` holds 31 entries, all
+cited, every identifier resolved in-session. Body is 5968 words (~9.9 pp)
+with the Introduction, plus a 235-word abstract, one figure and one table.
+**Nothing has been compiled** — there is no local LaTeX toolchain, so a
+first build on Overleaf is the next concrete action and belongs to P6.
+Awaiting the author's end-to-end read.
 
 ## Status by phase
 
@@ -47,11 +49,12 @@ before those two; see the measured budget block in `main.tex`.
   clinician 1.4.5 (images of text), the six
   Deferred are operability + robustness, which a static artifact cannot
   exercise. No human subjects.
-- **P5 — manuscript — IN PROGRESS.** `paper/main.tex` + nine
-  `paper/sections/*.tex` + `paper/refs.bib` (31 entries). Drafted: Related
-  Work, Data & Vehicle, Three Tiers, Evaluation, Limitations,
-  Reproducibility. Stubs: Intro, Abstract. Not compiled — no local LaTeX
-  toolchain; compilation is a P6 / Overleaf step.
+- **P5 — manuscript — DRAFTING DONE, unreviewed and uncompiled.**
+  `paper/main.tex` + nine `paper/sections/*.tex` + `paper/refs.bib` (31
+  entries). Every section drafted. Not compiled — no local LaTeX toolchain;
+  the first build is a P6 / Overleaf step and may surface layout problems
+  this repo cannot see, particularly float placement for Figure 1 and
+  Table 1.
 - P6 cold-run/submit — not started.
 
 ## Key data facts (UCI Maternal Health Risk, id=863)
@@ -129,12 +132,18 @@ RED → "HIGH — needs follow-up".
 
 ## Next step — P5, continued
 
-Six sections drafted, voice-levelled and compressed. One drafting session
-left: **Intro and Abstract**, written from the pinned contribution stack in
-`main.tex` to a body that is now stable.
+Drafting is finished. Next, in order:
 
-Also open: the third planned figure (`failure_mode` triptych) is still
-unallocated — see #33. Nothing else in the body is expected to move.
+1. **Author's end-to-end read** of the full paper.
+2. **First compile**, on Overleaf or any TeX install. Nothing here has ever
+   been through LaTeX; expect float placement and line-break fixes, not
+   content changes.
+3. **P6**: cold run from a fresh environment (clearing `results/audio/`
+   first, per #19), tagged release, arXiv submission to cs.HC.
+
+Standing items before submission: pull Mamun et al. 2025 (#23); decide on
+Clark et al. (#24b), still quarantined; and the `failure_mode` triptych
+stays cut (#33, reaffirmed as #38).
 
 Standing items before submission, unchanged: pull Mamun et al. 2025 (#23),
 answer calibration in one sentence (#24a), and decide on Clark et al. (#24b),
@@ -618,3 +627,26 @@ Decision Log entries named.
   broadened gate and records that both identifiers were resolved in-session,
   so a future session cannot re-drop them by trusting the comment over the
   text.
+
+- **2026-09-03 #38 — Intro and Abstract drafted last, to a frozen body; the
+  third figure stays cut.** Both were written only after the six body
+  sections were stable, so that every capability either states is one the
+  body actually delivers. Abstract is 235 words and opens on the failure
+  rather than on the contribution: a model at 0.487 against 0.499, a
+  clinician who can discount that margin, a mother who cannot. Introduction
+  is 770 words (~1.3 pp) and puts the honest frame in its own subsection
+  BEFORE the reader reaches Limitations: nobody in the three groups has used
+  the system, the evaluation is a formative critique of our own artifact, and
+  user studies are gated on ethics. The three claims and the three
+  disclaimers sit in the same passage, as required, so a skimming reader
+  cannot pick up the claims without the bounds. **Verified mechanically:** no
+  citation appears in Intro or Abstract that the body does not already use
+  (31 keys, unchanged), and no numeric token appears in either that is not
+  already in a body section. The abstract runs 235 words against a 150–200
+  target; the overrun is accepted deliberately, because hitting 200 required
+  dropping either the derate direction or one of the four disclaimers, and
+  arXiv imposes no abstract limit. **Figure #33 decision: stays cut.** The
+  `failure_mode` triptych carries no claim the prose does not — the case is
+  given numerically in Data & Vehicle and its wrongness is the closing beat
+  of Three Tiers — and it would cost ~0.35 pp on a paper already at ~9.9.
+  It remains rendered, archived and cited in the repository.
