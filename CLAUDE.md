@@ -68,4 +68,4 @@ plus an honest heuristic evaluation and the manuscript.
 - **P5** Manuscript — arXiv-ready PDF, repo linked.
 - **P6** Cold-run + submit — fresh env, tagged release, arXiv (cs.HC).
 
-## Current phase: P5
+## Current phase: P6 — pre-submission pass (P5 closed 2026-09-03, STATE.md #43)

@@ -8,6 +8,11 @@ _Last updated: 2026-09-03_
 
 ## Current phase
 
+**P5 CLOSED 2026-09-03. Now in P6 — pre-submission pass.** The manuscript is
+written, compiled and pushed. What remains is not writing: it is reading,
+verifying and packaging. See "Next step" for the ordered gate list, and #43
+for what closing P5 does and does not assert.
+
 **P5 manuscript COMPLETE.** All eight sections plus back matter are written:
 Abstract, Introduction, Related Work, Data & Vehicle, Three Tiers,
 Evaluation, Limitations, Reproducibility. Title, authors, ORCID, CRediT and
@@ -56,16 +61,18 @@ sits at the top of page 6 with its reference below it on the same page.
   clinician 1.4.5 (images of text), the six
   Deferred are operability + robustness, which a static artifact cannot
   exercise. No human subjects.
-- **P5 — manuscript — DRAFTED AND COMPILING, unreviewed.**
+- **P5 — manuscript — DONE (closed 2026-09-03, #43). Compiles clean;
+  unread on the page.**
   `paper/main.tex` + nine `paper/sections/*.tex` + `paper/refs.bib` (31
   entries, all 31 cited, all 31 resolving in the bibliography). Builds to
   `paper/main.pdf`, 17 pages: 13 pp body and front matter, 4 pp references.
   Clean log — no errors, no undefined refs, no overfull boxes. Four underfull
   hboxes remain (loose lines in `\texttt{}`-heavy list items); cosmetic,
   deliberately deferred. Front matter carries a bold title, a keywords line
-  under the abstract, and a two-line CRediT statement (#42). Not yet read end
-  to end by an author.
-- P6 cold-run/submit — not started.
+  under the abstract, and a two-line CRediT statement (#42). **Not yet read
+  end to end by either author — that is the first P6 gate, not a P5
+  leftover.**
+- **P6 — cold-run + submit — IN PROGRESS (entered 2026-09-03).** Nothing done yet; the gate list is under "Next step".
 
 ## Key data facts (UCI Maternal Health Risk, id=863)
 
@@ -140,24 +147,75 @@ Since Decision Log #11 the SAME band also drives the ASHA card header —
 GREEN → "LOW — routine care", AMBER → "ELEVATED — needs follow-up",
 RED → "HIGH — needs follow-up".
 
-## Next step — P5, continued
+## Next step — P6, the pre-submission pass
 
-The manuscript is written. Next, in order:
+Three gates, in order. **Do not start a later gate before an earlier one
+closes** — a cold run against prose that is still moving wastes the run, and
+tagging before the cold run tags something unverified.
 
-1. ~~Figure 1 composite~~ — DONE (#40).
-2. ~~First LaTeX build~~ — DONE (#41).
-3. **Author's end-to-end read** of `paper/main.pdf` (17 pp). This is the
-   next work item. Nothing in the manuscript has been read on the page yet.
-4. **P6**: cold run from a fresh environment (clearing `results/audio/`
-   first, per #19), tagged release, arXiv submission to cs.HC.
+### Gate A — read and settle the content (nothing here is layout)
 
-Standing items before submission: pull Mamun et al. 2025 (#23); decide on
-Clark et al. (#24b), still quarantined; and the `failure_mode` triptych
-stays cut (#33, reaffirmed as #38).
+1. **Author's end-to-end read of `paper/main.pdf`** (17 pp). Never done. No
+   part of this manuscript has been read on the page by a human. Blocking:
+   every later gate assumes the prose is final.
+2. **Co-author read (Patil).** Specifically: the Hindi strings and their
+   clinical framing (#14), the ASHA-tier card wording, and her own CRediT
+   role list — of her four roles only *Validation* is an official CRediT
+   term (#42), and whether to keep the three custom descriptors is hers to
+   decide, not a layout call.
+3. **Pull Mamun et al. 2025** (Engineering Reports, 10.1002/eng2.70491) —
+   #23. Paywalled and still unread; it is cited from resolved Crossref
+   metadata only. It is simultaneously the closest novelty check on Axis 1
+   and the best external leakage check. If it documents the duplicate rows,
+   the leakage framing in Data & Vehicle needs a sentence, not a rewrite.
+4. **Decide Clark et al. (BJGP 2022)** — #24b, still quarantined. Cite it
+   against ourselves (NICE traffic light comprehensible but not accurate) or
+   drop it and say so. If cited, `refs.bib` goes 31 -> 32 and the citation
+   gate applies in full: §7 of `related_work.md` requires the paper to have
+   been READ, not merely resolved.
+5. #24a **calibration is CLOSED** — `limitations.tex` carries the honest
+   sentence ("vote fractions rather than calibrated posteriors... a design
+   constant on an ordering, not a statement about probability"). Do not
+   reopen it.
+6. The `failure_mode` triptych **stays cut** (#33, reaffirmed #38). Do not
+   reopen it either.
 
-Standing items before submission, unchanged: pull Mamun et al. 2025 (#23),
-answer calibration in one sentence (#24a), and decide on Clark et al. (#24b),
-which is still quarantined.
+### Gate B — cold run (the reproducibility claim, actually exercised)
+
+7. Fresh clone into a clean directory, fresh virtualenv, pinned deps. The
+   point is to catch what only works because this machine has been running
+   the pipeline for days.
+8. **`rm -rf results/audio/*` FIRST** (#19). Re-rendering over an existing
+   MP3 reports success, updates the mtime and can leave the stale blob in
+   place. Skipping this certifies audio that was never regenerated.
+9. Run the five gates in order: `python -m src.{data,model,explain,render,
+   evaluate}`.
+10. Verify every PNG, CSV and TXT is byte-identical to what is committed.
+    The MP3s are the one documented exception (#10, #18) — same length,
+    different bytes. Expect that; do not "fix" it.
+11. **Rebuild the PDF from the regenerated figures** and confirm it is still
+    17 pp with a clean log. The three tier PNGs feed Figure 1 directly, so a
+    changed renderer is a changed figure.
+
+### Gate C — package, release, submit
+
+12. **arXiv packaging blocker, found 2026-09-03 and not yet fixed:**
+    `main.tex:138` sets `\graphicspath{{../results/figures/}}`, which points
+    OUTSIDE `paper/`. arXiv builds from a self-contained upload and a `../`
+    path escapes the submission root, so the upload will fail to find all
+    three PNGs. Fix at packaging time by copying the three committed PNGs
+    into the upload beside the sources and dropping or repointing
+    `\graphicspath` — do NOT restructure the repo for this, and do NOT
+    re-render the PNGs.
+13. Ship `main.bbl` in the upload. arXiv runs LaTeX but not BibTeX, so the
+    `.bbl` is the bibliography. It is already tracked for this reason.
+14. Final firewall grep before upload: no "novel framework", no
+    clinical-validity claim, no named condition (#21), every number traceable
+    to a committed table under `results/tables/`.
+15. Tag `v1.0.0`, push the tag, confirm Zenodo minted the version under the
+    concept DOI 10.5281/zenodo.22252076 (the concept DOI is what the paper
+    cites, deliberately, so it tracks later releases).
+16. Submit to arXiv, **cs.HC**.
 
 ### Reference material P4 hands the remaining sections:
 
@@ -744,4 +802,38 @@ Decision Log entries named.
   is unchanged at four and this line supersedes any expectation that loading
   it would drop them. Page count unchanged at 17; log still shows zero
   errors, zero warnings, zero overfull boxes.
+
+- **2026-09-03 #43 — P5 closed; P6 pre-submission pass opened.** Closing P5
+  asserts exactly this: every section is drafted, the manuscript compiles
+  clean (17 pp, no errors, no warnings, no undefined references, no overfull
+  boxes), Figure 1 is the three-tier composite it was always specified to be,
+  all 31 citations resolve, and the whole thing is pushed. It asserts nothing
+  about quality, because **no human has yet read the rendered PDF end to
+  end** — that is deliberately the first P6 gate rather than a P5 leftover,
+  so it cannot be skipped on the way to a tag. P6 is ordered into three gates
+  (content, cold run, packaging) with a rule that a later gate does not open
+  before an earlier one closes; the reasons are that a cold run against
+  moving prose is wasted and a tag before a cold run tags something
+  unverified. Two standing items were confirmed CLOSED and should not be
+  reopened: #24a calibration, answered in `limitations.tex`, and the
+  `failure_mode` triptych, cut at #33 and reaffirmed at #38. Two remain open
+  and are now numbered gates: #23 (pull Mamun et al., the novelty and leakage
+  check) and #24b (decide Clark et al., which would take `refs.bib` to 32 and
+  requires the paper to have been read, not merely resolved). The duplicated
+  "standing items" paragraphs that had accumulated in this file were
+  consolidated into that gate list; no item was dropped in the merge.
+
+- **2026-09-03 #44 — arXiv packaging blocker recorded before it bites.**
+  `main.tex` sets `\graphicspath{{../results/figures/}}` so the manuscript can
+  read the renderer's committed output in place, which is right for this repo
+  and keeps Figure 1 pointing at the real artifacts rather than a duplicated
+  copy. It does not survive arXiv, which builds from a self-contained upload
+  where a `../` path escapes the submission root. Decision: fix at PACKAGING
+  time, not in the repo — copy the three committed PNGs beside the sources in
+  the upload and drop or repoint `\graphicspath` there. Rejected: restructuring
+  the repo so `paper/` holds its own copies of the figures, which would create
+  a second copy that can drift from the renderer's output and would weaken the
+  determinism guarantee the Reproducibility section makes. The source PNGs are
+  not re-rendered for this. Recorded now because it is invisible until an
+  upload fails and easy to misdiagnose as a missing-figure error.
 
