@@ -1,9 +1,14 @@
 % =====================================================================
-% One Prediction, Three Voices
+% A Coin Flip Is Not a Red Light
 % arXiv preprint (cs.HC). Single-column article.
 %
 % Compile:  pdflatex main && bibtex main && pdflatex main && pdflatex main
 % Not compiled locally at P5 — compilation is a P6 / Overleaf step.
+%
+% PAGE BUDGET — 8 pp body, excluding references and back matter.
+%   Intro 1 | Related Work 1.5 | Data & Vehicle 1.5 | Three Tiers 2
+%   Evaluation 1 | Limitations 0.75 | Reproducibility 0.25
+% If a section runs long, CUT IT. Do not spill into the next one.
 % =====================================================================
 %
 % ---------------------------------------------------------------------
@@ -17,9 +22,11 @@
 %                        + results/tables/p1_*.csv
 %                        + related_work.md §5 (leakage wording)   [DRAFTED]
 %   Three Tiers       <- STATE.md Decision Log #5, #6, #7, #8, #11
-%                        (+ #14 Hindi provenance, #17 per-tier claim)  [STUB]
+%                        (+ #14 Hindi provenance, #17 per-tier claim)
+%                        Novelty framed per related_work.md §2.   [DRAFTED]
 %   Evaluation        <- results/tables/heuristic_evaluation.md,
-%                        DEFECTS FIRST — never lead with the Pass count  [STUB]
+%                        DEFECTS FIRST — never lead with the Pass count
+%                                                                 [DRAFTED]
 %   Limitations       <- heuristic_evaluation.md "Inherent limitations"
 %                        + related_work.md §4 concessions
 %                        + 35 conflicting-label rows, 0.15 threshold,
@@ -28,6 +35,7 @@
 %                        render,evaluate}; Decision Log #10/#18/#19       [STUB]
 %   Introduction      <- LAST. Must state the contribution stack below.   [STUB]
 %   Abstract          <- LAST. Must state the stack AND the disclaimers.  [STUB]
+%   Back matter       <- data availability (Zenodo concept DOI) + CRediT.
 %
 % ---------------------------------------------------------------------
 % CONTRIBUTION STACK — pinned. Claim exactly three (related_work.md §8).
@@ -43,12 +51,15 @@
 %      discovery (Decision Log #23).
 %
 % EXPLICITLY NOT CLAIMED AS NOVEL — the paper must say so in these words:
-%   * Tiered / stakeholder-tailored XAI (Kim; Imrie; the AIX360 line).
+%   * Tiered / stakeholder-tailored XAI (Arya/AIX360; Kim; Imrie).
 %   * Uncertainty gating as a MECHANISM (reject-option, learning to defer;
-%     Hendrickx et al.). Our 0.15-margin rule is a hand-set instance of a
-%     fifty-year-old mechanism. Do not claim the mechanism.
+%     Hendrickx; Mozannar & Sontag). Our 0.15-margin rule is a hand-set
+%     instance of a fifty-year-old mechanism. Do not claim the mechanism.
 %   * ML + SHAP on the UCI Maternal Health Risk dataset (Mamun; Maisoon;
 %     and four more). Saturated. There is no ML novelty here.
+%
+% The derate is RED -> AMBER, never RED -> GREEN. AMBER says "needs
+% follow-up". Nothing in this paper may read as "a near-tie means relax".
 %
 % ---------------------------------------------------------------------
 % OVERSELL FIREWALL — enforced repo-wide, checked before every commit.
@@ -63,7 +74,17 @@
 %     matrix is an instrument that found five defects in our own artifact,
 %     NOT evidence the tiers help anyone.
 %   * Every number traceable to a committed table under results/tables/.
-%   * Every citation DOI-resolved via Crossref before entering refs.bib.
+%   * All manuscript prose passes the /anti-ai skill before it is
+%     committed (CLAUDE.md P5+ non-negotiable).
+%
+% CITATION GATE (broadened 2026-09-03, Decision Log #28).
+%   A citation is admissible once its identifier is RESOLVED in-session
+%   against any one of: Crossref DOI, arXiv ID, or a PMLR / JMLR / ACL /
+%   DBLP record. Resolution means the record was fetched and its title,
+%   authors and year checked — never inferred, never recalled.
+%   Still quarantined (related_work.md §7): Liao 2020, Clark 2022,
+%   Kilkari / mMitra. A resolved identifier is necessary but not
+%   sufficient — §7 also requires the paper to have been read.
 % ---------------------------------------------------------------------
 
 \documentclass[11pt,a4paper]{article}
@@ -80,11 +101,19 @@
 
 \graphicspath{{../results/figures/}}
 
-\title{One Prediction, Three Voices:\
-Rendering an Uncertain Maternal-Health Risk Prediction\
-for a Clinician, a Community Health Worker, and a Mother-to-Be}
+\title{A Coin Flip Is Not a Red Light:\\
+Grading a Maternal-Health Risk Alarm for Mothers,\\
+Community Health Workers, and Clinicians}
 
-\author{Maitreya Sapariya}
+\author{
+  Maitreya Sapariya\thanks{Corresponding author.
+    ORCID \texttt{0009-0003-9346-3775}.}\\
+  \textit{Independent Researcher}\\[0.6em]
+  Aditi Patil\\
+  \textit{Smt.\ B.\ K.\ Shah Medical Institute \& Research Centre,}\\
+  \textit{Sumandeep Vidyapeeth (Deemed to be University)}
+}
+
 \date{}
 
 \begin{document}
@@ -99,6 +128,7 @@ for a Clinician, a Community Health Worker, and a Mother-to-Be}
 \input{sections/evaluation}
 \input{sections/limitations}
 \input{sections/reproducibility}
+\input{sections/backmatter}
 
 \bibliographystyle{plainnat}
 \bibliography{refs}

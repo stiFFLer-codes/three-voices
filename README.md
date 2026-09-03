@@ -83,6 +83,15 @@ properties of the design and are recorded as limitations.
 
 See `CLAUDE.md` for the operating rules this repo is built on.
 
+## Archived release
+
+Code and generated artifacts are archived on Zenodo:
+
+> https://doi.org/10.5281/zenodo.22252076
+
+That is the **concept DOI** — it always resolves to the latest release. Cite
+it rather than a version DOI unless you need to pin a specific one.
+
 ## Citation
 
 If you use this work, please also cite the dataset:

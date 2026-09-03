@@ -1,14 +1,77 @@
-% SOURCE: results/tables/heuristic_evaluation.md (48 cells, 16 criteria x
-% 3 tiers) and results/tables/heuristic_matrix.csv.
-%
-% ORDERING RULE, non-negotiable: DEFECTS FIRST. The section opens with the
-% five defects the evaluation found in our own artifact and the fixes made
-% (Decision Log #11), then the one standing Fail (clinician 1.4.5) and the
-% twelve Partials. The Pass count is a distribution reported in passing,
-% never a headline and never a score. Do not open with "29/48 Pass".
-% The instrument is what found the defects; it is not evidence the tiers
-% help anyone. Single-evaluator, author-conducted, formative, no users.
-% Quote the verbatim method-and-limitations note from that file.
-% STUB.
+% SOURCE: results/tables/heuristic_evaluation.md — "Defects found and
+% corrected" (C1-C5) and the Synthesis; results/tables/heuristic_matrix.csv.
+% ORDERING RULE, non-negotiable: DEFECTS FIRST. The distribution is reported
+% once, in passing, and never as a headline or a score.
+% Framing: single-evaluator, author-conducted, formative. Not user testing,
+% not validation. Okolo/Solano-Kamaiko cited as why the user study is needed.
+% BUDGET: 1 p. Cut prose before cutting a defect.
 \section{Formative Heuristic Evaluation}
 \label{sec:eval}
+
+We rated the rendered artifacts against WCAG 2.1 and Nielsen's usability
+heuristics: 16 criteria across three tiers, 48 cells, each grounded in a
+named detail of a file on disk. Contrast ratios are computed at run time from
+the palette constants rather than typed in by hand.
+
+This is a single-evaluator, author-conducted, formative assessment. It is not
+user testing and it is not validation. Nothing in it is evidence that the
+tiers help anyone. What it did was find defects in our own artifact, which is
+what we report.
+
+\subsection{What it found}
+
+The first pass ran against the original renderer and returned four failures,
+three of them on the health worker's card. All were fixed and the tiers
+re-rendered; the ratings below describe the corrected artifacts.
+
+\textbf{The driver list was sign-blind.} Features were ranked by absolute
+SHAP magnitude with no sign filter, so a reading that argued \emph{against}
+the prediction could be printed under a heading announcing it as a flag. On
+the false-positive case the card listed low blood sugar, whose contribution
+to the predicted class was $-0.085$. The routine card was worse: it listed
+the two features that were the model's reasons for saying \emph{low} under
+that same heading, above a next step telling the reader to arrange a
+check-up. This is the defect that could have put a wrong cue in front of the
+person making a referral, and no model metric would have shown it.
+
+\textbf{The two tiers banded independently}, so the confident high-risk case
+rendered an amber card beside a red lamp --- one prediction with two
+identities. The band is now computed once and passed to both.
+
+\textbf{Header contrast was assumed rather than measured.} White header text
+was hardcoded; on the amber header, which is the state for two of the four
+rendered cases, it measured $2.12{:}1$. Ink is now chosen per band by measured
+contrast, worst case $5.14{:}1$, and a self-check asserts it.
+
+\textbf{Direction words had no deadband}, so a blood sugar of $7.7$ against a
+median of $7.5$ was worded as ``raised''. The word now attaches only outside
+$0.25$ IQR of the median.
+
+\textbf{The mother's transcript carried no provenance}, while both other
+tiers printed the disclaimer. It now records case, band and disclaimer under
+an explicit written-not-spoken rule; the spoken line is unchanged, because
+appending provenance to every message would bury the one action the tier
+exists to deliver.
+
+\subsection{What it could not settle}
+
+Across the 48 cells the distribution after those fixes is 29 pass, 12
+partial, 1 fail and 6 deferred. The count is a description of coverage and
+not a score, and it is worth less than the five defects above. The single
+failure is the clinician tier shipping as an image of text. The six deferred
+cells are all keyboard operability and assistive-technology semantics, which
+a static PNG cannot exercise and a deployed application would.
+
+Read by column, each tier fails where a single universal rendering would have
+to compromise: the clinician view needs chart and English literacy, the
+mother's view needs hearing, and neither gap closes inside its own tier
+without destroying what that tier is for. Read by row, the criteria are
+covered. The architecture is what conforms; no single output does.
+
+None of this tells us whether a health worker or a mother understands what
+she is handed. That question needs users, and the nearest prior work is not
+encouraging about assuming the answer: studies with community health workers
+in India report difficulty interpreting AI explanations even after they have
+been simplified~\citep{okolo2024easy,solanokamaiko2024explorable}. Studies
+with mothers, health workers and clinicians are the next step, and they are
+gated on ethics clearance.

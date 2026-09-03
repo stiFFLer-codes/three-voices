@@ -1,12 +1,124 @@
 % SOURCE: STATE.md Decision Log #5 (deterministic templates, no LLM),
 % #6 (mother tier caps at an ACTION, never a number), #7 (the 0.15 top-2
 % margin gate; GREEN/AMBER/RED band rule), #8 (LOCAL drivers, not global),
-% #11 (the five P3 defects and their fixes; the sign-blind ranking fix
+% #11 (band computed once and shared; sign-aware driver ranking, which
 % supersedes #8's "top-2 by |SHAP|"), #14 (Hindi authored and clinically
-% reviewed by a native-speaking MBBS collaborator), #17 (per-tier claim:
-% mother = modality + language; ASHA = cognitive load, language incidental;
-% clinician = full decomposition).
-% Figure: boundary_mid three-tier composite.
-% STUB.
+% reviewed by the co-author), #17 (per-tier claim).
+% Novelty framed per related_work.md §2 — audience-aware SUPPRESSION, the
+% intersection only, mechanism not reclaimed.
+% Numbers: results/tables/shap_case_summary.csv (row 66, 0.013/0.487/0.499),
+% shap_case_contributions.csv (BS +0.204, BodyTemp +0.094), and the rendered
+% artifacts tier_asha_boundary_mid.txt and tier_mother_boundary_mid_hi.txt.
+% BUDGET: 2 pp including the figure. If it runs long, cut prose, not the rule.
 \section{Three Tiers from One Prediction}
 \label{sec:tiers}
+
+\subsection{What the alarm is, and what derating it means}
+
+By \emph{alarm} we mean the highest-severity signal a tier is permitted to
+raise: the red lamp and the urgent spoken message for the mother, the
+\textsc{high} header on the health worker's card. The rule this section
+describes withholds that signal when the model is close to a coin flip, and
+substitutes a middle signal that still says \emph{needs follow-up}.
+
+The direction of that substitution is the whole design, so we state it before
+anything else. \textbf{The derate is red to amber, never red to green.} A
+near-tie does not mean relax. It means the system is not entitled to the
+loudest thing it can say, and falls back to the one below it, which still
+sends the mother to a health worker. Nothing here removes a mother from care.
+
+\subsection{The band rule}
+
+Each rendering is driven by one band, computed once per prediction from the
+class probabilities and shared across all three tiers:
+
+\begin{itemize}
+  \item \textsc{green} if the predicted class is low risk.
+  \item \textsc{red} if the predicted class is high risk \emph{and} the
+    top-two probability margin is at least $0.15$.
+  \item \textsc{amber} otherwise --- which covers every mid-risk prediction
+    and every high-risk prediction that sits inside the margin.
+\end{itemize}
+
+The threshold of $0.15$ is a design constant. We did not tune it, and no
+experiment in this paper supports that value over $0.10$ or $0.20$; we return
+to what would be needed to justify it in Section~\ref{sec:limitations}.
+Computing the band once matters as much as the threshold does. In the first
+version of the renderer the health worker's card banded on its own rule and
+the mother's lamp banded on this one, so a single prediction could carry two
+identities. Section~\ref{sec:eval} describes how that was caught.
+
+\subsection{One prediction, three renderings}
+
+Figure~\ref{fig:tiers} shows the same prediction rendered three ways. The
+case is row 66 of the deduplicated set, a true mid-risk record the model
+calls high risk, with class probabilities $0.013 / 0.487 / 0.499$ across low,
+mid and high. The top-two margin is $0.012$. Blood sugar contributes $+0.204$
+to the predicted class and body temperature $+0.094$; the remaining four
+features contribute negatively and together amount to less than $0.05$.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{tier_clinician_boundary_mid.png}
+\caption{The hero case rendered for the clinician: SHAP decomposition,
+class probabilities, and the raw readings. The health worker's card and the
+mother's lamp for the same prediction are rendered separately
+(\texttt{tier\_asha\_boundary\_mid.png},
+\texttt{tier\_mother\_boundary\_mid.png}); all four cases across all three
+tiers are in the archived repository.}
+\label{fig:tiers}
+\end{figure}
+
+\paragraph{Clinician.} The full decomposition, unmodified. Signed SHAP
+contributions per feature with numeric labels, all three class probabilities,
+and the six raw readings in clinical units. The $0.487$ against $0.499$ is
+shown as it stands. A reader who can interrogate the model is given what she
+needs to do so, including the fact that the call was nearly a tie.
+
+\paragraph{Community health worker.} A card carrying the band header, the
+factors behind \emph{this} prediction, and one next step. Two rules shape it.
+The factors are local rather than global: naming the dataset's top features
+on every card would print the same two words for every mother and explain
+nothing about any of them. And only features that push \emph{toward} the
+predicted class are listed, ranked by signed contribution, because a card
+headed ``what the model flagged'' that lists a reading arguing against its own
+prediction misleads the person making the referral. On this case the card
+reads \textsc{elevated --- needs follow-up}, lists raised blood sugar and
+raised body temperature, and asks the worker to arrange a check-up and share
+the readings. Every string is a fixed template constant filled from the
+attributions. No language model runs at inference, which is our stated
+alternative to LLM-mediated tiering~\citep{bello2025threelevel}: the card is
+regenerable, diffable, and has nothing to hallucinate.
+
+\paragraph{Mother-to-be.} A three-lamp visual and one spoken Hindi sentence.
+No probability, no percentage, no condition named, and no text required to
+use it. The tier answers \emph{what do I do next}, not \emph{how likely is
+this}. Here the amber lamp lights and the message says, in Hindi, that some
+findings need attention, not to panic, and to get checked soon at her ANM or
+nearest health centre. The Hindi strings were written and clinically reviewed
+by the second author, a physician and native speaker; they are neither
+machine-translated nor author-invented.
+
+\subsection{What we claim}
+
+Three literatures surround this design and we claim none of them. Tiering
+explanations by audience is established~\citep{arya2019explanation,
+imrie2023multiple,kim2024stakeholder}. Withholding a prediction under
+uncertainty is a mechanism with a long lineage, and our margin rule is a
+hand-set instance of it~\citep{hendrickx2024reject,mozannar2020consistent}.
+Fitting a classifier with SHAP attributions to this dataset is
+saturated~\citep{mamun2025identification,maisoon2026stratification}.
+
+What we claim is the intersection, and it is narrow. Prior work on
+audience-specific uncertainty makes the \emph{display} of uncertainty
+audience-aware~\citep{bhatt2021uncertainty}; the reader with less expertise
+receives the same uncertainty in a gentler presentation. Here the abstention
+decision is taken once and then rendered as \emph{different assertions}. The
+clinician receives $0.487$ against $0.499$. The mother receives amber, and
+the red she would otherwise have received is withheld from her channel and
+from no other. The grading runs against power: the reader least able to
+interrogate the system gets the most conservative signal.
+
+On this case the rule is doing what it was built for. The model is nearly
+split between mid and high, and it is wrong --- the record is true mid-risk.
+The rendering that reaches the mother is the one that survives being wrong.

@@ -8,11 +8,12 @@ _Last updated: 2026-09-03_
 
 ## Current phase
 
-**P5 in progress (manuscript).** The LaTeX skeleton exists and two sections
-are drafted: Related Work and Data & Vehicle. Six sections are stubs carrying
-their source map in a comment block. `paper/refs.bib` holds 29 entries, every
-DOI resolved against Crossref in-session. Intro and Abstract are deliberately
-NOT drafted — they are written last, from the pinned contribution stack.
+**P5 in progress (manuscript).** Four sections drafted: Related Work, Data &
+Vehicle, Three Tiers, Evaluation. Title, authors, ORCID, CRediT and the
+Zenodo concept DOI are in place. `paper/refs.bib` holds 31 entries, every
+identifier resolved in-session. Remaining: Limitations, Reproducibility,
+then Intro and Abstract last. Body budget is 8 pp and each section carries
+its page allowance in `main.tex`.
 
 ## Status by phase
 
@@ -45,11 +46,11 @@ NOT drafted — they are written last, from the pinned contribution stack.
   clinician 1.4.5 (images of text), the six
   Deferred are operability + robustness, which a static artifact cannot
   exercise. No human subjects.
-- **P5 — manuscript — IN PROGRESS.** `paper/main.tex` + eight
-  `paper/sections/*.tex` + `paper/refs.bib` (29 Crossref-resolved entries).
-  Drafted: Related Work, Data & Vehicle. Stubs: Three Tiers, Evaluation,
-  Limitations, Reproducibility, Intro, Abstract. Not compiled — no local
-  LaTeX toolchain; compilation is a P6 / Overleaf step.
+- **P5 — manuscript — IN PROGRESS.** `paper/main.tex` + nine
+  `paper/sections/*.tex` + `paper/refs.bib` (31 entries). Drafted: Related
+  Work, Data & Vehicle, Three Tiers, Evaluation. Stubs: Limitations,
+  Reproducibility, Intro, Abstract. Not compiled — no local LaTeX toolchain;
+  compilation is a P6 / Overleaf step.
 - P6 cold-run/submit — not started.
 
 ## Key data facts (UCI Maternal Health Risk, id=863)
@@ -127,9 +128,13 @@ RED → "HIGH — needs follow-up".
 
 ## Next step — P5, continued
 
-Two sections are drafted and awaiting review. The next drafting session takes
-**Three Tiers** and **Evaluation**, in that order; each stub's comment block
-names its source. Intro and Abstract stay last.
+Four sections drafted and awaiting review. The next drafting session takes
+**Limitations** and **Reproducibility**; each stub's comment block names its
+source. Intro and Abstract stay last, written from the pinned contribution
+stack in `main.tex`.
+
+Watch the page budget: 8 pp of body. Three Tiers is 919 words plus one
+full-width figure and Evaluation is 609 words, both inside allowance.
 
 Standing items before submission, unchanged: pull Mamun et al. 2025 (#23),
 answer calibration in one sentence (#24a), and decide on Clark et al. (#24b),
@@ -468,3 +473,58 @@ Decision Log entries named.
   numbering; its DOIs are sound and it is kept for provenance, but it is not
   the section's source. Not merged or deleted this session — flagged so the
   duplication is a known state rather than a trap for the next reader.
+
+- **2026-09-03 #28 — citation gate broadened; Arya and Mozannar restored.**
+  Crossref-only was the wrong bar for a CS venue: it excludes arXiv-first
+  and proceedings-only work that the field treats as canonical. A citation
+  is now admissible once its identifier is resolved in-session against a
+  **Crossref DOI, an arXiv ID, or a PMLR / JMLR / ACL / DBLP record** —
+  resolved meaning the record was fetched and its title, authors and year
+  read off it. Restored under the new bar, both verified this session:
+  **Arya et al. 2019** (arXiv:1909.03012, resolved via the arXiv API — v2,
+  20 authors, title confirmed) back into §3.1, where it is the canonical
+  "one explanation does not fit all" anchor; **Mozannar & Sontag 2020**
+  (PMLR v119, pp. 7076–7087, BibTeX taken verbatim from the PMLR record
+  page) back into §3.2, where learning-to-defer strengthens the "we claim
+  none of the mechanism" concession. Franc 2021 stays out — optional depth,
+  not pursued. The §7 quarantine is untouched: Liao 2020, Clark 2022 and
+  Kilkari/mMitra are still uncited, because a resolved identifier is
+  necessary and not sufficient, and §7 also requires the paper to be read.
+  Supersedes the drop decision in #26. Recorded in CLAUDE.md as
+  non-negotiable #9 so the bar does not drift again.
+
+- **2026-09-03 #29 — /anti-ai is a standing gate on manuscript prose.**
+  CLAUDE.md non-negotiable #8: all prose under `paper/`, and README prose,
+  passes the `/anti-ai` skill before commit. Academic register is that
+  skill's use case 3.1 — justified statistical hedging and methods passive
+  voice stay; the targets are AI vocabulary, unjustified vagueness, flat
+  sentence rhythm and significance inflation. Both sections drafted this
+  session were audited: no vocabulary tells, no formulaic connectives, no
+  trailing participial tails, no negative parallelism, and sentence-length
+  spread is wide (Three Tiers stdev 9.2 over 4–37 words; Evaluation stdev
+  10.1 over 7–53), which is the opposite of the flat 15–25 band the skill
+  flags. **Not applied retroactively:** `related_work.tex` and
+  `data_and_vehicle.tex` were committed before this rule and reviewed as
+  they stand. They should get an audit pass before P6.
+
+- **2026-09-03 #30 — title, authorship and archive fixed.** Title is
+  *"A Coin Flip Is Not a Red Light: Grading a Maternal-Health Risk Alarm for
+  Mothers, Community Health Workers, and Clinicians."* The hook is literal
+  rather than decorative — the hero case is a 0.012 top-2 margin — and "red
+  light" was chosen over "emergency" because it names what the gate actually
+  withholds and cannot be misread as "so relax". Authors: Maitreya Sapariya
+  (Independent Researcher, ORCID 0009-0003-9346-3775, corresponding) and
+  Aditi Patil (Smt. B. K. Shah Medical Institute & Research Centre,
+  Sumandeep Vidyapeeth), with a CRediT statement in
+  `sections/backmatter.tex`. Archive is the Zenodo **concept** DOI
+  **10.5281/zenodo.22252076**, confirmed against the Zenodo API; the v1.0.0
+  version DOI 10.5281/zenodo.22252077 is deliberately NOT cited, so the
+  reference follows later releases. Also in README.
+
+- **2026-09-03 #31 — `paper/related_work.md` deleted.** The earlier
+  web-search sweep, superseded by the root `related_work.md` (the §1–§8
+  Consensus sweep) which is canonical and is what the manuscript is drafted
+  from. Removed rather than kept alongside, because two files of the same
+  name with different section numbering is a trap for the next reader.
+  Recoverable from git history at commit cdb52b4. Supersedes #27, which
+  flagged the duplication without resolving it.

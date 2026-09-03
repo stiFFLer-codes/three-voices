@@ -36,6 +36,17 @@ plus an honest heuristic evaluation and the manuscript.
    Fixed seeds, pinned deps, cached data.
 7. Never add Co-Authored-By, 'Generated with Claude Code', or Claude-Session
    trailers to any commit or PR.
+8. **All manuscript prose must pass the `/anti-ai` skill before it is
+   committed.** Applies from P5 onward to everything under `paper/` and to
+   README prose. Run the audit, fix what it finds, then commit. Academic
+   register is use case 3.1 — do NOT strip justified statistical hedging or
+   methods passive voice; the target is unjustified vagueness, AI vocabulary,
+   flat sentence rhythm, and significance inflation.
+9. **Citation gate.** A citation may enter `refs.bib` only once its
+   identifier has been resolved in-session against a Crossref DOI, an arXiv
+   ID, or a PMLR / JMLR / ACL / DBLP record — record fetched, title, authors
+   and year read off it. Never from memory. Papers quarantined in
+   `related_work.md` §7 additionally require having been read.
 
 ## Repo map
 - `src/config.py` — paths, seeds, dataset constants.

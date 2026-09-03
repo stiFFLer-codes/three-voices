@@ -15,9 +15,11 @@ occupied territory.
 \label{sec:rw-stakeholder}
 
 That different audiences need different explanations of the same model
-output is established, not open. Imrie et al.\ show that stakeholders in
-healthcare impose genuinely divergent interpretability requirements rather
-than differing degrees of the same
+output is established, not open. Arya et al.\ made the point in a title ---
+\emph{One Explanation Does Not Fit All} --- and built the toolkit and
+taxonomy to go with it~\citep{arya2019explanation}. Imrie et al.\ show that
+stakeholders in healthcare impose genuinely divergent interpretability
+requirements rather than differing degrees of the same
 requirement~\citep{imrie2023multiple}, and Kim et al.\ build and compare
 stakeholder-tailored explanation interfaces directly, including the
 clinician-versus-patient split that two of our three tiers
@@ -63,10 +65,13 @@ boundary. Withholding or hedging a prediction when the model is not
 confident is a long-settled mechanism. Hendrickx et al.\ survey machine
 learning with a reject option and name the case we implement: rejection
 under \emph{ambiguity}, where two classes are close, as distinct from
-rejection under novelty~\citep{hendrickx2024reject}. Our rule --- decline to
-raise the highest-severity signal when the top-two class probabilities are
-separated by less than a fixed margin --- is a hand-set instance of that
-mechanism. \textbf{We claim none of it.} Kompa et al.\ supply the clinical
+rejection under novelty~\citep{hendrickx2024reject}. Mozannar and Sontag
+give the learning-to-defer version, where the model is trained to route a
+case to a human expert rather than to answer it~\citep{mozannar2020consistent}.
+Our rule --- decline to raise the highest-severity signal when the top-two
+class probabilities are separated by less than a fixed margin --- is a
+hand-set instance of that mechanism, and a cruder one than either of these.
+\textbf{We claim none of it.} Kompa et al.\ supply the clinical
 framing: in medical machine learning, abstaining on high-uncertainty cases
 is a safety property rather than a shortfall in
 coverage~\citep{kompa2021second}. That is the argument we borrow to justify
