@@ -9,9 +9,18 @@
 %
 % STRUCTURE (2026-09-08 framing pass, Decision Log #47). Purpose / Methods /
 % Results / Conclusion, which is what SN Computer Science requires of an
-% abstract and what arXiv accepts unchanged. Word count is held inside the
-% 150-250 band. The four run-in labels are the only formatting concession in
-% this pass; nothing else here is publisher-specific.
+% abstract and what arXiv accepts unchanged. The band is 150-250 words and
+% the abstract sits at 237, trimmed from 250 on 2026-09-08 (Decision Log
+% #48) so that a word-counter that counts the four run-in labels, or splits
+% a hyphenated term, cannot push it over the ceiling. The trim removed
+% redundant connective phrasing only: a repeated 'no language model at
+% inference' (kept in Conclusion, where it is the contribution rather than
+% a restatement), a redundant 'of an uncertain prediction', and a second
+% 'our own' that Methods already carries. No number and no disclaimer.
+% 'each reader' then had no antecedent, Purpose having named a clinician and
+% a mother rather than readers of anything, so it reads 'each of them'.
+% The four run-in labels are the only formatting concession in this pass;
+% nothing else here is publisher-specific.
 % ORDERING RULE: the caveats move EARLIER, into Methods and Results where a
 % reader meets them beside the thing they bound. The abstract closes on what
 % the artifact delivers. Not one disclaimer was dropped to achieve that ---
@@ -24,25 +33,24 @@
 % number is a measurement, not a discovery.
 \begin{abstract}
 \noindent\textbf{Purpose.} A maternal-health risk model splits a case
-$0.487$ against $0.499$ between adjacent risk levels. A clinician can
-read that margin and discount it; a mother handed a red alarm for the same
-prediction cannot. We ask what each reader of an uncertain prediction is
-entitled to be told.
+$0.487$ against $0.499$ between adjacent risk levels. A clinician can read
+that margin and discount it; a mother handed a red alarm for the same
+prediction cannot. We ask what each of them is entitled to be told.
 
 \noindent\textbf{Methods.} One prediction is rendered for three readers,
 gated on the model's uncertainty: below a fixed top-two margin the
 highest-severity signal is withheld from the mother's channel and from no
 other. The derate is red to amber, never red to green, and amber still says
 \emph{needs follow-up}. Every string is a deterministic template over SHAP
-attributions, with no language model at inference. This is a design and
-feasibility artifact; its evaluation is a formative single-evaluator
-inspection of our own renderings rather than a user study.
+attributions. This is a design and feasibility artifact;
+its evaluation is a formative single-evaluator inspection of our own
+renderings rather than a user study.
 
-\noindent\textbf{Results.} The inspection found five defects in our own
-artifact, all corrected. It is not evidence that the tiers help
-anyone; nobody in the three groups has used the system. Retaining this
-benchmark's 561 duplicate rows moves macro-recall from
-$0.580$ to $0.859$, a measurement we report, not a discovery we claim.
+\noindent\textbf{Results.} The inspection found five defects, all
+corrected. It is not evidence that the tiers help anyone; nobody in the
+three groups has used the system. Retaining this benchmark's 561 duplicate
+rows moves macro-recall from $0.580$ to $0.859$, a measurement we report, not
+a discovery we claim.
 
 \noindent\textbf{Conclusion.} The work delivers an auditable,
 uncertainty-gated rendering discipline with no language model at inference,

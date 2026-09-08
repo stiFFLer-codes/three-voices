@@ -10,8 +10,8 @@ _Last updated: 2026-09-08_
 
 **P5 CLOSED 2026-09-03. Now in P6 — pre-submission pass.** A journal-alignment
 framing pass for SN Computer Science sits on branch
-`revision/sncs-framing`, unmerged (#47): emphasis only, 18 pp, no number
-and no disclaimer moved. The manuscript is
+`revision/sncs-framing`, unmerged (#47, #48): emphasis and title-page
+compliance only, 18 pp, no number and no disclaimer moved. The manuscript is
 written, compiled and pushed. What remains is reading, verifying and
 packaging. See "Next step" for the ordered gate list, and #43 for what closing
 P5 does and does not assert.
@@ -1049,3 +1049,55 @@ Decision Log entries named.
   run) remain untouched and still block the v1.0.0 tag, and the read is now
   against an 18 pp PDF rather than the 17 pp one #43 described. **Branch not
   merged and not pushed**, by instruction.
+
+- **2026-09-08 #48 — Title page completed and abstract trimmed for margin.
+  Two compliance items and one safety cut, on `revision/sncs-framing`.**
+  **No result number changed and no file under `src/` or `results/` was
+  touched.** Verified the same way #47 was: a numeric-token multiset diff of
+  every section against the previous commit (21979ae) returns **zero tokens
+  lost and zero gained**. All eight abstract disclaimers survive, checked
+  item by item against the checklist pinned in `abstract.tex`.
+  **(a) Title page.** SN Computer Science requires city and country on every
+  affiliation and an active e-mail plus ORCID clearly bound to the
+  corresponding author; a submission missing either is returned as incomplete,
+  so this is compliance rather than polish. Maitreya Sapariya is now
+  *Independent Researcher, Surat, India*, with the e-mail added to the
+  existing corresponding-author `\thanks` footnote alongside the ORCID that
+  was already there, which keeps both bound to the right author.
+  **Aditi Patil's location is `Vadodara, Gujarat, India`, CONFIRMED by the
+  co-author on 2026-09-08** — the phase brief had asked for a
+  `% TODO CONFIRM` marker pending her sign-off, and that marker was
+  deliberately **not** added because the confirmation arrived in the same
+  instruction. Leaving a "pending" comment in the source against a fact the
+  co-author had already settled would have been inaccurate, and a stale TODO
+  is worse than none. The confirmation and its date are recorded as a source
+  comment above the author block instead. Her institution string is otherwise
+  untouched. Nothing publisher-specific is used: both are ordinary title-page
+  facts and the arXiv build is unaffected.
+  **(b) Abstract trimmed 250 -> 237 words.** 250 sat exactly on the journal's
+  ceiling, where a word-counter that counts the four run-in labels or splits a
+  hyphenated term could bounce it. The Purpose / Methods / Results /
+  Conclusion structure is unchanged and every number stays. Three cuts, all
+  redundant connective phrasing rather than content: the second *no language
+  model at inference*, which is kept in Conclusion where it is the
+  contribution instead of a restatement of the mechanism; *of an uncertain
+  prediction*, which the two preceding sentences already establish; and a
+  second *our own*, which Methods already carries. Passed `/anti-ai`, which
+  caught the one real defect the trim introduced — dropping *of an uncertain
+  prediction* left "each reader" with no antecedent, Purpose having named a
+  clinician and a mother rather than readers of anything, so the sentence now
+  reads *what each of them is entitled to be told*. Sentence-length spread
+  stays wide at stdev 6.4 over 7 to 30 words, against the flat 15-25 band the
+  gate flags.
+  **Verified this session rather than asserted.** In-repo build and a 15-file
+  fresh-directory build with `pdflatex` alone against the shipped `.bbl` both
+  give **18 pp, 0 errors, 0 overfull boxes, 0 undefined citations or
+  references and 0 LaTeX warnings**, with the same four cosmetic underfull
+  hboxes #41 documented. `main.bbl` is unchanged because no citation moved;
+  only `main.tex`, `sections/abstract.tex` and the regenerated `main.pdf`
+  differ. `refs.bib` stays at 34 entries.
+  **This closes no P6 gate.** Gate A (the author read) and Gate B (the cold
+  run) remain untouched and still block the v1.0.0 tag. Remaining SN Computer
+  Science work is the template phase — `sn-jnl.cls`, the Springer reference
+  style, editable source files — and is deliberately not started, so the
+  manuscript stays arXiv-clean until then.
