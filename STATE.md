@@ -4,11 +4,14 @@ Read this at the start of every session. Update it at the end (phase, status,
 next step) and **append** to the Decision Log — never edit or delete an
 existing entry; supersede it with a new dated one.
 
-_Last updated: 2026-09-04_
+_Last updated: 2026-09-08_
 
 ## Current phase
 
-**P5 CLOSED 2026-09-03. Now in P6 — pre-submission pass.** The manuscript is
+**P5 CLOSED 2026-09-03. Now in P6 — pre-submission pass.** A journal-alignment
+framing pass for SN Computer Science sits on branch
+`revision/sncs-framing`, unmerged (#47): emphasis only, 18 pp, no number
+and no disclaimer moved. The manuscript is
 written, compiled and pushed. What remains is reading, verifying and
 packaging. See "Next step" for the ordered gate list, and #43 for what closing
 P5 does and does not assert.
@@ -942,3 +945,107 @@ Decision Log entries named.
   **This closes no P6 gate.** Gate A (the author read) and Gate B (the cold
   run) remain untouched and still block the v1.0.0 tag.
 
+
+- **2026-09-08 #47 — Journal-alignment framing pass, on branch
+  `revision/sncs-framing`. Emphasis only.** The manuscript is being prepared
+  for **SN Computer Science** (Springer Nature) alongside the arXiv posting.
+  One source serves both: no publisher template, no reference-style
+  conversion, no bibliography reordering. Those belong to a later phase and
+  doing them now would break the arXiv build for no gain.
+  **The load-bearing line first: no number changed, no result changed, no file
+  under `src/` or `results/` was touched, and no disclaimer was removed.**
+  Verified mechanically rather than asserted. A numeric-token multiset diff of
+  every section against `main` returns **zero tokens lost**; the cite-key diff
+  returns **zero keys removed**; and `limitations.tex`, `three_tiers.tex`,
+  `related_work.tex` and `reproducibility.tex` are **byte-identical to
+  `main`**, which is where the honest caveats live.
+  **What changed, and why.** The target journal reviews "from a sound science
+  perspective", so this pass makes the contribution land as hard as the
+  caveats already did, without laundering either into the other.
+  (a) **Abstract restructured** to Purpose / Methods / Results / Conclusion
+  and held at exactly **250 words**, the ceiling of the journal's 150–250
+  band. The caveats moved *earlier*, into Methods and Results beside the
+  things they bound, and the abstract now closes on what the artifact
+  delivers. All eight disclaimers survive, and `abstract.tex` carries the
+  checklist as a comment so a later edit cannot quietly drop one. Supersedes
+  #38's 235-word count; it still opens on the failure, now inside Purpose.
+  (b) **The Introduction's three claims are a labelled Contributions list** —
+  MECHANISM, ARTIFACT, MEASUREMENT — so a computer-science reader can see
+  what kind of object each one is. The claims are unchanged in substance and
+  the disclaimer paragraph still sits in the same passage as them.
+  (c) **The leakage audit reads as a peer of the abstention rule**, tied to
+  the reproducibility literature the body already cites (Kapoor and
+  Narayanan; Rosenblatt et al.), and its subsection heading now names it:
+  "A leakage-aware re-benchmark". The pinned contribution stack is unchanged,
+  item 1 is still the thesis and the title, and the claim is still **the
+  measurement and never the discovery** (#23 stands).
+  (d) **Section 1.2 states an explicit evaluation contract**: a design and
+  measurement contribution, an artifact validated by formative inspection, a
+  leakage effect quantified, and efficacy out of scope and ethics-gated.
+  (e) **Section 5's two instruments carry citations for the first time.** The
+  section named WCAG 2.1 and Nielsen's heuristics and cited neither, leaving
+  a methods claim standing on nothing, which is the first thing a
+  sound-science reviewer pushes on. `refs.bib` goes **31 -> 34**. The added
+  paragraph gives the METHOD standing and does not upgrade what the method
+  proves: the "not user testing and it is not validation" paragraph is
+  untouched, and the `evaluation.tex` diff has **zero deleted lines**.
+  **Citation gate extended visibly rather than quietly.** Nielsen and Molich
+  1990 (10.1145/97243.97281) and Nielsen 1994 (10.1145/191666.191729) were
+  resolved against Crossref and their BibTeX emitted by Crossref's transform
+  endpoint, exactly as the other 29 were. Nielsen 1994 is the right second
+  entry because `src/evaluate.py` rates against the refined **ten**
+  heuristics, checked in the source this session rather than assumed.
+  **WCAG 2.1 fits none of #28's three schemes**, because it is a standard and
+  not a paper. It is admitted on a stricter basis than the gate asks for: the
+  W3C Recommendation IS the primary record, and it was fetched in-session
+  from `w3.org/TR/WCAG21/` with its status, its date (06 May 2025) and its
+  editor list read off the document. Also recorded in the `refs.bib` header.
+  **Declarations added**, where Springer requires them, before the reference
+  list. Funding (none received), Competing Interests (none), Ethics Approval
+  (no human participants, public CC BY 4.0 dataset, approval not required and
+  not sought), Consent (not applicable). The two pre-existing statements,
+  Data and Code Availability and the CRediT contributions, are **unchanged in
+  wording** and now sit as subsections under the same `Declarations` heading.
+  #42's note stands: three of Aditi Patil's four CRediT roles are custom
+  descriptors and remain the authors' call, not a formatting decision.
+  **Generative-AI-in-writing declaration: disclosed, and it stays.** Springer
+  Nature exempts only AI-assisted *copy editing* from disclosure. Drafting is
+  not copy editing, and this repository's own record (#25, #34, #38) shows
+  sections drafted in assisted sessions, so a statement that the prose is
+  unassisted would have been false. An undisclosed assistance that surfaces
+  later is a far worse problem than a disclosed one, which Springer does not
+  treat as a ground for rejection. The declaration's closing sentence is
+  load-bearing for a separate reason: it stops a reader conflating how the
+  PAPER was written with what the SYSTEM does, and the system's
+  no-model-at-inference property is one of the three contributions.
+  **Do not "clean this up" in a later session.** This is orthogonal to #5,
+  which bans AI *commit trailers*; #5 is untouched and no trailer was added.
+  **Consequences to absorb.** The paper is **18 pp, up from 17**, from the
+  added prose and the Declarations block. No page cap applies: SN Computer
+  Science sets none and neither does arXiv. `paper/main.bbl` and
+  `paper/main.pdf` were regenerated because `refs.bib` moved, since shipping
+  a stale `.bbl` would give the arXiv build three undefined citations.
+  `paper/ARXIV_SUBMISSION.md` was refreshed: its abstract transcription, its
+  page count and its 31/31/31 citation line all went stale the moment the
+  abstract changed, and leaving them would have put the OLD abstract on the
+  arXiv form. Its abstract block is again a mechanical de-LaTeX of
+  `sections/abstract.tex`, pure ASCII, verified word-for-word.
+  **Verified this session rather than asserted.** The in-repo build and a
+  15-file fresh-directory build with `pdflatex` alone against the shipped
+  `.bbl`, which is what arXiv actually does, both give **18 pp, 0 errors, 0
+  overfull boxes, 0 undefined citations or references and 0 LaTeX
+  warnings**, with the same four cosmetic underfull hboxes #41 documented.
+  34 cite keys = 34 `refs.bib` entries = 34 `\bibitem`, no orphans either
+  way. The oversell firewall grep is clean: no banned phrase, no named
+  condition, and the only "clinically validated" hit is `limitations.tex`
+  saying there is none. `/anti-ai` was run over every new passage: a
+  near-verbatim echo of Related Work's "fluency and coverage" line was cut,
+  along with a doubled word, a number-agreement slip and two negative-parallel
+  constructions. The three surviving "X, not Y" constructions in the abstract
+  are each a required disclaimer and are kept on #46's precedent.
+  Sentence-length spread stays wide, which is the opposite of what the gate
+  flags: intro stdev 10.8 over 7 to 42 words, evaluation 11.4 over 4 to 57.
+  **This closes no P6 gate.** Gate A (the author read) and Gate B (the cold
+  run) remain untouched and still block the v1.0.0 tag, and the read is now
+  against an 18 pp PDF rather than the 17 pp one #43 described. **Branch not
+  merged and not pushed**, by instruction.

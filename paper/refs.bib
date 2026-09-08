@@ -108,3 +108,37 @@
   publisher = {PMLR},
   url       = {https://proceedings.mlr.press/v119/mozannar20b.html}
 }
+
+% ---------------------------------------------------------------------
+% Added 2026-09-08 (Decision Log #47), to give Section 5's method its own
+% provenance: the section named WCAG 2.1 and Nielsen's heuristics without
+% citing either, which is an unsupported assertion in a methods passage.
+% The two Nielsen entries were resolved against Crossref and their BibTeX
+% bodies emitted by Crossref's transform endpoint, exactly as the 29 above:
+%   10.1145/97243.97281   Nielsen & Molich 1990 — heuristic evaluation as an
+%                         inspection method (the method's standing).
+%   10.1145/191666.191729 Nielsen 1994 — the refined set of ten heuristics,
+%                         which is the set src/evaluate.py actually rates
+%                         against (verified in the source this session).
+% WCAG 2.1 fits none of the gate's three schemes because it is a standard
+% rather than a paper. It is admitted on a stricter basis than the gate asks
+% for: the W3C Recommendation IS the primary record, and it was fetched in
+% session from w3.org/TR/WCAG21/ with its status, date and editor list read
+% off the document itself. Recorded here so the gate is extended visibly
+% rather than quietly.
+% ---------------------------------------------------------------------
+
+@inproceedings{nielsen1990heuristic, series={CHI ’90}, title={Heuristic evaluation of user interfaces}, url={http://dx.doi.org/10.1145/97243.97281}, DOI={10.1145/97243.97281}, booktitle={Proceedings of the SIGCHI conference on Human factors in computing systems Empowering people - CHI ’90}, publisher={ACM Press}, author={Nielsen, Jakob and Molich, Rolf}, year={1990}, pages={249–256}, collection={CHI ’90} }
+
+@inproceedings{nielsen1994enhancing, series={CHI ’94}, title={Enhancing the explanatory power of usability heuristics}, url={http://dx.doi.org/10.1145/191666.191729}, DOI={10.1145/191666.191729}, booktitle={Proceedings of the SIGCHI Conference on Human Factors in Computing Systems}, publisher={ACM}, author={Nielsen, Jakob}, year={1994}, month=Apr, pages={152–158}, collection={CHI ’94} }
+
+@misc{w3c2025wcag21,
+  title        = {Web Content Accessibility Guidelines ({WCAG}) 2.1},
+  author       = {Kirkpatrick, Andrew and O Connor, Joshue and Campbell,
+                  Alastair and Cooper, Michael},
+  howpublished = {W3C Recommendation},
+  year         = {2025},
+  month        = May,
+  note         = {World Wide Web Consortium},
+  url          = {https://www.w3.org/TR/WCAG21/}
+}

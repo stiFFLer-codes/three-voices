@@ -1,10 +1,23 @@
 % SOURCE: written LAST, from the contribution stack pinned in main.tex and
 % related_work.md §1, §2, §8. Every number already appears in the body.
-% Citations are anchors already used in Three Tiers and Related Work; none
-% is new and refs.bib is unchanged at 31 keys.
+% Citations are anchors already used elsewhere in the body; none is new to
+% the manuscript.
 % FIREWALL: honest frame stated UP FRONT, not deferred to Limitations. The
 % three occupied territories are disclaimed in the same passage as the three
 % claims. No banned phrase, no clinical-validity claim, generic risk only.
+%
+% 2026-09-08 framing pass (Decision Log #47). Three changes, all emphasis:
+%   (a) the three claims are now a labelled Contributions list — MECHANISM,
+%       ARTIFACT, MEASUREMENT — so a computer-science reader can see what
+%       kind of object each one is. The claims themselves are word-for-word
+%       what they were; only the framing around them is new.
+%   (b) the leakage audit is given billing equal to the abstention rule and
+%       tied to the reproducibility-crisis literature the body already
+%       cites. Still the measurement, never the discovery.
+%   (c) an explicit evaluation contract in §1.2, so the standard the paper
+%       asks to be judged against is stated by us rather than guessed at.
+% The disclaimer paragraph stays where it was, in the same passage as the
+% claims, and nothing was removed from it.
 \section{Introduction}
 \label{sec:intro}
 
@@ -40,25 +53,38 @@ backwards.
 
 \subsection{What we claim, and what we do not}
 
-We claim three things.
+We contribute three things, and they are different kinds of object: a
+rendering mechanism, the artifact that implements it, and a measurement on
+the benchmark underneath both.
 
-First, and this is the headline, \textbf{abstention differentiated by
-stakeholder vulnerability}. The decision to withhold is taken once, from the
-model's output, then rendered as different assertions for different readers,
-graded so that the reader with the least power to interrogate the system
-receives the most conservative signal.
+\paragraph{A mechanism: abstention graded by stakeholder vulnerability.}
+The decision to withhold is taken once, from the model's output, then
+rendered as different assertions for different readers, graded so that the
+reader with the least power to interrogate the system receives the most
+conservative signal. The gate is a rule over class probabilities, stated in
+Section~\ref{sec:tiers} and reproducible from the committed tables.
 
-Second, \textbf{deterministic templating over SHAP attributions}. Every
-string a health worker or a mother receives is a fixed template filled from
-the case's attributions. No language model runs at inference, so the
-rendering can be regenerated, diffed and audited, and there is nothing in it
-to hallucinate.
+\paragraph{An artifact: an auditable rendering pipeline with no language
+model at inference.} Every string a health worker or a mother receives is a
+fixed template filled from the case's attributions. Nothing is generated at
+inference, so the rendering can be regenerated, diffed and checked line by
+line by someone who does not trust us, and there is nothing in it to
+hallucinate. We pay for that in fluency and coverage, as
+Section~\ref{sec:rw-stakeholder} sets out.
 
-Third, \textbf{a quantified leakage audit} of a widely used benchmark. The
-UCI Maternal Health Risk dataset contains 561 exact duplicate rows. Scoring
-the same model under the same cross-validation with those rows retained moves
-macro-recall from $0.580$ to $0.859$, which lands inside the accuracy band
-the literature reports for this dataset.
+\paragraph{A measurement: leakage-aware re-benchmarking of a saturated public
+dataset.} The UCI Maternal Health Risk dataset contains 561 exact duplicate
+rows, which can place the same record in a training fold and the test fold of
+the same split. Scoring the identical model under the identical
+cross-validation with those rows retained moves macro-recall from $0.580$ to
+$0.859$, which lands inside the accuracy band the literature reports for this
+dataset. This is the correction that literature asks for: Kapoor and Narayanan
+set out leakage's taxonomy and its place in the reproducibility crisis, and
+Rosenblatt et al.\ show the inflation is worst on small datasets, which is
+exactly this one~\citep{kapoor2023leakage,rosenblatt2024leakage}. We report
+it as a result in its own right rather than as housekeeping behind the rendering
+work, because a reader who compares our headline number against the
+published band needs it to make sense of either.
 
 The disclaimers belong in the same breath. \textbf{We do not claim that
 explanations should be audience-specific}, which is settled and was settled
@@ -92,6 +118,16 @@ simplification~\citep{okolo2024easy,solanokamaiko2024explorable}. Studies
 with the three groups are the next step, gated on ethics clearance. The data
 here is public, the task is generic maternal-health risk, and nothing in this
 paper predicts an outcome for a real patient.
+
+Here is the standard we ask to be held to. This is a design and measurement
+contribution. The
+rendering rule and the pipeline that implements it are the object; the
+artifact is validated by formative inspection against published usability and
+accessibility criteria; the leakage effect on the benchmark is quantified and
+reproducible in either direction from a committed table. Whether any of it
+helps a mother, a health worker or a clinician is a question this paper does
+not answer, and answering it is gated on ethics clearance rather than on
+effort.
 
 Section~\ref{sec:related} places the work against the two literatures it sits
 between, Section~\ref{sec:data} covers the dataset and the leakage

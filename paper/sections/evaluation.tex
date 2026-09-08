@@ -5,6 +5,15 @@
 % Framing: single-evaluator, author-conducted, formative. Not user testing,
 % not validation. Okolo/Solano-Kamaiko cited as why the user study is needed.
 % BUDGET: 1 p. Cut prose before cutting a defect.
+%
+% 2026-09-08 framing pass (Decision Log #47). One paragraph added, giving the
+% two instruments their own citations — the section named WCAG 2.1 and
+% Nielsen's heuristics and cited neither, which left a methods claim standing
+% on nothing. refs.bib gains nielsen1990heuristic, nielsen1994enhancing and
+% w3c2025wcag21; all three resolved in-session. The "not user testing and not
+% validation" paragraph below is UNCHANGED and must stay that way: the new
+% paragraph gives the method standing, it does not upgrade what the method
+% proves, and it says so in its own last two sentences.
 \section{Formative Heuristic Evaluation}
 \label{sec:eval}
 
@@ -12,6 +21,17 @@ We rated the rendered artifacts against WCAG 2.1 and Nielsen's usability
 heuristics: 16 criteria across three tiers, 48 cells, each grounded in a
 named detail of a file on disk. Contrast ratios are computed at run time from
 the palette constants rather than typed in by hand.
+
+Both instruments are inspection methods, each with a stated procedure and a
+literature on what it does and does not catch. Heuristic evaluation was
+introduced as a way for an inspector rather than a user to find usability
+problems against a small set of stated principles, and the set we rate
+against is the refined ten~\citep{nielsen1990heuristic,
+nielsen1994enhancing}; conformance inspection against the WCAG 2.1 success
+criteria is the corresponding instrument on the accessibility
+side~\citep{w3c2025wcag21}. Neither substitutes for users. Both were built to
+find defects early, which is how a design claim gets tested before anyone is
+asked to rely on it.
 
 This is a single-evaluator, author-conducted, formative assessment. It is not
 user testing and it is not validation. Nothing in it is evidence that the

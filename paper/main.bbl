@@ -1,4 +1,4 @@
-\begin{thebibliography}{31}
+\begin{thebibliography}{34}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -153,6 +153,14 @@ Minjung Kim, Saebyeol Kim, Jinwoo Kim, Tae-Jin Song, and Yuyoung Kim.
 \newblock \doi{10.1016/j.ijhcs.2023.103160}.
 \newblock URL \url{http://dx.doi.org/10.1016/j.ijhcs.2023.103160}.
 
+\bibitem[Kirkpatrick et~al.(2025)Kirkpatrick, O~Connor, Campbell, and
+  Cooper]{w3c2025wcag21}
+Andrew Kirkpatrick, Joshue O~Connor, Alastair Campbell, and Michael Cooper.
+\newblock Web content accessibility guidelines ({WCAG}) 2.1.
+\newblock W3C Recommendation, May 2025.
+\newblock URL \url{https://www.w3.org/TR/WCAG21/}.
+\newblock World Wide Web Consortium.
+
 \bibitem[Kompa et~al.(2021)Kompa, Snoek, and Beam]{kompa2021second}
 Benjamin Kompa, Jasper Snoek, and Andrew~L. Beam.
 \newblock Second opinion needed: communicating uncertainty in medical machine
@@ -200,6 +208,23 @@ Hussein Mozannar and David Sontag.
   \emph{Proceedings of Machine Learning Research}, pages 7076--7087. PMLR,
   2020.
 \newblock URL \url{https://proceedings.mlr.press/v119/mozannar20b.html}.
+
+\bibitem[Nielsen(1994)]{nielsen1994enhancing}
+Jakob Nielsen.
+\newblock Enhancing the explanatory power of usability heuristics.
+\newblock In \emph{Proceedings of the SIGCHI Conference on Human Factors in
+  Computing Systems}, CHI ’94, page 152–158. ACM, April 1994.
+\newblock \doi{10.1145/191666.191729}.
+\newblock URL \url{http://dx.doi.org/10.1145/191666.191729}.
+
+\bibitem[Nielsen and Molich(1990)]{nielsen1990heuristic}
+Jakob Nielsen and Rolf Molich.
+\newblock Heuristic evaluation of user interfaces.
+\newblock In \emph{Proceedings of the SIGCHI conference on Human factors in
+  computing systems Empowering people - CHI ’90}, CHI ’90, page 249–256.
+  ACM Press, 1990.
+\newblock \doi{10.1145/97243.97281}.
+\newblock URL \url{http://dx.doi.org/10.1145/97243.97281}.
 
 \bibitem[Okolo et~al.(2021)Okolo, Kamath, Dell, and Vashistha]{okolo2021cannot}
 Chinasa~T. Okolo, Srujana Kamath, Nicola Dell, and Aditya Vashistha.

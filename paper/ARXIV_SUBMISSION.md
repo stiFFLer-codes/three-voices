@@ -2,7 +2,9 @@
 
 The answer key for whoever fills in the arXiv web form: every field it asks
 for, in the form it wants. Written 2026-09-03 during the P6 pre-submission
-pass. Nothing here has been submitted.
+pass, and refreshed 2026-09-08 after the framing pass (Decision Log #47) moved
+the abstract, the page count and the citation count. Nothing here has been
+submitted.
 
 ---
 
@@ -58,22 +60,31 @@ De-LaTeX'd from `sections/abstract.tex`: math delimiters removed, `\emph`
 rendered as straight double quotes, straight quotes throughout, no macros. The
 wording is unchanged; this is a transcription.
 
+The abstract is structured (Purpose / Methods / Results / Conclusion). arXiv
+does not require that and renders the four run-in labels as ordinary text,
+which is fine. It is there because the journal this manuscript is also being
+prepared for requires it, and because the four-part order is what makes the
+abstract close on the contribution rather than on the caveats.
+
 ```
-A maternal-health risk model splits a case 0.487 against 0.499 between two adjacent risk levels. A clinician can read that margin and discount it; a mother handed a red alarm for the same prediction cannot. Rendering a coin flip as an emergency to the reader least able to interrogate it is the failure we address.
+Purpose. A maternal-health risk model splits a case 0.487 against 0.499 between adjacent risk levels. A clinician can read that margin and discount it; a mother handed a red alarm for the same prediction cannot. We ask what each reader of an uncertain prediction is entitled to be told.
 
-We render one prediction for three readers and gate the rendering on the model's own uncertainty: below a fixed top-two margin the highest-severity signal is withheld from the mother's channel and from no other. The derate is red to amber, never red to green, and amber still says "needs follow-up".
+Methods. One prediction is rendered for three readers, gated on the model's own uncertainty: below a fixed top-two margin the highest-severity signal is withheld from the mother's channel and from no other. The derate is red to amber, never red to green, and amber still says "needs follow-up". Every string is a deterministic template over SHAP attributions, with no language model at inference. This is a design and feasibility artifact; its evaluation is a formative single-evaluator inspection of our own renderings, not a user study.
 
-Three claims, each bounded. Abstention rendered by stakeholder vulnerability rather than uniformly, which is an intersection of two established literatures and not the gating mechanism. Deterministic templating over SHAP attributions, with no language model at inference. And a leakage audit: retaining this benchmark's 561 duplicate rows moves macro-recall from 0.580 to 0.859, a measurement we report rather than a problem we claim to have found.
+Results. The inspection found five defects in our own artifact, all corrected. It is not evidence that the tiers help anyone; nobody in the three groups has used the system. Retaining this benchmark's 561 duplicate rows moves macro-recall from 0.580 to 0.859, a measurement we report, not a discovery we claim.
 
-This is a design and feasibility artifact. Our evaluation is a formative single-evaluator critique of our own renderings: it found five defects and is not evidence that the tiers help anyone. Nobody in the three groups has used the system, and user studies are the next step, gated on ethics. The data is public, the task is generic maternal-health risk, and we make no clinical-validity claim.
+Conclusion. The work delivers an auditable, uncertainty-gated rendering discipline with no language model at inference, and a leakage-aware re-benchmarking of a saturated public dataset. Abstention graded by stakeholder vulnerability is an intersection of two established literatures, not the gating mechanism. The data is public, the task is generic maternal-health risk, we make no clinical-validity claim, and user studies are the next step, gated on ethics.
 ```
 
-235 words, counted as the manuscript counts them. arXiv sets no abstract limit,
-and the overrun against the 150–200 house target is the deliberate call
-recorded in Decision Log #38.
+250 words, counted as the manuscript counts them and including the four run-in
+labels. arXiv sets no abstract limit; 250 is the ceiling of the 150–250 band
+the target journal sets, and the abstract sits at it deliberately rather than
+being trimmed further, because every remaining sentence carries a number, a
+contribution or a disclaimer (Decision Log #47, superseding #38's word count).
 
 Verified mechanically against `sections/abstract.tex`: after stripping `$` math
-delimiters and `\emph{}`, the two texts are word-for-word identical. The block
+delimiters, `\noindent`, `\textbf{}` and `\emph{}`, the two texts are
+word-for-word identical. The block
 above is pure ASCII with straight quotes and no curly punctuation, so it
 survives paste into the arXiv form unchanged.
 
@@ -85,7 +96,7 @@ health workers; risk communication.
 ## Comments field (optional, suggested)
 
 ```
-17 pages, 1 figure, 1 table. Code, figures and audio artifacts at https://github.com/stiFFLer-codes/three-voices and archived at https://doi.org/10.5281/zenodo.22252076
+18 pages, 1 figure, 1 table. Code, figures and audio artifacts at https://github.com/stiFFLer-codes/three-voices and archived at https://doi.org/10.5281/zenodo.22252076
 ```
 
 ---
@@ -141,8 +152,8 @@ PNGs and the second root resolves them from the renderer's committed output.
 ### Bibliography
 
 arXiv runs LaTeX but **not** BibTeX, so `main.bbl` is the bibliography. It is
-tracked for exactly this reason and is current: 31 `\bibitem` entries against
-31 `\cite` keys against 31 `refs.bib` entries, no orphans in either direction.
+tracked for exactly this reason and is current: 34 `\bibitem` entries against
+34 `\cite` keys against 34 `refs.bib` entries, no orphans in either direction.
 `refs.bib` is included for provenance. `pdflatex` never opens it while the
 `.bbl` is present, so dropping it would change nothing in the output.
 
@@ -152,9 +163,9 @@ The fifteen files above were copied into an empty directory containing nothing
 else (no `.aux`, `.log`, `.out` or `.pdf`) and compiled with `pdflatex` alone,
 three passes, no BibTeX run. That is what arXiv does.
 
-**Result: 17-page PDF, 0 errors, 0 overfull boxes, no undefined citations or
-references.** All 31 citations and every internal cross-reference resolve from
-the shipped `.bbl`.
+**Result: 18-page PDF, 0 errors, 0 overfull boxes, no undefined citations or
+references.** All 34 citations and every internal cross-reference resolve from
+the shipped `.bbl`. Re-verified 2026-09-08 after the framing pass.
 
 ### Packages
 

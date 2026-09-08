@@ -4,9 +4,54 @@
 % reference tracks later releases. Both confirmed against the Zenodo API
 % in-session on 2026-09-03.
 % CRediT roles as agreed with the co-author.
+%
+% 2026-09-08 framing pass (Decision Log #47). The two existing statements are
+% UNCHANGED in wording; they are now subsections of a single "Declarations"
+% section, which is where Springer Nature asks for them (before the reference
+% list, one heading per declaration) and which costs an arXiv reader nothing.
+% Five declarations added, all additive and none of them a claim about the
+% work: Funding, Competing Interests, Ethics Approval, Consent, and the use
+% of generative AI in preparing the manuscript.
+%
+% ON THE AI DECLARATION, so a future session does not quietly "clean it up":
+% it is accurate and it stays. Springer Nature exempts only AI-assisted copy
+% editing from disclosure; drafting is not copy editing. The repository's own
+% record (STATE.md #25, #34, #38) shows sections drafted in assisted
+% sessions, so a statement that this manuscript is unassisted would be false,
+% and an undisclosed assistance that surfaces later is a far worse problem
+% than a disclosed one. The declaration's last sentence is load-bearing for a
+% different reason: it stops a reader conflating how the PAPER was written
+% with what the SYSTEM does, and the system's no-model-at-inference property
+% is one of the paper's three contributions.
 
-\section*{Data and Code Availability}
-\addcontentsline{toc}{section}{Data and Code Availability}
+\section*{Declarations}
+\addcontentsline{toc}{section}{Declarations}
+
+\subsection*{Funding}
+
+No funding was received for conducting this study.
+
+\subsection*{Competing Interests}
+
+The authors have no relevant financial or non-financial interests to
+disclose.
+
+\subsection*{Ethics Approval}
+
+This study involved no human participants and no animals. It is a secondary
+analysis of the UCI Maternal Health Risk dataset, which is public, released
+under CC BY 4.0, and contains no identifiable personal data. Ethics approval
+was therefore not required and none was sought. The studies with mothers,
+community health workers and clinicians that this paper names as its next
+step are gated on ethics clearance that has not been obtained and is not
+claimed anywhere in this work.
+
+\subsection*{Consent to Participate and Consent to Publish}
+
+Not applicable. No human participants were recruited and no individual
+person's data is reported.
+
+\subsection*{Data and Code Availability}
 
 The dataset is the UCI Maternal Health Risk dataset (repository id 863),
 public and released under CC BY 4.0, at
@@ -21,8 +66,7 @@ and resolves to the latest release; development history is at
 in this paper regenerates from the five commands listed in
 Section~\ref{sec:repro}.
 
-\section*{CRediT Author Contributions}
-\addcontentsline{toc}{section}{CRediT Author Contributions}
+\subsection*{Author Contributions}
 
 \noindent\textbf{Maitreya Sapariya} --- Conceptualization, Methodology,
 Software, Formal analysis, Writing -- original draft.
@@ -31,3 +75,15 @@ Software, Formal analysis, Writing -- original draft.
 
 \noindent\textbf{Aditi Patil} --- Clinical domain expertise, Hindi authoring
 and review, ASHA-tier design input, Validation.
+
+\subsection*{Use of Generative AI in the Preparation of this Manuscript}
+
+The authors used an AI assistant (Claude, Anthropic) to draft and revise the
+text of this manuscript, working under author direction. The research design,
+the analyses, every reported number, the selection and verification of every
+citation, and the final wording were determined, checked and approved by the
+authors, who take full responsibility for the content. This is a statement
+about how the paper was written and not about the system it describes: the
+rendering pipeline of Section~\ref{sec:tiers} runs fixed templates over SHAP
+attributions and invokes no language model at inference, which is one of the
+contributions claimed here.
