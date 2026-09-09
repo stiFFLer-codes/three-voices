@@ -1204,3 +1204,50 @@ Decision Log entries named.
   byte unchanged in this commit. It must be revisited before submission.
   **This closes no P6 gate.** Gate A (the author read) and Gate B (the cold
   run) remain untouched and still block the v1.0.0 tag.
+
+- **2026-09-09 #50 — Introduction: coin-flip line moved from the title.**
+  Supersedes #49's "the Introduction is NOT repositioned" in part. The
+  Introduction now opens on **"A coin flip is not a red light."** That sentence
+  was the manuscript's title until #49 renamed it to name the artifact, and
+  without this line the phrase appeared nowhere in the paper. The third
+  paragraph already pays it off, so it reads as a claim stated and then earned.
+  One added line. No claim, number, citation or disclaimer changed.
+  **Considered and rejected:** renaming the two subsection headings ("What we
+  claim, and what we do not", "What kind of evidence this is") to look less
+  like a position paper. The section structure is already research-shaped —
+  Related Work, Data, Method, Evaluation, Limitations, Reproducibility — and
+  the honest headings are worth more than the cosmetic gain.
+  **STILL OPEN:** the three intro diffs (a), (b), (c) from the cleared session
+  remain unrecovered. `git show 6993541:paper/sections/intro.tex` returns the
+  file whose own (a)(b)(c) comment describes the already-applied #47 pass, so
+  it does not recover them. Only the coin-flip move was specified well enough
+  to act on.
+  **Verified:** repackaged and rebuilt from the extracted tarball — 15 files,
+  0 leaked comment lines, 19 pp, 0 errors, 0 overfull boxes, 0 undefined
+  citations or references, 0 LaTeX warnings. No dot-prefixed files in the
+  archive (arXiv deletes those on announcement) and `\date{}` is empty, so no
+  `\today` to drift on rebuild.
+
+- **2026-09-09 #51 — Two moderation facts that raise the bar, recorded so a
+  future session does not rediscover them.** Both from arXiv's own moderation
+  and content-type pages, fetched 2026-09-09.
+  **(a) A prior decline means closer scrutiny.** arXiv states: "Submitters who
+  have had works previously delayed or declined by arXiv should anticipate
+  closer scrutiny on future submissions. In some cases, authors may be required
+  to establish a conventional publication record." The corresponding author has
+  a recent decline, so this submission is read against a higher bar than a
+  first-time one. That is the case for the #49/#50 repositioning, not an
+  argument against submitting.
+  **(b) "Undergraduate or high-school research" is a listed content type arXiv
+  typically does not accept.** The new corresponding address
+  `12202120601029@adit.ac.in` is an enrollment-number address. This needs an
+  author decision before submission: the listed exclusion is aimed at course
+  projects and coursework write-ups, and this manuscript is not one — it has a
+  clinical co-author, a released and archived artifact, a quantified benchmark
+  measurement and a structured evaluation — but the affiliation string should
+  not invite the reading. Options are to state a department affiliation without
+  the enrollment-number address, or to use an address that does not encode
+  student status. NOT decided here.
+  **(c) Appeals are final and carry no feedback,** and arXiv may require journal
+  acceptance before considering one. There is no cheap second attempt, which is
+  why the pre-submission audit is worth its cost.
