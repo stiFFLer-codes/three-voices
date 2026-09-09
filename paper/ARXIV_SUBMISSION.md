@@ -52,7 +52,16 @@ Maitreya Sapariya, Aditi Patil
 - **Maitreya Sapariya** — Department of Information Technology, A. D. Patel
   Institute of Technology (ADIT), Charutar Vidya Mandal (CVM) University, New
   Vallabh Vidyanagar, Anand, Gujarat, India. ORCID 0009-0003-9346-3775.
-  Corresponding author, 12202120601029@adit.ac.in.
+  Corresponding author, maitreyasapariya@gmail.com.
+
+  On the corresponding address: the affiliation is institutional and stays
+  that way, but the address deliberately does **not** encode an enrollment
+  number. arXiv lists "undergraduate or high-school research" among the
+  content types it typically does not accept, and a submitter with a prior
+  decline is told to "anticipate closer scrutiny", so there is no reason to
+  hand a moderator a student-number address to read that way. Swap in a
+  name-based `adit.ac.in` alias if one is available; that is strictly better
+  than a personal address and is a one-line change in `main.tex` and here.
 - **Aditi Patil** — Smt. B. K. Shah Medical Institute & Research Centre,
   Sumandeep Vidyapeeth (Deemed to be University).
 

@@ -1251,3 +1251,25 @@ Decision Log entries named.
   **(c) Appeals are final and carry no feedback,** and arXiv may require journal
   acceptance before considering one. There is no cheap second attempt, which is
   why the pre-submission audit is worth its cost.
+
+- **2026-09-09 #52 — Corresponding address decoupled from enrollment number.**
+  Supersedes #49(d) on the e-mail only. The ADIT / CVM University affiliation
+  set in #49 is UNCHANGED and stays in `main.tex`, `ARXIV_SUBMISSION.md` and
+  `README.md`. The corresponding address reverts to
+  `maitreyasapariya@gmail.com`.
+  **Why.** #51(b): arXiv lists "undergraduate or high-school research" among
+  content types it typically does not accept, and #51(a): a submitter with a
+  prior decline is told to anticipate closer scrutiny. `12202120601029@adit.ac.in`
+  encodes an enrollment number. This manuscript is not coursework — clinical
+  co-author, released and archived artifact, quantified benchmark measurement,
+  structured evaluation instrument — and the fix is to stop inviting the
+  reading rather than to argue with it after the fact. Author decision,
+  2026-09-09.
+  **Better option if it exists:** a name-based `adit.ac.in` alias beats a
+  personal address, because it carries the institution as well as the name. One
+  line in `main.tex` and one in `ARXIV_SUBMISSION.md`. Not available at time of
+  writing.
+  **Verified:** repackaged and rebuilt from the extracted tarball — 15 files, 0
+  leaked comment lines, 0 dot-prefixed entries, 19 pp, 0 errors, 0 overfull
+  boxes, 0 undefined citations or references, 0 LaTeX warnings. Enrollment
+  number appears nowhere under `paper/` or in `README.md`.
