@@ -49,3 +49,6 @@ paper/*.blg
 paper/*.synctex.gz
 paper/pass*.txt
 paper/bibtex.txt
+
+# arXiv upload staging dir, rebuilt by the ARXIV_SUBMISSION.md packaging block
+arxiv/
