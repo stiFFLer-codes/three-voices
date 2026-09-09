@@ -1320,3 +1320,53 @@ Decision Log entries named.
   faculty flag it.
   (ii) *Prior decline.* Per #51(a) this submitter is read against a higher bar.
   Not fixable, only compensated for.
+
+- **2026-09-09 #54 — FACULTY-REVIEW SNAPSHOT SUPERSEDED: `a119504` replaces
+  `7346ae4`.** (`a11950490c08df67f557cea14dfd4f3181a66e9f`.) Still on
+  `revision/sncs-framing`, still **not merged to `main`, still no PR**.
+  **The manuscript carried a false claim about its own headline mechanism.**
+  Four sites said the highest-severity signal is withheld "from the mother's
+  channel **and from no other**". It is withheld from the ASHA card as well.
+  **The code is the proof, and it is the code we archive and cite.**
+  `band_for()` returns one band; `render_asha()` takes that same band and sets
+  its header from `BAND_LABEL`. Run this session against the shipped source:
+  `band_for("high risk", 0.012)` -> `AMBER` -> header `ELEVATED — needs
+  follow-up`; `band_for("high risk", 0.90)` -> `RED` -> header `HIGH — needs
+  follow-up`. The gate withholds RED from **both** downstream tiers. Only the
+  clinician tier is untouched, and it never calls `band_for` at all.
+  **The paper already contradicted itself.** §4.1 defines the alarm as "the red
+  lamp and the urgent spoken message for the mother, **the \textsc{high} header
+  on the health worker's card**", and §4.2 says the band is computed once and
+  shared across all three tiers. The figure caption managed the contradiction
+  inside one sentence: "The other two panels carry the derated band instead...
+  withheld from her channel and from no other."
+  **Fixed in four prose sites** — `abstract.tex`, `intro.tex`, the
+  Figure~1 caption, §4.4 — plus the regenerated `ARXIV_SUBMISSION.md`
+  transcription (now 1760 chars / 277 words, against the 1920 ceiling).
+  **§4.4's "The grading runs against power" also went.** It implied a monotone
+  three-level gradient in the abstention. The gate is binary: clinician versus
+  the two who cannot interrogate the model. What separates those two is how
+  much of the model's state each is asked to hold, not severity — the card
+  carries the drivers and a next step, the lamp carries neither.
+  **Two sites deliberately NOT changed.** `intro.tex:78` and
+  `related_work.tex:84` say the assertions are "graded so that the reader with
+  the least power to interrogate the system receives the most conservative
+  signal". That remains true: the three *assertions* are graded (raw split /
+  header plus drivers plus next step / lamp plus one sentence), and the
+  mother's is the least assertive. Only the *gate* is binary, and neither
+  sentence claims otherwise.
+  **`src/render.py` corrected too**, since it is archived and cited: the
+  `RED_MARGIN` comment and the `band_for` docstring both described shared logic
+  as mother-only. `band_for`'s docstring now says the band drives both cards
+  and carries an explicit note against reintroducing the claim.
+  **This was an OVERSELL FIREWALL breach** — the false version made the
+  mechanism sound sharper and more novel than it is — and every prior pass
+  missed it, including the moderation audits of #53, which checked whether
+  claims were *supported* but not whether they were *self-consistent*. It was
+  found in external review. Lesson recorded: the firewall needs a check that
+  reads the claim against the renderer, not only against the tables.
+  **Verified:** cold build from the extracted package — 15 files, 0 leaked
+  comment lines, 0 dot-prefixed entries, **19 pp, 0 errors, 0 overfull boxes, 0
+  undefined citations or references, 0 LaTeX warnings**; in-repo `main.pdf`
+  content-identical to the cold build. `paper/main.pdf` at this commit is the
+  faculty package.
