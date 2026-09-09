@@ -34,8 +34,9 @@
 three stakeholder-specific action-signals, one each for a clinician, a
 community health worker, and a mother, and gates each signal on the model's
 own uncertainty. Below a fixed top-two margin the highest-severity signal is
-withheld from the mother's channel and from no other: the derate is red to
-amber, never red to green, and amber still says \emph{needs follow-up}. Every
+withheld from the mother's channel and the health worker's, while the
+clinician's view of the split is untouched: the derate is red to amber, never
+red to green, and amber still says \emph{needs follow-up}. Every
 string is a deterministic template filled from the case's SHAP attributions,
 with no language model at inference, so a rendering can be regenerated and
 audited line by line. Code, the rendered artifacts, the cross-validation and

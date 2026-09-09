@@ -97,7 +97,8 @@ MOTHER_HI = {
 
 BAND_RGB = {"RED": (200, 40, 40), "AMBER": (235, 165, 20), "GREEN": (40, 160, 70)}
 BAND_HEX = {"RED": "#c82828", "AMBER": "#eba514", "GREEN": "#28a046"}
-RED_MARGIN = 0.15  # top-2 probability margin required before the mother sees RED
+RED_MARGIN = 0.15  # top-2 margin required before RED reaches EITHER downstream
+                   # tier: the ASHA header and the mother's lamp both derate.
 
 # One band drives the mother's lamp AND the ASHA header, so a case cannot be
 # amber in one tier and red in the next. GREEN <=> predicted low risk.
@@ -154,12 +155,18 @@ def text_on(bg_hex: str) -> str:
 # Deterministic logic (the part worth a self-check)
 # ---------------------------------------------------------------------------
 def band_for(predicted: str, margin: float) -> str:
-    """Uncertainty-aware traffic-light band for the mother tier.
+    """Uncertainty-aware traffic-light band for BOTH downstream tiers.
 
     GREEN when the model predicts low risk. RED only when it predicts high
     risk AND is not on a knife edge (top-2 margin >= 0.15). Everything else —
     mid risk, and any near-tie — is AMBER. A coin-flip must not be shown to a
     mother as a red alarm.
+
+    The one band returned here drives the ASHA header and the mother's lamp
+    alike, so a near-tie withholds RED from both cards, not from the mother
+    alone. The clinician tier does not consult this function at all: it
+    renders the class probabilities as they stand. Do not describe this gate
+    as mother-only — the manuscript said so once and it was wrong.
     """
     if predicted == "low risk":
         return "GREEN"

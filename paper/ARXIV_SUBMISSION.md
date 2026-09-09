@@ -79,22 +79,22 @@ paper contributes. The labelled version is recoverable from commit 6993541 and
 is restored before the journal submission.
 
 ```
-Three Voices renders a single maternal-health risk prediction as three stakeholder-specific action-signals, one each for a clinician, a community health worker, and a mother, and gates each signal on the model's own uncertainty. Below a fixed top-two margin the highest-severity signal is withheld from the mother's channel and from no other: the derate is red to amber, never red to green, and amber still says "needs follow-up". Every string is a deterministic template filled from the case's SHAP attributions, with no language model at inference, so a rendering can be regenerated and audited line by line. Code, the rendered artifacts, the cross-validation and SHAP tables, and the evaluation matrix are archived, and all of it regenerates from five commands.
+Three Voices renders a single maternal-health risk prediction as three stakeholder-specific action-signals, one each for a clinician, a community health worker, and a mother, and gates each signal on the model's own uncertainty. Below a fixed top-two margin the highest-severity signal is withheld from the mother's channel and the health worker's, while the clinician's view of the split is untouched: the derate is red to amber, never red to green, and amber still says "needs follow-up". Every string is a deterministic template filled from the case's SHAP attributions, with no language model at inference, so a rendering can be regenerated and audited line by line. Code, the rendered artifacts, the cross-validation and SHAP tables, and the evaluation matrix are archived, and all of it regenerates from five commands.
 
 This is a design and feasibility artifact. Its evaluation is a formative single-evaluator heuristic critique of our own renderings, which found five defects, all of them corrected. That is an instrument that improved the design, not evidence that any tier helps a reader. No mother, health worker or clinician has used the system; the data is public, the task is generic maternal-health risk, and we make no clinical-validity claim. User studies with the three groups are the next step, gated on ethics clearance. The abstention idea sits between stakeholder-tailored explanation and selective prediction, and we claim only their pairing, not either mechanism.
 
 We also report a leakage audit of the UCI Maternal Health Risk benchmark. It contains 561 exact duplicate rows, and retaining them moves macro-recall from 0.580 to 0.859 under the same cross-validation. That is a cost we quantify, not a fault we claim to have found first.
 ```
 
-**1700 characters**, against the hard ceiling of 1920 that `prep.html` states
-("abstracts longer than 1920 characters will not be accepted"); 268 words. Both
+**1760 characters**, against the hard ceiling of 1920 that `prep.html` states
+("abstracts longer than 1920 characters will not be accepted"); 277 words. Both
 counts are machine-measured on the block above, not estimated. The block is
 generated from `sections/abstract.tex` rather than retyped, so it cannot drift
 from the manuscript the way the previous transcription did — that one still
 carried the pre-trim 250-word text after Decision Log #48 shortened the source
 to 237, and claimed to be word-for-word identical while it was not.
 
-268 words is over the 150–250 band SN Computer Science sets. That is accepted
+277 words is over the 150–250 band SN Computer Science sets. That is accepted
 here because arXiv sets no word limit, and because the labelled 237-word
 abstract is restored for the journal submission.
 
