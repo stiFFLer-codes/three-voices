@@ -1273,3 +1273,50 @@ Decision Log entries named.
   leaked comment lines, 0 dot-prefixed entries, 19 pp, 0 errors, 0 overfull
   boxes, 0 undefined citations or references, 0 LaTeX warnings. Enrollment
   number appears nowhere under `paper/` or in `README.md`.
+
+- **2026-09-09 #53 — FACULTY-REVIEW SNAPSHOT: commit `7346ae4`.**
+  (`7346ae47bd040bf0e43c5bf90241aa99a68d58bd`, branch `revision/sncs-framing`.)
+  This is the version that goes to faculty. **Not merged to `main`, no PR
+  open.** The merge is the last step, after faculty review and the final
+  moderation pass — deliberately, so `main` keeps matching the last public
+  state until the paper is actually cleared.
+  **What landed in the snapshot.**
+  (a) *Intro name injection.* "Our response is to make the abstention decision
+  part of the rendering rather than part of the model" becomes "Our response,
+  **which we call Three Voices**, makes the abstention decision part of the
+  rendering rather than part of the model." Plain, no `\emph`, matching the
+  abstract, which introduces the name; this is its first binding in the body.
+  Both subsection headings left alone, per #50. Paragraph rewrapped to the
+  file's ~76-column convention; no other wording moved.
+  (b) *Affiliation provenance corrected.* The author-block comment claimed
+  Aditi Patil's "city and state" were confirmed on 2026-09-08. She confirmed
+  **city (Vadodara) and country (India)**. Gujarat is in the affiliation string
+  because it is the state containing Vadodara, not because she confirmed it
+  separately. The affiliation string itself is unchanged.
+  (c) *Corresponding address stays* `maitreyasapariya@gmail.com` (#52). No
+  faculty-style `adit.ac.in` alias was available; skipped rather than chased.
+  **`/anti-ai` on the one changed sentence: clean, no rewrite.** No AI
+  vocabulary, no triplet, no participial tail, no significance inflation.
+  Paragraph burstiness 21/26/15/10 words, outside the flat 15-25 band. The
+  "rendering rather than the model" contrast was kept: it carries the thesis
+  and it predates this edit.
+  **Build, verified cold rather than asserted.** Package rebuilt, extracted
+  into an empty directory, `pdflatex` three passes, no BibTeX: 15 files, 0
+  leaked comment lines, 0 dot-prefixed entries, 0 aux/output files, **19 pp, 0
+  errors, 0 overfull boxes, 0 undefined citations or references, 0 LaTeX
+  warnings**. In-repo `paper/main.pdf` rebuilt from the same source and is
+  content-identical to the cold build (62 bytes differ, all in the trailing
+  timestamp/ID region). That PDF is the faculty package. Citations 34 cited /
+  34 in `refs.bib` / 34 `\bibitem`, no orphans in either direction.
+  **Moderation gates re-run against this snapshot: LIKELY PASS.** Checks 1, 2,
+  3, 5, 6, 7 pass. Two risks stand, both recorded and neither fixed here.
+  (i) *Normative register in the Introduction.* Three phrases — "entitled to
+  be told" (l.49), "vulnerability" (l.76), "least power" (l.79) — are the
+  register a moderator reads as position-paper advocacy; the check skill names
+  "what X is entitled to" explicitly. They are confined to the Introduction:
+  the **abstract and title carry none of it**, and the shopfront is what triage
+  reads. Left alone because Phase A was scoped to two specified diffs, and
+  because the phrases are the paper's actual research question. Revisit only if
+  faculty flag it.
+  (ii) *Prior decline.* Per #51(a) this submitter is read against a higher bar.
+  Not fixable, only compensated for.
