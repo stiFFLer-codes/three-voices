@@ -4,17 +4,23 @@ Read this at the start of every session. Update it at the end (phase, status,
 next step) and **append** to the Decision Log — never edit or delete an
 existing entry; supersede it with a new dated one.
 
-_Last updated: 2026-09-08_
+_Last updated: 2026-09-09_
 
 ## Current phase
 
-**P5 CLOSED 2026-09-03. Now in P6 — pre-submission pass.** A journal-alignment
-framing pass for SN Computer Science sits on branch
-`revision/sncs-framing`, unmerged (#47, #48): emphasis and title-page
-compliance only, 18 pp, no number and no disclaimer moved. The manuscript is
-written, compiled and pushed. What remains is reading, verifying and
-packaging. See "Next step" for the ordered gate list, and #43 for what closing
-P5 does and does not assert.
+**P5 CLOSED 2026-09-03. Now in P6 — pre-submission pass.** Branch
+`revision/sncs-framing`, unmerged, carries a journal-alignment framing pass
+(#47, #48) and then an **arXiv moderation repositioning (#49)**: new title
+naming the artifact, three-paragraph abstract, ADIT affiliation, and `%`
+comments stripped from the upload but not the repo. Emphasis, title page and
+packaging only across all three — no claim, number or citation moved. 19 pp.
+The manuscript is written, compiled and pushed. What remains is reading,
+verifying and packaging. See "Next step" for the ordered gate list, and #43
+for what closing P5 does and does not assert.
+
+**OPEN against #49:** `sections/intro.tex` was NOT repositioned — the three
+intro diffs the session called for were lost when the prior session cleared.
+Revisit before submission.
 
 **Gate C packaging is done (#45):** the arXiv `\graphicspath` blocker is
 closed, the 15-file upload compiles standalone with `pdflatex` alone at 17 pp
@@ -26,8 +32,10 @@ v1.0.0 tag.**
 **P5 manuscript COMPLETE.** All eight sections plus back matter are written:
 Abstract, Introduction, Related Work, Data & Vehicle, Three Tiers,
 Evaluation, Limitations, Reproducibility. Title, authors, ORCID, CRediT and
-the Zenodo concept DOI are in place. `paper/refs.bib` holds 31 entries, all
-cited, every identifier resolved in-session. Body is 5968 words (~9.9 pp)
+the Zenodo concept DOI are in place. `paper/refs.bib` holds 34 entries (31 at
+P5 close; #47 added the two Nielsen heuristics papers and the WCAG 2.1
+Recommendation), all cited, every identifier re-resolved in-session on
+2026-09-09. Body is 5968 words (~9.9 pp)
 with the Introduction, plus a 235-word abstract and one table. Pushed to
 `origin/main` at 77fda14.
 
@@ -1101,3 +1109,98 @@ Decision Log entries named.
   Science work is the template phase — `sn-jnl.cls`, the Springer reference
   style, editable source files — and is deliberately not started, so the
   manuscript stays arXiv-clean until then.
+
+- **2026-09-09 #49 — arXiv moderation repositioning.** Prompted by the
+  ADS-Cascade desk-reject and by an observed acceptance (Naisha, cs.CR): arXiv
+  triage reads the shopfront, not Section 6. Emphasis, title page and
+  packaging only. **No claim, number or citation changed.** `refs.bib` stays
+  at 34 entries and `main.bbl` is untouched.
+  **(a) Title names the artifact.** *A Coin Flip Is Not a Red Light: Grading a
+  Maternal-Health Risk Alarm...* becomes *Three Voices: Uncertainty-Gated
+  Rendering of a Maternal-Health Risk Alarm for Mothers, Community Health
+  Workers, and Clinicians*. 127 characters, pure ASCII, no macro, not
+  all-caps, which is what `prep.html` asks of the title field. The coin-flip
+  framing already lives in the Introduction's third paragraph and stays there.
+  **(b) Abstract restructured to three unlabelled paragraphs.** Artifact and
+  mechanism first, scope limits second, leakage measurement last. This
+  SUPERSEDES #47/#48's Purpose / Methods / Results / Conclusion labelling,
+  which SN Computer Science requires and arXiv does not; the labelled 237-word
+  version is recoverable from commit 6993541 and is restored before the
+  journal submission. Two deliberate changes beyond the reframing: the
+  novelty-boundary sentence moved from the end of paragraph 1 to the end of
+  paragraph 2, because arXiv's moderation page names *originality, novelty,
+  significance* as a decline ground and the last line of the opening paragraph
+  is where a moderator skimming for what is new will land; and one sentence
+  was ADDED naming the archived, regenerable artifact, which is the paper's
+  primary-research evidence and had no place in the abstract before. All eight
+  disclaimers on abstract.tex's checklist survive, verified item by item.
+  **(c) `/anti-ai` caught a firewall breach, not just a style tell.** The
+  proposed abstract dropped *gated on ethics* from the user-studies sentence,
+  which is checklist item (4). Restored. The gate also fixed a stacked triplet
+  (the deposit holds four things, so it now names four), a 45-word single-
+  sentence paragraph split into three, *the benchmark we use* named as the UCI
+  Maternal Health Risk benchmark, and *a critique that found and fixed five
+  defects*, which credited the instrument with the repair.
+  **(d) Affiliation updated.** Maitreya Sapariya moves from *Independent
+  Researcher, Surat* to *Department of Information Technology, A. D. Patel
+  Institute of Technology (ADIT), Charutar Vidya Mandal (CVM) University, New
+  Vallabh Vidyanagar, Anand, Gujarat, India*, corresponding e-mail
+  `12202120601029@adit.ac.in`. Changed in `main.tex`, `ARXIV_SUBMISSION.md`
+  and `README.md`. Aditi Patil's affiliation is untouched.
+  **(e) `%` comments are stripped from the UPLOAD, not from the repo.** arXiv
+  publishes raw `.tex` source, and 155 of `main.tex`'s 216 lines are working
+  notes containing, in these words, `EXPLICITLY NOT CLAIMED AS NOVEL`, `There
+  is no ML novelty here`, `Do not claim the mechanism` and `OVERSELL
+  FIREWALL`. Those notes are why the manuscript is honest and they stay in the
+  repository, but publishing the authors' own internal case against their
+  novelty, to a moderator who declines on that exact ground, is a needless
+  loss. `ARXIV_SUBMISSION.md`'s packaging block gains one line-oriented `sed`
+  that deletes only lines whose first non-space character is `%`, so the
+  line-joining `%` at the end of three_tiers.tex's `\subcaptionbox` lines
+  survives.
+  **(f) Three stale claims in `ARXIV_SUBMISSION.md` corrected.** It asserted
+  *arXiv runs LaTeX but not BibTeX*; `submit_tex.html`, fetched 2026-09-09,
+  says arXiv "provides support for bib file processing using various
+  processors like `biblatex`... and `bibtex`" and blocks a submission carrying
+  neither a `.bbl` nor the `.bib` it needs. Shipping the `.bbl` stays right;
+  the reason given was wrong. The same page requires the `.bbl` to be named
+  for the main `.tex`, which `main.bbl` satisfies. Second, the sheet's
+  "verified word-for-word identical" abstract transcription still carried
+  #47's 250-word text after #48 trimmed the source to 237 — it had been false
+  since 2026-09-08. It is now generated from `sections/abstract.tex` rather
+  than retyped. Third, the page count.
+  **Verified this session rather than asserted.** All 34 citation identifiers
+  re-resolved: 31 against the Crossref API with title, first author and year
+  read off each record, plus arXiv 1909.03012, PMLR `v119/mozannar20b` and the
+  W3C WCAG 2.1 Recommendation. 34 `\bibitem` against 34 `\cite` keys against
+  34 `refs.bib` entries, no orphans — note that a line-oriented grep
+  undercounts to 32, because `evaluation.tex` cites the two Nielsen keys in a
+  `\citep` that spans a line break. Fresh 15-file directory, `pdflatex` three
+  passes, no BibTeX, run for the stripped and unstripped variants both:
+  **19 pp, 0 errors, 0 overfull boxes, 0 undefined citations or references**,
+  the same four cosmetic underfull hboxes #41 documents, identical file length
+  and identical content streams between variants. The count moved 18 -> 19
+  because the four-line affiliation and the longer abstract push references
+  [30] to [34] onto their own page, which is a third full rather than a stub.
+  Comments field updated to 19 pages. Zenodo concept DOI
+  `10.5281/zenodo.22252076` re-confirmed in all four places it appears:
+  `backmatter.tex`, `reproducibility.tex`, `ARXIV_SUBMISSION.md` and
+  `README.md`. Firewall re-run clean: no `novel`+`framework` adjacency in
+  manuscript prose, `red to green` appears only negated, no named condition,
+  formative framing intact in both abstract and intro.
+  **Policy checked against live arXiv pages, not memory.** The cs review /
+  survey / position rule (blog, 2025-10-31) requires prior acceptance plus
+  journal-ref and DOI in metadata, and workshop review does not qualify. It
+  binds cs.HC. This manuscript is not a review or a position paper: it ships a
+  released system, a quantified benchmark measurement and a structured
+  evaluation instrument, and the repositioning is meant to make that legible
+  at a skim. The full-English requirement (in force 2026-02-11) is satisfied.
+  Springer Nature permits preprint posting, so arXiv does not forfeit SN
+  Computer Science. Endorsement: the corresponding author is already endorsed
+  for cs, confirmed by the author this session.
+  **OPEN — the Introduction is NOT repositioned.** The session prompt referred
+  to three intro diffs (a), (b), (c) and an optional triplet tweak that were
+  lost when the prior session was cleared. `sections/intro.tex` is byte-for-
+  byte unchanged in this commit. It must be revisited before submission.
+  **This closes no P6 gate.** Gate A (the author read) and Gate B (the cold
+  run) remain untouched and still block the v1.0.0 tag.

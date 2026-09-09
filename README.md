@@ -1,6 +1,6 @@
 # One Prediction, Three Voices
 
-Code and artifacts for **"A Coin Flip Is Not a Red Light: Grading a
+Code and artifacts for **"Three Voices: Uncertainty-Gated Rendering of a
 Maternal-Health Risk Alarm for Mothers, Community Health Workers, and
 Clinicians."**
 
@@ -112,7 +112,9 @@ survived the repair. Read it to see how a number arrived.
 
 ## Authors
 
-**Maitreya Sapariya**, Independent Researcher
+**Maitreya Sapariya**, Department of Information Technology, A. D. Patel
+Institute of Technology (ADIT), Charutar Vidya Mandal (CVM) University, New
+Vallabh Vidyanagar, Anand, Gujarat, India
 ([ORCID 0009-0003-9346-3775](https://orcid.org/0009-0003-9346-3775)),
 corresponding author — Conceptualization, Methodology, Software, Formal
 analysis, Writing (original draft).

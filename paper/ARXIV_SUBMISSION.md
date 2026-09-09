@@ -40,7 +40,7 @@ is reserved for a journal DOI of this same article, so leave it blank.
 ## Title (plain text)
 
 ```
-A Coin Flip Is Not a Red Light: Grading a Maternal-Health Risk Alarm for Mothers, Community Health Workers, and Clinicians
+Three Voices: Uncertainty-Gated Rendering of a Maternal-Health Risk Alarm for Mothers, Community Health Workers, and Clinicians
 ```
 
 ## Authors (plain text, arXiv order)
@@ -49,8 +49,10 @@ A Coin Flip Is Not a Red Light: Grading a Maternal-Health Risk Alarm for Mothers
 Maitreya Sapariya, Aditi Patil
 ```
 
-- **Maitreya Sapariya** — Independent Researcher. ORCID 0009-0003-9346-3775.
-  Corresponding author.
+- **Maitreya Sapariya** — Department of Information Technology, A. D. Patel
+  Institute of Technology (ADIT), Charutar Vidya Mandal (CVM) University, New
+  Vallabh Vidyanagar, Anand, Gujarat, India. ORCID 0009-0003-9346-3775.
+  Corresponding author, 12202120601029@adit.ac.in.
 - **Aditi Patil** — Smt. B. K. Shah Medical Institute & Research Centre,
   Sumandeep Vidyapeeth (Deemed to be University).
 
@@ -60,33 +62,39 @@ De-LaTeX'd from `sections/abstract.tex`: math delimiters removed, `\emph`
 rendered as straight double quotes, straight quotes throughout, no macros. The
 wording is unchanged; this is a transcription.
 
-The abstract is structured (Purpose / Methods / Results / Conclusion). arXiv
-does not require that and renders the four run-in labels as ordinary text,
-which is fine. It is there because the journal this manuscript is also being
-prepared for requires it, and because the four-part order is what makes the
-abstract close on the contribution rather than on the caveats.
+Three unlabelled paragraphs (Decision Log #49). The Purpose / Methods /
+Results / Conclusion labelling of Decision Log #47/#48 was dropped for the
+arXiv submission: the journal requires it and arXiv does not, and the labels
+put a structural signal on a shopfront that a moderator reads for what the
+paper contributes. The labelled version is recoverable from commit 6993541 and
+is restored before the journal submission.
 
 ```
-Purpose. A maternal-health risk model splits a case 0.487 against 0.499 between adjacent risk levels. A clinician can read that margin and discount it; a mother handed a red alarm for the same prediction cannot. We ask what each reader of an uncertain prediction is entitled to be told.
+Three Voices renders a single maternal-health risk prediction as three stakeholder-specific action-signals, one each for a clinician, a community health worker, and a mother, and gates each signal on the model's own uncertainty. Below a fixed top-two margin the highest-severity signal is withheld from the mother's channel and from no other: the derate is red to amber, never red to green, and amber still says "needs follow-up". Every string is a deterministic template filled from the case's SHAP attributions, with no language model at inference, so a rendering can be regenerated and audited line by line. Code, the rendered artifacts, the cross-validation and SHAP tables, and the evaluation matrix are archived, and all of it regenerates from five commands.
 
-Methods. One prediction is rendered for three readers, gated on the model's own uncertainty: below a fixed top-two margin the highest-severity signal is withheld from the mother's channel and from no other. The derate is red to amber, never red to green, and amber still says "needs follow-up". Every string is a deterministic template over SHAP attributions, with no language model at inference. This is a design and feasibility artifact; its evaluation is a formative single-evaluator inspection of our own renderings, not a user study.
+This is a design and feasibility artifact. Its evaluation is a formative single-evaluator heuristic critique of our own renderings, which found five defects, all of them corrected. That is an instrument that improved the design, not evidence that any tier helps a reader. No mother, health worker or clinician has used the system; the data is public, the task is generic maternal-health risk, and we make no clinical-validity claim. User studies with the three groups are the next step, gated on ethics clearance. The abstention idea sits between stakeholder-tailored explanation and selective prediction, and we claim only their pairing, not either mechanism.
 
-Results. The inspection found five defects in our own artifact, all corrected. It is not evidence that the tiers help anyone; nobody in the three groups has used the system. Retaining this benchmark's 561 duplicate rows moves macro-recall from 0.580 to 0.859, a measurement we report, not a discovery we claim.
-
-Conclusion. The work delivers an auditable, uncertainty-gated rendering discipline with no language model at inference, and a leakage-aware re-benchmarking of a saturated public dataset. Abstention graded by stakeholder vulnerability is an intersection of two established literatures, not the gating mechanism. The data is public, the task is generic maternal-health risk, we make no clinical-validity claim, and user studies are the next step, gated on ethics.
+We also report a leakage audit of the UCI Maternal Health Risk benchmark. It contains 561 exact duplicate rows, and retaining them moves macro-recall from 0.580 to 0.859 under the same cross-validation. That is a cost we quantify, not a fault we claim to have found first.
 ```
 
-250 words, counted as the manuscript counts them and including the four run-in
-labels. arXiv sets no abstract limit; 250 is the ceiling of the 150–250 band
-the target journal sets, and the abstract sits at it deliberately rather than
-being trimmed further, because every remaining sentence carries a number, a
-contribution or a disclaimer (Decision Log #47, superseding #38's word count).
+**1700 characters**, against the hard ceiling of 1920 that `prep.html` states
+("abstracts longer than 1920 characters will not be accepted"); 268 words. Both
+counts are machine-measured on the block above, not estimated. The block is
+generated from `sections/abstract.tex` rather than retyped, so it cannot drift
+from the manuscript the way the previous transcription did — that one still
+carried the pre-trim 250-word text after Decision Log #48 shortened the source
+to 237, and claimed to be word-for-word identical while it was not.
+
+268 words is over the 150–250 band SN Computer Science sets. That is accepted
+here because arXiv sets no word limit, and because the labelled 237-word
+abstract is restored for the journal submission.
 
 Verified mechanically against `sections/abstract.tex`: after stripping `$` math
-delimiters, `\noindent`, `\textbf{}` and `\emph{}`, the two texts are
-word-for-word identical. The block
-above is pure ASCII with straight quotes and no curly punctuation, so it
-survives paste into the arXiv form unchanged.
+delimiters, `\noindent` and `\emph{}`, the two texts are word-for-word
+identical. The block above is pure ASCII with straight quotes and no curly
+punctuation, so it survives paste into the arXiv form unchanged. No line starts
+with whitespace, which `prep.html` warns will defeat the form's automatic line
+wrapping.
 
 **Keywords** (the manuscript carries these under the abstract; arXiv has no
 keywords field, so they go nowhere on the form):
@@ -96,7 +104,7 @@ health workers; risk communication.
 ## Comments field (optional, suggested)
 
 ```
-18 pages, 1 figure, 1 table. Code, figures and audio artifacts at https://github.com/stiFFLer-codes/three-voices and archived at https://doi.org/10.5281/zenodo.22252076
+19 pages, 1 figure, 1 table. Code, figures and audio artifacts at https://github.com/stiFFLer-codes/three-voices and archived at https://doi.org/10.5281/zenodo.22252076
 ```
 
 ---
@@ -140,8 +148,40 @@ mkdir -p arxiv/sections
 cp paper/main.tex paper/main.bbl paper/refs.bib arxiv/
 cp paper/sections/*.tex arxiv/sections/
 cp results/figures/tier_{clinician,asha,mother}_boundary_mid.png arxiv/
+# Strip whole-line % comments from the UPLOADED copies only. See below.
+sed -i '/^[[:space:]]*%/d' arxiv/main.tex arxiv/sections/*.tex
 cd arxiv && tar czf ../three-voices-arxiv.tar.gz .
 ```
+
+### Why the comments are stripped from the upload
+
+arXiv publishes the raw `.tex` source, so every `%` comment in it is public.
+The repository copies carry the working notes this project runs on — the
+outline map, the page budget, the contribution stack, the oversell firewall,
+the per-section source provenance — and 155 of `main.tex`'s 216 lines are
+comment. Among them, in these words: `EXPLICITLY NOT CLAIMED AS NOVEL`, `There
+is no ML novelty here`, `Do not claim the mechanism`, `OVERSELL FIREWALL`.
+
+Those lines are correct, and they are why the manuscript is honest. They are
+also an argument the authors have with themselves. arXiv's moderation page
+names "originality, novelty, significance" as a ground for declining a
+submission, so the source as it stands hands a moderator the manuscript's own
+internal case that parts of it are not novel. The prose already states every
+one of those boundaries where a reader should meet them: Section 1.1 disclaims
+all three occupied territories by name, and Section 2 does it again, one
+literature at a time.
+
+The `sed` is line-oriented and deletes only lines whose first non-space
+character is `%`. No trailing in-line comment and no escaped `\%` is touched,
+and the repository files are not modified. This matters for the one place it
+could bite: `sections/three_tiers.tex` ends `\subcaptionbox{...}` lines with a
+line-joining `%`, and those survive because the `%` is not the first character.
+
+Both variants were compiled from an empty directory on 2026-09-09 and compared.
+Identical page count (19), identical file length (609826 bytes), and identical
+content streams: the two PDFs differ only in the trailing metadata region,
+which is the creation timestamp and document ID that `pdflatex` stamps on every
+run.
 
 No source edit is needed. `main.tex` sets
 `\graphicspath{{./}{../results/figures/}}`, so in the archive the root matches
@@ -151,21 +191,43 @@ PNGs and the second root resolves them from the renderer's committed output.
 
 ### Bibliography
 
-arXiv runs LaTeX but **not** BibTeX, so `main.bbl` is the bibliography. It is
-tracked for exactly this reason and is current: 34 `\bibitem` entries against
-34 `\cite` keys against 34 `refs.bib` entries, no orphans in either direction.
-`refs.bib` is included for provenance. `pdflatex` never opens it while the
-`.bbl` is present, so dropping it would change nothing in the output.
+We ship a pre-generated `main.bbl` and let arXiv use it. **Correcting what this
+sheet said before 2026-09-09:** arXiv *does* now run bibliography processors —
+`submit_tex.html` states it "provides support for bib file processing using
+various processors like `biblatex` (with auto-selection of the correct backend)
+and `bibtex`", and it blocks a submission that has neither a `.bbl` nor the
+`.bib` it needs. Shipping the `.bbl` is still the right call, because it fixes
+the output rather than leaving it to arXiv's TeX Live version, but the old
+reason given here was wrong.
+
+The same page requires that "the name of the `.bbl` file _must_ match the name
+of the main `.tex` file". `main.bbl` against `main.tex` satisfies that.
+
+The `.bbl` is current: 34 `\bibitem` entries against 34 `\cite` keys against 34
+`refs.bib` entries, no orphans in either direction. Two of those keys
+(`nielsen1990heuristic`, `nielsen1994enhancing`) are cited in a `\citep` that
+spans a line break in `sections/evaluation.tex`, so a line-oriented grep
+undercounts to 32 — count with a multiline match. All 34 identifiers were
+re-resolved on 2026-09-09: 31 against the Crossref API, plus arXiv 1909.03012,
+PMLR `v119/mozannar20b`, and the W3C WCAG 2.1 Recommendation. `refs.bib` is
+included for provenance. `pdflatex` never opens it while the `.bbl` is present,
+so dropping it would change nothing in the output.
 
 ### Standalone compile, verified
 
 The fifteen files above were copied into an empty directory containing nothing
 else (no `.aux`, `.log`, `.out` or `.pdf`) and compiled with `pdflatex` alone,
-three passes, no BibTeX run. That is what arXiv does.
+three passes, no BibTeX run. That is what arXiv does with a shipped `.bbl`.
 
-**Result: 18-page PDF, 0 errors, 0 overfull boxes, no undefined citations or
+**Result: 19-page PDF, 0 errors, 0 overfull boxes, no undefined citations or
 references.** All 34 citations and every internal cross-reference resolve from
-the shipped `.bbl`. Re-verified 2026-09-08 after the framing pass.
+the shipped `.bbl`, numbered [1] through [34]. Re-verified 2026-09-09 after the
+moderation repositioning, for the stripped and unstripped variants both.
+
+The page count moved from 18 to 19 in that pass: the four-line ADIT affiliation
+and the longer abstract push the last five references onto a page of their own.
+That page carries entries [30] to [34] and is a third full, so it is a real
+page rather than a dangling stub.
 
 ### Packages
 
