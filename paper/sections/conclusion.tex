@@ -1,0 +1,32 @@
+% SOURCE: nothing new. Every number here already appears in the body —
+% 561/1012 and 0.580/0.859 from Section 3.3 (p1_duplicate_leakage.csv), row
+% 382 and its 0.002 margin from Section 4.4 (shap_case_summary.csv).
+% PURPOSE: ToC shape. Before this section the paper trailed into
+% Limitations / Reproducibility / Declarations, and two external reviews had
+% already flagged a ToC skim as an incompleteness signal (see the header of
+% limitations.tex). This section is the substantive close.
+% FIREWALL: no future-work list, no recap of sections, no new claim, and the
+% user-study point appears in ONE clause pointing at Section 6, which already
+% states it. The row-382 paragraph must keep both honest sentences: amber on
+% a true-low record is still a false referral, and the gate made the error
+% smaller rather than correct.
+\section{Conclusion}
+\label{sec:conclusion}
+
+We built a rendering pipeline that takes one maternal-health risk prediction
+and issues three different assertions from it, one per reader, withholding the
+highest-severity signal from the two channels that cannot interrogate the
+model whenever the top-two class probabilities fall inside a fixed margin.
+Every string in it is a template filled from the case's SHAP attributions and
+no language model runs at inference, so any rendering here can be regenerated
+and checked line by line. We also re-benchmarked the dataset underneath it:
+561 of the 1012 usable rows are exact duplicates, retaining them across the
+split moves macro-recall from $0.580$ to $0.859$, and $0.580$ is the figure
+this vehicle earns once they are dropped.
+
+Row 382 is the case that shows what the rule is for. The model calls a
+true-low record high risk on a top-two margin of $0.002$, and the mother
+receives amber where the argmax alone would have sent red. That is still a
+false referral. The gate made the error smaller, not correct. Whether any of
+this helps a mother, a health worker or a clinician is untested here and gated
+on the ethics clearance Section~\ref{sec:limitations} describes.

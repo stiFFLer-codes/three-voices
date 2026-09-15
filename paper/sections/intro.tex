@@ -31,6 +31,23 @@
 % renaming them was considered as a way to look less like a position paper
 % and rejected, because the section structure is already research-shaped and
 % the honest headings are worth more than the cosmetic gain.
+%
+% 2026-09-15 consolidated edit pass (see STATE.md). Compression + one fix:
+%   (a) 1.2's two paragraphs merged; they made one point twice. Nothing
+%       dropped: design-and-feasibility self-label, no users, formative
+%       single-evaluator, five defects, Okolo/Solano-Kamaiko, public data,
+%       generic task, no outcome prediction, and the standard we ask to be
+%       judged on all survive. "Gated on ethics clearance" now appears once
+%       here instead of twice.
+%   (b) The disclaimer paragraph's five negative constructions in thirteen
+%       lines thinned. All three bolded disclaimers are untouched.
+%   (c) Throat-clearing cut: "The disclaimers belong in the same breath",
+%       "Here is the standard we ask to be held to".
+%   (d) The leakage paragraph now compares ACCURACY 0.854 to the published
+%       accuracy band, which is the like-for-like comparator, and points to
+%       3.3 rather than retelling it. Mechanism and vehicle sentences point
+%       to Sections 4 and 2.5 instead of duplicating them.
+% The coin-flip opener and every claim, number and citation are unchanged.
 \section{Introduction}
 \label{sec:intro}
 
@@ -44,9 +61,8 @@ at all, in which case the score reaches her as a colour and a spoken sentence
 or it does not reach her.
 
 Most work on explaining a model to several audiences varies how much of the
-explanation each one gets. That is the right instinct, and it leaves one
-question open. When the model is not confident, what is each reader
-\emph{entitled to be told}?
+explanation each one gets. That leaves a second question open. When the model
+is not confident, which assertion should each channel carry?
 
 Consider a case from the dataset we use. The model puts it at $0.013$,
 $0.487$ and $0.499$ across low, mid and high risk. The top two are separated
@@ -73,12 +89,11 @@ We contribute three things, and they are different kinds of object: a
 rendering mechanism, the artifact that implements it, and a measurement on
 the benchmark underneath both.
 
-\paragraph{A mechanism: abstention graded by stakeholder vulnerability.}
-The decision to withhold is taken once, from the model's output, then
-rendered as different assertions for different readers, graded so that the
-reader with the least power to interrogate the system receives the most
-conservative signal. The gate is a rule over class probabilities, stated in
-Section~\ref{sec:tiers} and reproducible from the committed tables.
+\paragraph{A mechanism: abstention graded across stakeholder channels.}
+The decision to withhold is taken once, from the model's output, then rendered
+as a different assertion for each reader rather than as the same assertion
+softened. The gate is a rule over class probabilities, stated with its grading
+in Section~\ref{sec:tiers} and reproducible from the committed tables.
 
 \paragraph{An artifact: an auditable rendering pipeline with no language
 model at inference.} Every string a health worker or a mother receives is a
@@ -89,32 +104,33 @@ hallucinate. We pay for that in fluency and coverage, as
 Section~\ref{sec:rw-stakeholder} sets out.
 
 \paragraph{A measurement: leakage-aware re-benchmarking of a saturated public
-dataset.} The UCI Maternal Health Risk dataset contains 561 exact duplicate
-rows, which can place the same record in a training fold and the test fold of
-the same split. Scoring the identical model under the identical
-cross-validation with those rows retained moves macro-recall from $0.580$ to
-$0.859$, which lands inside the accuracy band the literature reports for this
-dataset. This is the correction that literature asks for: Kapoor and Narayanan
-set out leakage's taxonomy and its place in the reproducibility crisis, and
-Rosenblatt et al.\ show the inflation is worst on small datasets, which is
-exactly this one~\citep{kapoor2023leakage,rosenblatt2024leakage}. We report
-it as a result in its own right rather than as housekeeping behind the rendering
-work, because a reader who compares our headline number against the
+dataset.} Of the 1012 UCI Maternal Health Risk rows that survive a two-row
+plausibility filter, 561 are exact duplicates of an earlier row, which can
+place the same record in a training fold and the test fold of the same
+split. Scoring the identical model under the identical
+cross-validation with those rows retained moves accuracy from $0.641$ to
+$0.854$ and macro-recall from $0.580$ to $0.859$. The inflated accuracy lands
+inside the band the literature reports for this dataset, which is the
+comparison Section~\ref{sec:data-leakage} sets out in full. Kapoor and
+Narayanan set out leakage's taxonomy and its place in the reproducibility
+crisis, and Rosenblatt et al.\ show the inflation is worst on small datasets,
+which is our case~\citep{kapoor2023leakage,rosenblatt2024leakage}. We give it
+a result's billing because a reader comparing our headline number against the
 published band needs it to make sense of either.
 
-The disclaimers belong in the same breath. \textbf{We do not claim that
-explanations should be audience-specific}, which is settled and was settled
-before us~\citep{arya2019explanation,imrie2023multiple,kim2024stakeholder}.
+Three boundaries go with those claims. \textbf{We do not claim that
+explanations should be audience-specific}, which was settled before
+us~\citep{arya2019explanation,imrie2023multiple,kim2024stakeholder}.
 \textbf{We do not claim the gating mechanism.} Declining to answer under
 uncertainty has a long lineage in selective prediction and learning to defer,
 and our fixed-margin rule is a hand-set and cruder instance of
 it~\citep{hendrickx2024reject,mozannar2020consistent}. \textbf{We do not
 claim a modelling contribution.} Fitting a classifier with SHAP attributions
 to this dataset is saturated~\citep{mamun2025identification,
-maisoon2026stratification}, and our model is a vehicle for the rendering
-question. On the audit we claim the measurement and not the discovery: the
-duplicates are the kind of thing noticed in a notebook and never written up,
-and we report what they cost rather than asserting we found them first.
+maisoon2026stratification}, and Section~\ref{sec:rw-dataset} sets out why we
+build on that pipeline as a vehicle. On the audit we claim the measurement:
+the duplicates are the kind of thing noticed in a notebook and never written
+up, and we report what they cost rather than asserting we found them first.
 
 \subsection{What kind of evidence this is}
 
@@ -130,25 +146,22 @@ written. That is what the evaluation is: an instrument that improved the
 design. It is not evidence that any tier helps anyone, and the nearest
 empirical work argues against assuming so, since community health workers in
 India have been reported struggling with AI explanations even after
-simplification~\citep{okolo2024easy,solanokamaiko2024explorable}. Studies
-with the three groups are the next step, gated on ethics clearance. The data
-here is public, the task is generic maternal-health risk, and nothing in this
-paper predicts an outcome for a real patient.
+simplification~\citep{okolo2024easy,solanokamaiko2024explorable}.
 
-Here is the standard we ask to be held to. This is a design and measurement
-contribution. The
-rendering rule and the pipeline that implements it are the object; the
-artifact is validated by formative inspection against published usability and
-accessibility criteria; the leakage effect on the benchmark is quantified and
-reproducible in either direction from a committed table. Whether any of it
-helps a mother, a health worker or a clinician is a question this paper does
-not answer, and answering it is gated on ethics clearance rather than on
-effort.
+We ask to be judged on the following. The rendering rule and the pipeline that
+implements it are the object; the artifact is validated by formative
+inspection against published usability and accessibility criteria; the leakage
+effect on the benchmark is quantified and reproducible in either direction
+from a committed table. The data here is public, the task is generic
+maternal-health risk, and nothing in this paper predicts an outcome for a real
+patient. Whether any of it helps a mother, a health worker or a clinician is a
+question this paper does not answer, and answering it is gated on ethics
+clearance rather than on effort.
 
-Section~\ref{sec:related} places the work against the two literatures it sits
-between, Section~\ref{sec:data} covers the dataset and the leakage
-measurement, and Section~\ref{sec:tiers} gives the rendering rule and the
-three tiers. Section~\ref{sec:eval} reports the evaluation defects first,
-Section~\ref{sec:limitations} collects what the design cannot yet support,
-and Section~\ref{sec:repro} gives the commands that regenerate every artifact
-here.
+Section~\ref{sec:related} places the work against the two literatures it
+claims between and the three it is answerable to, Section~\ref{sec:data}
+covers the dataset and the leakage measurement, and Section~\ref{sec:tiers}
+gives the rendering rule and the three tiers. Section~\ref{sec:eval} reports
+the evaluation defects first, Section~\ref{sec:limitations} collects what the
+design cannot yet support, and Section~\ref{sec:repro} gives the commands that
+regenerate every artifact here.

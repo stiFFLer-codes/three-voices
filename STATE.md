@@ -4,38 +4,65 @@ Read this at the start of every session. Update it at the end (phase, status,
 next step) and **append** to the Decision Log — never edit or delete an
 existing entry; supersede it with a new dated one.
 
-_Last updated: 2026-09-09_
+_Last updated: 2026-09-15_
 
 ## Current phase
 
 **P5 CLOSED 2026-09-03. Now in P6 — pre-submission pass.** Branch
 `revision/sncs-framing`, unmerged, carries a journal-alignment framing pass
-(#47, #48) and then an **arXiv moderation repositioning (#49)**: new title
-naming the artifact, three-paragraph abstract, ADIT affiliation, and `%`
-comments stripped from the upload but not the repo. Emphasis, title page and
-packaging only across all three — no claim, number or citation moved. 19 pp.
-The manuscript is written, compiled and pushed. What remains is reading,
-verifying and packaging. See "Next step" for the ordered gate list, and #43
-for what closing P5 does and does not assert.
+(#47, #48), an **arXiv moderation repositioning (#49)** — new title naming the
+artifact, three-paragraph abstract, ADIT affiliation, and `%` comments
+stripped from the upload but not the repo — and now a **consolidated edit pass
+(#56)**. What remains is reading, verifying and packaging. See "Next step" for
+the ordered gate list, and #43 for what closing P5 does and does not assert.
+
+**#56 changed content, unlike #47-#49.** It added a **Section 7 Conclusion**
+(so Reproducibility is now Section 8), a **Section 4.4** on the row-382 case,
+**Table 2** (model comparison) and **Table 3** (the 48-cell heuristic matrix),
+a first statement of **mid-risk recall 0.227**, and a disclosure that the
+**uncertainty gate is one-sided**: it guards the high boundary and leaves
+GREEN ungated, which Section 3.4's own asymmetry argument says is the wrong
+side to leave open. Section 2 was re-textured so every subsection opens on the
+work rather than the literature. **Now 20 pp**, clean build, no locked number
+changed, Section 6 duplication deliberately untouched. Not committed.
+
+**BLOCKING THE UPLOAD, NEW IN #56:** `paper/ARXIV_SUBMISSION.md` is stale.
+Its upload list names fifteen files and omits `sections/conclusion.tex`; the
+page count (19), byte length (609826) and bibitem count (34) are all wrong.
+The build recipe globs `sections/*.tex` so it still works, but the file list
+must be regenerated before anyone packages from it.
 
 **OPEN against #49:** `sections/intro.tex` was NOT repositioned — the three
 intro diffs the session called for were lost when the prior session cleared.
 Revisit before submission.
 
+**GATE B IS CLOSED (#55, 2026-09-11).** The cold run has been done: fresh
+clone, fresh venv, pinned deps, audio purged first. 33 of 33 non-audio
+artifacts byte-identical; all four MP3s the right length, three of them
+byte-identical. Every headline number regenerated, so Table 1 is verified
+rather than asserted. It found two real defects, both now fixed: the pins
+require Python 3.12 and nothing said so, and the abstract and Introduction
+attributed 561 duplicates to the raw file, which actually holds 562 (561 is
+the post-filter count the body always reported). Endorsement is confirmed to
+cover **cs.HC**. **GATE A IS THE ONLY THING LEFT BLOCKING THE TAG** — the
+author's end-to-end read has still never happened, and Patil's read is out
+but not back.
+
 **Gate C packaging is done (#45):** the arXiv `\graphicspath` blocker is
-closed, the 15-file upload compiles standalone with `pdflatex` alone at 17 pp
-and zero errors, References now opens on its own page, and
-`paper/ARXIV_SUBMISSION.md` holds every field the arXiv form asks for. **Gate A
-(author read) and Gate B (cold run) remain untouched and still block the
-v1.0.0 tag.**
+closed, the 15-file upload compiles standalone with `pdflatex` alone and zero
+errors, References now opens on its own page, and `paper/ARXIV_SUBMISSION.md`
+holds every field the arXiv form asks for. (The 17 pp figure in this paragraph
+was #45's; the manuscript is **19 pp** as of #49 and was re-verified cold at
+19 pp in #55.) **Gate B is now CLOSED (#55). Gate A (author read) remains
+untouched and is the last thing blocking the v1.0.0 tag.**
 
 **P5 manuscript COMPLETE.** All eight sections plus back matter are written:
 Abstract, Introduction, Related Work, Data & Vehicle, Three Tiers,
 Evaluation, Limitations, Reproducibility. Title, authors, ORCID, CRediT and
-the Zenodo concept DOI are in place. `paper/refs.bib` holds 34 entries (31 at
-P5 close; #47 added the two Nielsen heuristics papers and the WCAG 2.1
-Recommendation), all cited, every identifier re-resolved in-session on
-2026-09-09. Body is 5968 words (~9.9 pp)
+the Zenodo concept DOI are in place. `paper/refs.bib` holds **35** entries (31
+at P5 close; #47 added the two Nielsen heuristics papers and the WCAG 2.1
+Recommendation; #55 added Yesmin et al.), all cited, every identifier
+re-resolved in-session on 2026-09-11. Body is 5968 words (~9.9 pp)
 with the Introduction, plus a 235-word abstract and one table. Pushed to
 `origin/main` at 77fda14.
 
@@ -178,9 +205,21 @@ tagging before the cold run tags something unverified.
 
 ### Gate A — read and settle the content (nothing here is layout)
 
-1. **Author's end-to-end read of `paper/main.pdf`** (17 pp). Never done. No
-   part of this manuscript has been read on the page by a human. Blocking:
-   every later gate assumes the prose is final.
+1. **Author's end-to-end read of `paper/main.pdf`** (now **20 pp**, #56).
+   Never done. No part of this manuscript has been read on the page by a
+   human. Blocking: every later gate assumes the prose is final. **#56 raised
+   the stakes on this item** — it added a Section 7 Conclusion, a Section 4.4,
+   and two tables, none of which any human has read, and it disclosed a
+   one-sided gate that a reader should check against Section 4.2 and 6.2 with
+   their own eyes.
+1a. **Re-run Gate B (cold run) after Gate A closes.** #55 closed it against a
+   19 pp manuscript with one table. #56 changed content, so that run no longer
+   describes what would be tagged. Nothing in #56 touched `src/`, so the
+   artifacts should be unchanged, but the claim "verified cold" now needs a
+   fresh run to be true.
+1b. **Regenerate `paper/ARXIV_SUBMISSION.md`** (Gate C material, listed here
+   because #56 invalidated it): sixteen upload files including
+   `sections/conclusion.tex`, 20 pp, the new byte length, and 35 bibitems.
 2. **Co-author read (Patil).** Specifically: the Hindi strings and their
    clinical framing (#14), the ASHA-tier card wording, and her own CRediT
    role list — of her four roles only *Validation* is an official CRediT
@@ -203,7 +242,11 @@ tagging before the cold run tags something unverified.
 6. The `failure_mode` triptych **stays cut** (#33, reaffirmed #38). Do not
    reopen it either.
 
-### Gate B — cold run (the reproducibility claim, actually exercised)
+### Gate B — cold run — **DONE 2026-09-11 (#55). PASSED.**
+
+Items 7-11 below were all executed and all passed; they are kept for the
+record and as the recipe if the pipeline ever changes. Re-run only if `src/`
+moves.
 
 7. Fresh clone into a clean directory, fresh virtualenv, pinned deps. The
    point is to catch what only works because this machine has been running
@@ -502,6 +545,296 @@ tagging before the cold run tags something unverified.
   did not accurately detect seriously ill children. A traffic light being
   comprehensible is not the same as it being safe, which is precisely why the
   tier caps at an action (#6) and derates under uncertainty (#7).
+
+- **2026-09-11 #55 — GATE B CLOSED (cold run passed), plus an external-review
+  response pass.** Branch `revision/sncs-framing`, still **not merged to
+  `main`, still no PR.** Two external moderation reviews were run by the
+  author between #54 and this entry. This entry records what they got right,
+  what they got wrong, and what was actually changed.
+
+  **GATE B — THE COLD RUN, RUN AND PASSED. This was never done before.**
+  Fresh `git clone` into an empty directory, fresh venv, pinned deps,
+  `rm -rf results/audio/*` first per #19, then the five gates in order.
+  *Result:* **33 of 33 non-audio artifacts byte-identical** to what is
+  committed — every PNG, CSV, TXT and MD. Zero differing, zero missing. All
+  four MP3s identical in length; three byte-identical and one not, which is
+  exactly the behaviour #10/#18 documents and predicts. Every headline number
+  regenerated from scratch: 561 duplicates, n_clean 451, macro-recall
+  0.580 +/- 0.027 -> 0.859 +/- 0.026, accuracy 0.641 -> 0.854, recall_high
+  0.723 -> 0.908, 35 conflicting vectors, the boundary case at
+  0.013/0.487/0.499 with a 0.012 margin, and the 48-cell evaluation at 29 pass
+  / 12 partial / 1 fail / 6 deferred. **Table 1 is now verified rather than
+  asserted.**
+
+  **The cold run found a real reproducibility defect, which is what it was
+  for.** The pins require **Python 3.12** and nothing said so. numpy 1.26.4
+  and scikit-learn 1.5.1 ship no wheels for 3.13+, and the system default is
+  now 3.14, so a reader following the README could not install the pinned set
+  at all. Stated now in `reproducibility.tex`, `requirements.txt` and
+  `README.md`. The paper claimed pinned determinism while omitting the one
+  fact that makes the pins installable.
+
+  **A second defect, found by the consistency sweep: 561 versus 562.** The raw
+  file holds **562** exact duplicates; **561** is the count *after* the
+  documented two-row plausibility filter. Section 3.2 always said this
+  correctly ("561 of the 1012 rows"), but the abstract and the Introduction
+  attributed 561 to the dataset as distributed. A reader running
+  `drop_duplicates()` on the download gets 562 and a mismatch against the
+  paper's headline measurement. Both sites now say "of the 1012 rows that
+  survive a two-row plausibility filter". Same class of error as #54 — a claim
+  that did not match the artifact — caught this time before submission.
+
+  **Claim-vs-renderer sweep: CLEAN.** Every mechanism claim in the prose was
+  read against `src/render.py` rather than against the tables, which is the
+  check #54 said the firewall lacked. `band_for` returns RED only for high
+  risk at margin >= 0.15 and AMBER otherwise, never GREEN except on predicted
+  low risk; `BAND_LABEL` gives AMBER "ELEVATED — needs follow-up". The
+  abstract, Section 1, Sections 4.1 and 4.2 and the Figure 1 caption all
+  match. The cold run then rendered the boundary case's ASHA header as
+  "ELEVATED — needs follow-up" live, confirming #54's fix in a clean clone.
+  Also verified: no language model anywhere at inference — gTTS is the only
+  network call and it synthesises a committed string.
+
+  **WHAT THE TWO EXTERNAL REVIEWS GOT WRONG.** Recorded so no future session
+  re-does this work.
+  (a) *"Maisoon et al. [17] could not be confirmed."* FALSE POSITIVE. It
+  resolves cleanly against Crossref (10.1109/access.2026.3710610): exact
+  title, all three authors, IEEE Access, 2026, vol. 14, pp. 102905-102919.
+  (b) *"Novelty-undercutting comments sit in the raw .tex and arXiv publishes
+  source."* ALREADY CLOSED by #49 — the upload set carries 0 comment lines.
+  This was the most damaging item either review raised and it was already
+  handled.
+  (c) *"Move the leakage audit up / make it co-equal in the abstract."*
+  ALREADY TRUE — abstract paragraph 3 was the leakage audit and Section 1.2
+  already labelled it MEASUREMENT alongside MECHANISM and ARTIFACT.
+  (d) *"The disclaimer appears at least five times."* It appears three times —
+  abstract, 1.2, 6.1 — which is standard placement.
+  (e) *"55-65% chance of passing."* No basis; ignore the number.
+  (f) One review urged framing the audit as "a correction to the published
+  record". **Rejected — that is an oversell-firewall breach**; the paper's "a
+  cost we quantify, not a fault we claim to have found first" stands.
+
+  **WHAT THEY GOT RIGHT, AND WHAT CHANGED.**
+  (a) *Front-loaded negatives.* Both reviews, run independently, said the
+  stacked caveats on page one cause a 60-second triage to over-weight them.
+  **Abstract paragraphs 2 and 3 SWAPPED** — leakage measurement now second,
+  caveats third. Verified as a pure block swap: the transcription measured
+  1760 characters before and after. **This SUPERSEDES #49's ORDERING RULE**
+  ("the caveats stay EARLY, in paragraph 2"), and the supersession is recorded
+  in `abstract.tex`'s own header. **All eight checklist items survive verbatim
+  and were re-verified item by item after the swap.** Nothing was dropped,
+  softened or compressed — the caveats sit ~100 words later in the same
+  abstract, not deferred to a section.
+  (b) *Advocacy register in the Introduction* — the risk #53 logged as (i) and
+  left alone. The three phrases are now descriptive: "what is each reader
+  *entitled to be told*" -> "which assertion should each channel carry";
+  "abstention graded by stakeholder vulnerability" -> "graded across
+  stakeholder channels"; "the reader with the least power to interrogate the
+  system" -> "the channel that exposes least of the model's output". The
+  research question is unchanged; only the register is. The parallel sentence
+  at `related_work.tex:85` was aligned to the same wording so the two cannot
+  drift. **"stakeholder vulnerability" at `related_work.tex:87` was
+  deliberately KEPT** — it is the novelty-boundary sentence ("that
+  intersection, and only that intersection, is what we claim"), which is the
+  most research-shaped sentence in the paper, and it sits deep in Section 2.2
+  where triage does not reach.
+  (c) *Two Limitations headings renamed.* "Nobody has used this" ->
+  "Evaluation without users"; "Nothing is deployed" -> "Evaluated on a
+  workstation". Two of five headings read as an incompleteness confession at
+  ToC skim. **Not one sentence of body text moved.** ("Bench conditions, not
+  field conditions" was drafted and rejected: it is the "X, not Y" pattern the
+  paper already spends well elsewhere, and a fourth instance is a tell.)
+  (d) *Yesmin et al. cited* — `refs.bib` 34 -> 35. arXiv:2601.07866v1
+  [cs.AI], 10 Jan 2026, three authors, resolved in-session against the arXiv
+  API, and the dataset confirmed from the full HTML text: "We utilized the UCI
+  Maternal Health Risk Dataset (N=1,014)", six clinical features plus a
+  **synthetic** regional access score, and **no mention of duplicates or
+  deduplication anywhere**. Cited twice: in Section 3.3 as a third
+  undeduplicated n=1014 report at 88.67% — flagged explicitly as **not**
+  like-for-like because of the synthetic feature — and in Section 5.5 as the
+  closest contemporaneous neighbour, separated on both mechanism (nothing in
+  their pipeline withholds an assertion) and audience (their fourteen
+  clinicians sit on the one tier our gate leaves untouched).
+
+  **Yesmin is a calibration point worth keeping.** Five pages, cs.AI primary,
+  a WCCI submission, no released artifact and no reproducibility package — and
+  it cleared moderation in January 2026. This manuscript is 19 pp with an
+  archived artifact and a verified cold run.
+
+  **`/anti-ai` run on every sentence written this session.** Four tells found
+  and fixed in the new prose: a vague "most of whom" where 71.4% was
+  available; an empty transition ("The separation is clean in both
+  directions"); the "X, not Y" heading above; and "pinned" three times in one
+  sentence. The pre-existing prose was not touched.
+
+  **Firewall re-run in full (Gate C item 14), clean.** No banned phrase. The
+  four clinical-validity greps hit only sentences that *deny* the claim.
+  Citations **35 cited / 35 in refs.bib / 35 bibitem, zero orphans in either
+  direction**, and **all 35 identifiers mechanically re-resolved this
+  session**: 33 against Crossref or the arXiv API, plus PMLR v119 (Mozannar)
+  and the W3C WCAG 2.1 Recommendation, both HTTP 200. Every one of the 14
+  distinct numbers in the abstract and Introduction appears in a body section.
+  `refs.bib` comments are now stripped from the upload too — they documented
+  the citation gate and read as diligence, but arXiv never runs BibTeX, so
+  they are inert surface. The repo keeps them.
+
+  **Verified, cold rather than asserted.** Package rebuilt, extracted into an
+  empty directory, `pdflatex` three passes, no BibTeX: **15 files, 0 leaked
+  comment lines, 0 dot-prefixed entries, 19 pp, 0 errors, 0 overfull boxes, 0
+  undefined citations or references, 0 LaTeX warnings.** In-repo `main.pdf`
+  is content-identical to the cold build (same byte length; 68 bytes differ,
+  all in the trailing timestamp/ID region). Abstract transcription regenerated
+  from source, not retyped: **1827 characters against the 1920 ceiling, 289
+  words.**
+
+  **Endorsement confirmed by the author this session: covers cs.HC.** #51(b)
+  is therefore closed for this submission; #51(a) (prior-decline scrutiny)
+  still stands and is not fixable, only compensated for.
+
+  **STILL OPEN, and still blocking the v1.0.0 tag: Gate A.** The author's
+  end-to-end read of the 19 pp PDF has not happened, and the co-author read
+  (Patil) was sent this session but has not returned. Mamun et al. is
+  **deliberately deferred to the journal round** (#23 downgraded): the paper
+  claims no priority on the duplicates, so nothing breaks if Mamun documented
+  them first, and Yesmin now supplies the external undeduplicated-band
+  corroboration Mamun was wanted for. Clark et al. (#24b) is **dropped**.
+
+
+- **2026-09-15 #56 — CONSOLIDATED EDIT PASS: body sections 1-6, plus a new
+  Section 7 Conclusion.** Branch `revision/sncs-framing`, still **not merged
+  to `main`, still no PR, not committed.** Driven by an editorial read that
+  found the paper arguing in places where it could show, and reading as a
+  survey in Section 2 because every subsection opened on the literature rather
+  than on us. Sizes before: Related Work 1594 prose words against Three Tiers
+  1056, so the literature outweighed the contribution by half again.
+
+  **The gate's missing side, and the reason this entry exists (ADDITION 1).**
+  Section 4.2's band rule fires RED on predicted-high AND margin >= 0.15, but
+  GREEN follows the argmax with NO margin test at all. Section 3.4 states the
+  opposite principle in the paper's own words: "the costs are asymmetric:
+  failing to flag a high-risk mother is the error that matters". The paper
+  shipped the principle in Section 3 and the rule that does not implement it in
+  Section 4, two sections apart, and named the gap nowhere. A near-tie
+  resolving to low risk renders an unqualified GREEN all-clear to the mother
+  and no derate exists for it. **Now named in one paragraph in 4.2 and one
+  entry in 6.2, both framed as UNHANDLED**: the gate is one-sided, the low
+  boundary is unprotected, the symmetric extension (derating an ungated
+  near-tie GREEN down to AMBER, mirroring red-to-amber) is future work, and
+  this version does not do it. **No code changed.** `band_for` is untouched;
+  this is a disclosure, not a fix. Same class as the #55 breach: a claim read
+  against the tables but never against the rule.
+
+  **Row 382 promoted to its own subsection 4.4 (ADDITION 2).** The paper's
+  strongest single design case survived only as a passing mention in 3.5 and a
+  defect illustration in Section 5. It is true LOW, predicted HIGH, at
+  `0.451 / 0.097 / 0.453` with a top-two margin of `0.002` — a 13-year-old
+  whose 101 F body temperature drives the call — and the gate withheld a red
+  lamp and an urgent spoken message from her. `heuristic_evaluation.md` already
+  called it "the strongest single design decision in the three tiers".
+  Figure 1 stays on row 66: it is referenced in five places and the 0.487/0.499
+  split is the cleaner coin-flip illustration. **The honesty sentences are
+  load-bearing and must survive any future edit:** amber on a true-low record
+  is still a false referral, and the gate made the error smaller, not correct.
+  Subsection title is "Derating a false alarm", not "When the gate prevents a
+  false alarm" — the gate derated it, it did not prevent it.
+
+  **Mid-risk recall stated for the first time (ADDITION 3).** `0.227 +/- 0.057`
+  for the selected model, no higher than `0.302` in any of the six
+  configurations, against `0.790` low and `0.723` high. Tied to the 35
+  conflicting feature vectors already in 3.2. This turns "a model that was
+  right 99% of the time would not need the machinery we describe" from a
+  general remark into a measurement: the mid class is the one the vehicle
+  cannot resolve, so mid-high near-ties are a structural property of this data,
+  not an occasional accident. A worse number that strengthens the design
+  argument and costs nothing on the firewall.
+
+  **Two committed tables typeset for the first time (ADDITION 4).** Before this
+  pass the entire body carried one table and one figure while citing five
+  committed CSVs. **Table 2** is the six-configuration model comparison from
+  `p1_model_metrics.csv`; **Table 3** is the 16 x 3 heuristic matrix from
+  `heuristic_matrix.csv`, symbols only, rationales left in the CSV. The
+  abstract already named that matrix as archived and the paper had never shown
+  it. Both verified cell-by-cell against their source CSVs by script, not by
+  eye. This also closes a self-containment gap: Section 5's result no longer
+  lives only in the repository.
+
+  **Section 7 Conclusion added (ADDITION 5).** Two short paragraphs, landing on
+  row 382. Reason is ToC shape: the paper trailed into Limitations /
+  Reproducibility / Declarations, and #55's external reviews had already shown
+  that a ToC skim reads as an incompleteness signal (the same evidence that
+  renamed two Section 6 headings on 2026-09-11). **Deliberately NOT a recap:**
+  no future-work list, no section-by-section summary, no new claim, and the
+  user-study point appears in one clause pointing at Section 6. Reproducibility
+  stays at Section 8, before Declarations.
+
+  **Section 2 re-textured, the single highest-leverage move against the survey
+  read (RELOCATION + TONE).** (a) The opener now names the split it always had:
+  TWO literatures we claim between (tiering, selective prediction) and THREE we
+  are answerable to (CHW comprehension, risk communication, this dataset). It
+  previously promised "two mature literatures" and then ran five subsections;
+  `intro.tex` repeated the undercount. (b) All five subsections now open on
+  what we do, with the literature positioned as what we build past. Same
+  citations, same bolded disclaimers, opposite genre signal. (c) 2.4's
+  entitlement defence (an icon array communicates a magnitude the sender is
+  entitled to assert; at 0.487 against 0.499 the model is not so entitled)
+  MOVED to Section 4 beside the mother tier it defends, seventy lines closer to
+  the thing being defended; 2.4 keeps the literature, the tension and one
+  pointer. (d) Concession-announcements deleted, boundaries kept verbatim:
+  "and both weaken us", "evidence of a weaker kind", "forced by the field
+  rather than chosen out of modesty". **"This paper has none" (re: users)
+  stays, stated once and plainly — it is load-bearing.** 2.5 now reads as
+  deliberate use of a standardised vehicle, and does NOT claim to have
+  evaluated whether the rendering helps anyone.
+
+  **Compression funded the additions.** Intro 1.2's two paragraphs merged (they
+  made one point twice); the "gated on ethics clearance" repeat inside the
+  intro removed; throat-clearing cut ("The disclaimers belong in the same
+  breath", "Here is the standard we ask to be held to", "We are careful about
+  what this licenses us to say", "stating the assumption is what makes the gap
+  findable", "which is how a design claim gets tested before anyone is asked to
+  rely on it"); the local pile-up of five negative constructions in thirteen
+  lines of the disclaimer paragraph thinned, with the global count of
+  contrastive constructions left alone because contrast is the right instrument
+  for boundary-drawing; the Figure 1 caption cut to what the figure needs; the
+  abstention sentence, the vehicle line and the saturation claim now point back
+  instead of restating with the same cites.
+
+  **SECTION 6 WAS NOT TOUCHED for duplication.** It is a declared collection
+  point and its repetition is load-bearing. The only changes there are the new
+  one-sided-gate entry in 6.2 and one trimmed framing sentence in 6.3.
+
+  **Two precision fixes.** (a) `evaluation.tex` said "four failures" and then
+  listed five defects; `intro.tex` and `abstract.tex` said five. BOTH numbers
+  were right and referred to different things — four Fail RATINGS on the first
+  pass, arising from five distinct DEFECTS (C1-C5). "Four" was NOT changed to
+  "five"; a clause now says which is which. (b) The intro compared macro-recall
+  `0.859` to an accuracy band; the like-for-like comparator against the
+  published figures (83.74 / 99.51 / 88.67, all accuracies) is accuracy
+  `0.854`, which 3.3 already had. Fixed in both places, and 3.3's "the inflated
+  figure" now names which figure.
+
+  **Verified.** Data spine recomputed independently from `data/raw/`, not read
+  off prose: 1014 / 2 at HR=7 / 1012 / 561 / 451 (233 low, 106 mid, 112 high) /
+  35 conflicting vectors / 95 under 18 / min age 10 — all match. Every numeric
+  token in body prose extracted and checked; no locked number changed. Tables 2
+  and 3 script-verified against their CSVs. Clean build: **20 pp, 0 errors,
+  0 overfull boxes, 0 undefined citations or references**, 35 citations against
+  35 bibitems. The stripped-comment upload variant was rebuilt cold from an
+  empty directory with the shipped `.bbl` and no BibTeX run: identical 20 pp,
+  identical byte length, 0 leaked comment lines.
+
+  **`paper/ARXIV_SUBMISSION.md` IS NOW STALE AND MUST BE REGENERATED BEFORE
+  UPLOAD.** It names fifteen upload files and omits `sections/conclusion.tex`;
+  it says nine input targets (now ten), 19 pp (now 20), 609826 bytes (now
+  679581), and 34 bibitems against 34 cite keys (now 35 — that one was already
+  stale before this pass). The build recipe itself is fine: it globs
+  `paper/sections/*.tex`, so the new file is picked up automatically, and the
+  comment-strip `sed` catches every new header line. Not fixed here because the
+  pass was scoped to `paper/sections/`.
+
+  **Gate A still blocks the v1.0.0 tag and this pass does not touch it.** The
+  author's end-to-end read has still not happened, and this pass added a new
+  section and two new tables that no human has read.
 
 ## Paper-ready framing decided 2026-09-03
 

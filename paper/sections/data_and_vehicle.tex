@@ -6,6 +6,22 @@
 % and results/tables/p1_duplicate_leakage.csv.
 % Every number below is traceable to one of those two committed tables or
 % to a counted property of the cached raw CSV.
+%
+% 2026-09-15 consolidated edit pass (see STATE.md). Three changes:
+%   (a) NEW Table 2 (tab:models), typeset from p1_model_metrics.csv: the six
+%       configurations, macro-recall, accuracy and per-class recall. The
+%       comparison was prose-only and surfaced three numbers.
+%   (b) NEW measurement sentence in 3.4: mid-risk recall 0.227 +/- 0.057 for
+%       the selected model, no higher than 0.302 in any configuration, tied
+%       to the 35 conflicting feature vectors already in 3.2. Turns "a model
+%       right 99% of the time would not need this machinery" from a general
+%       remark into a number. 0.580 now stated as the operating figure.
+%   (c) 3.3 disambiguated: the like-for-like comparator against the published
+%       accuracies (83.74 / 99.51 / 88.67) is ACCURACY 0.854, not macro-recall
+%       0.859. Same fix applied in intro.tex.
+% No locked number changed. Data spine re-verified from the raw cache:
+% 1014 / 2 at HR=7 / 1012 / 561 / 451 (233 low, 106 mid, 112 high) / 35 / 95
+% under 18 / min age 10.
 \section{Data and the Model Vehicle}
 \label{sec:data}
 
@@ -93,15 +109,19 @@ Kept    & 1012 & $0.859 \pm 0.026$ & $0.854 \pm 0.026$ & $0.908 \pm 0.031$ \\
 \end{table}
 
 Retaining the duplicates moves accuracy from 0.641 to 0.854 and macro-recall
-from 0.580 to 0.859. The inflated figure sits inside the band typically
-reported for this dataset, and the published range extends higher still:
-Maisoon et al.\ report 83.74\% and Mamun et al.\
+from 0.580 to 0.859. The inflated \emph{accuracy}, 0.854, is the like-for-like
+comparator for the published figures, which are accuracies, and it sits inside
+the band typically reported for this dataset; the published range extends
+higher still. Maisoon et al.\ report 83.74\% and Mamun et al.\
 99.51\%~\citep{maisoon2026stratification,mamun2025identification}. Neither
 describes duplicate handling, both report $n = 1014$, and preprocessing on
 this dataset is generally given only as normalisation and the removal of
-inconsistencies.
+inconsistencies. Yesmin et al.\ report 88.67\% on the same $n = 1014$ and
+likewise describe no duplicate handling, though that figure is not a
+like-for-like comparison: they add a synthetic regional access score to the
+six clinical features~\citep{yesmin2026trust}.
 
-We are careful about what this licenses us to say. Leakage is well
+Leakage is well
 documented: Kapoor and Narayanan set out its taxonomy and its role in the
 reproducibility crisis~\citep{kapoor2023leakage}, Rosenblatt et al.\ show
 that leakage through repeated subjects inflates performance and that the
@@ -126,13 +146,39 @@ headline number is legible as hygiene rather than as a weaker model.
 \label{sec:data-model}
 
 We compared logistic regression, random forest and XGBoost, each with and
-without in-fold SMOTE, under five-fold stratified cross-validation
-(\texttt{results/tables/p1\_model\_metrics.csv}). The primary metric is
+without in-fold SMOTE, under five-fold stratified cross-validation.
+Table~\ref{tab:models} gives all six configurations, typeset from
+\texttt{results/tables/p1\_model\_metrics.csv}. The primary metric is
 \textbf{macro-recall}, with macro-F1, per-class recall, one-versus-rest
 ROC-AUC and the confusion matrix as support. Macro-recall is the right
 primary here because the costs are asymmetric: failing to flag a high-risk
 mother is the error that matters, and headline accuracy on an imbalanced
-three-class problem conceals exactly that failure.
+three-class problem conceals that failure.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Six configurations under the same five-fold stratified
+cross-validation on the 451 deduplicated records. Mean $\pm$ standard
+deviation across folds. The two random-forest rows tie on the primary metric
+at $0.580$; Section~\ref{sec:data-model} gives the tie-break. Mid-risk recall
+does not exceed $0.302$ in any configuration.}
+\label{tab:models}
+\begin{tabular}{llrrrrr}
+\toprule
+ & & \multicolumn{2}{c}{Overall} & \multicolumn{3}{c}{Per-class recall} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-7}
+Model & Resample & Macro-recall & Accuracy & Low & Mid & High \\
+\midrule
+Logistic regression & none  & $0.553 \pm 0.056$ & $0.665 \pm 0.048$ & $0.948$ & $0.075$ & $0.635$ \\
+Logistic regression & SMOTE & $0.548 \pm 0.051$ & $0.587 \pm 0.037$ & $0.682$ & $0.283$ & $0.678$ \\
+Random forest       & none  & $\mathbf{0.580} \pm 0.027$ & $0.641 \pm 0.025$ & $0.790$ & $0.227$ & $0.723$ \\
+Random forest       & SMOTE & $\mathbf{0.580} \pm 0.040$ & $0.627 \pm 0.039$ & $0.742$ & $0.283$ & $0.713$ \\
+XGBoost             & none  & $0.558 \pm 0.020$ & $0.621 \pm 0.017$ & $0.777$ & $0.236$ & $0.660$ \\
+XGBoost             & SMOTE & $0.578 \pm 0.022$ & $0.627 \pm 0.024$ & $0.747$ & $0.302$ & $0.687$ \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 The final model is a \textbf{random forest with no resampling}
 (\texttt{n\_estimators=300}, \texttt{random\_state=42}). It ties the
@@ -144,11 +190,18 @@ units, which is what makes the ASHA and mother tiers expressible as templates
 over attributions at all. The selection is a constant in the code, and the
 script still prints the argmax winner so the tie stays visible.
 
-We present that 0.580 as the premise of the paper rather than as a shortfall
-to be excused. The design question this work addresses, how an uncertain
-prediction should be rendered to readers of differing power, only exists
-because models on data like this are uncertain. A model that was right 99\%
-of the time would not need the machinery we describe. The
+We take 0.580 as the operating figure for this deduplicated dataset; the
+rendering question exists precisely because models on data like this are
+uncertain. Table~\ref{tab:models} says where that uncertainty is concentrated.
+Mid-risk recall is $0.227 \pm 0.057$ for the selected model and reaches no
+higher than $0.302$ in any of the six configurations, against $0.790$ for low
+risk and $0.723$ for high. The mid class is the one the vehicle cannot
+resolve, which is what the 35 feature vectors carrying more than one risk
+label (Section~\ref{sec:data-dedup}) would predict: rows the model cannot
+distinguish it also cannot separate. Cases therefore land on the mid-high
+boundary as a structural property of this data rather than as an occasional
+accident, and a rendering that reaches a mother has to have an answer for
+them. The
 attributions themselves are stable and unremarkable: blood sugar is the
 leading global driver for every class, with systolic blood pressure second,
 and diastolic pressure and heart rate close to noise

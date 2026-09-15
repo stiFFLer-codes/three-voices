@@ -10,6 +10,23 @@
 % shap_case_contributions.csv (BS +0.204, BodyTemp +0.094), and the rendered
 % artifacts tier_asha_boundary_mid.txt and tier_mother_boundary_mid_hi.txt.
 % BUDGET: 2 pp including the figure. If it runs long, cut prose, not the rule.
+%
+% 2026-09-15 consolidated edit pass (see STATE.md). Four changes:
+%   (a) NEW paragraph in 4.2 naming the gate's one-sidedness: the margin test
+%       guards the high boundary only, GREEN follows the argmax untested.
+%       Framed as unhandled, with the symmetric extension as future work.
+%       Paired entry in limitations.tex 6.2. No rule changed in code.
+%   (b) NEW 4.4 "When the gate prevents a false alarm", on row 382
+%       (0.451/0.097/0.453, true low, predicted high, margin 0.002). Numbers
+%       from shap_case_summary.csv. Keeps both honesty sentences: amber on a
+%       true-low record is still a false referral; the gate made the error
+%       smaller, not correct.
+%   (c) The entitlement defence for stripping magnitude MOVED here from
+%       related_work.tex 2.4, into the mother-tier paragraph it defends.
+%       related_work.tex keeps the literature, the tension and a pointer.
+%   (d) 4.5 opener now points to Section 2 for the three literatures instead
+%       of restating them with the same cites; figure caption cut to what the
+%       figure needs; closing paragraph no longer re-narrates row 66.
 \section{Three Tiers from One Prediction}
 \label{sec:tiers}
 
@@ -43,6 +60,17 @@ class probabilities and shared across all three tiers:
 The threshold of $0.15$ is a design constant. We did not tune it, and no
 experiment in this paper supports that value over $0.10$ or $0.20$; we return
 to what would be needed to justify it in Section~\ref{sec:limitations}.
+
+The gate is one-sided, and we state where it fires rather than leave a reader
+to infer it. The margin test guards the high boundary only: \textsc{green}
+follows the argmax with no margin test at all, so a prediction that is
+low risk by a hair renders an unqualified all-clear to the mother. That is the
+opposite of the asymmetry Section~\ref{sec:data-model} argues for, where
+missing a higher-risk mother is the error that matters. The symmetric
+extension, derating an ungated near-tie \textsc{green} down to \textsc{amber}
+as the red-to-amber move already does, is the natural next version of this
+rule and is future work. This version does not implement it.
+
 Computing the band once matters as much as the threshold does. In the first
 version of the renderer the health worker's card banded on its own rule and
 the mother's lamp banded on this one, so a single prediction could carry two
@@ -73,15 +101,11 @@ features contribute negatively and together amount to less than $0.05$.
   dark.\label{fig:tiers-mother}}%
   {\includegraphics[height=52mm]{tier_mother_boundary_mid.png}}
 
-\caption{Row 66 of the deduplicated set, rendered for all three readers.
-The record is true mid-risk; the model calls it high risk, at
-$0.013 / 0.487 / 0.499$ across low, mid and high, a top-two margin of
-$0.012$. The clinician panel carries that margin intact, $0.487$ against
-$0.499$, so the near-tie stays visible. The other two panels carry the
-derated band instead: the card and the lamp show amber, and the red they
-would otherwise have carried is withheld from both. Amber still tells the
-mother to get checked. All four cases across all three tiers are in the
-archived repository.}
+\caption{Row 66 of the deduplicated set, rendered for all three readers. The
+clinician panel carries the near-tie intact at $0.487$ against $0.499$. The
+card and the lamp carry the derated band, and the red they would otherwise
+have shown is withheld from both. Amber still tells the mother to get checked.
+All four cases across all three tiers are in the archived repository.}
 \label{fig:tiers}
 \end{figure}
 
@@ -115,15 +139,42 @@ nearest health centre. The Hindi strings were written and clinically reviewed
 by the second author, a physician and native speaker; they are neither
 machine-translated nor author-invented.
 
+Stripping magnitude departs from the risk-communication literature of
+Section~\ref{sec:rw-riskcomm}, which recommends conveying magnitude through an
+icon array or a visible denominator, and we take that departure on a stated
+condition. An icon array communicates a magnitude the sender is entitled to
+assert. At $0.487$ against $0.499$ the model is not so entitled, and rendering
+that split as roughly fifty chances in a hundred would carry a precision it
+does not have, to the reader least equipped to discount it. Where the
+magnitude is trustworthy, show it; where the gate has fired, an ordinal band
+and one action is what the model can support. That is the uncertainty argument
+of Section~\ref{sec:rw-uncertainty} arriving from the health-communication
+side, and it remains an argument rather than a result, since whether the band
+is understood as intended is untested here.
+
+\subsection{Derating a false alarm}
+\label{sec:tiers-failure}
+
+Row 66 shows the rule behaving correctly on a near-tie between mid and high.
+Row 382 shows what it is for. That record is true low risk, the model calls it
+high risk at $0.451 / 0.097 / 0.453$ across low, mid and high, and the top-two
+margin is $0.002$. A 13-year-old with a body temperature of
+101\,\textdegree F, the case Section~\ref{sec:data-age} designates as the
+vehicle's failure mode, would have received a red lamp and an urgent spoken
+message on the argmax alone. The gate withheld it and both derated channels
+show amber instead.
+
+Amber on a true-low record is still a false referral. The gate made the error
+smaller, not correct, and it did nothing about the underlying misprediction,
+which the clinician tier carries unmodified here as it does on every case.
+What it changed is what the mother was told.
+
 \subsection{What we claim}
 
-Three literatures surround this design and we claim none of them. Tiering
-explanations by audience is established~\citep{arya2019explanation,
-imrie2023multiple,kim2024stakeholder}. Withholding a prediction under
-uncertainty is a mechanism with a long lineage, and our margin rule is a
-hand-set instance of it~\citep{hendrickx2024reject,mozannar2020consistent}.
-Fitting a classifier with SHAP attributions to this dataset is
-saturated~\citep{mamun2025identification,maisoon2026stratification}.
+Section~\ref{sec:related} places the three literatures this design sits in and
+states what each has settled: tiering explanations by audience, withholding a
+prediction under uncertainty, and fitting a classifier with SHAP attributions
+to this dataset. We claim none of them.
 
 What we claim is the intersection, and it is narrow. Prior work on
 audience-specific uncertainty makes the \emph{display} of uncertainty
@@ -138,6 +189,5 @@ cannot lose the alarm. What separates those two is how much of the model's
 state each is asked to hold, not severity. The card carries the drivers and
 a next step; the lamp carries neither.
 
-On this case the rule is doing what it was built for. The model is nearly
-split between mid and high, and it is wrong --- the record is true mid-risk.
-The rendering that reaches the mother is the one that survives being wrong.
+Both cases in this section are ones the model gets wrong. The rendering that
+reaches the mother is the one that survives being wrong.

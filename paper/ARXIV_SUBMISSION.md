@@ -71,7 +71,15 @@ De-LaTeX'd from `sections/abstract.tex`: math delimiters removed, `\emph`
 rendered as straight double quotes, straight quotes throughout, no macros. The
 wording is unchanged; this is a transcription.
 
-Three unlabelled paragraphs (Decision Log #49). The Purpose / Methods /
+Three unlabelled paragraphs (Decision Log #49), reordered 2026-09-11:
+mechanism, then the leakage measurement, then the caveats. The reorder itself
+was a whole-block swap of paragraphs 2 and 3 that changed no word of either;
+the transcription measured 1760 characters both before and after it, which is
+the mechanical proof. The count then moved to 1827 for a separate correction
+made the same day: the duplicate count is now attributed to the 1012 rows that
+survive the plausibility filter rather than to the dataset as distributed,
+because the raw file holds 562 duplicates and 561 is the post-filter figure
+the body has always reported. The Purpose / Methods /
 Results / Conclusion labelling of Decision Log #47/#48 was dropped for the
 arXiv submission: the journal requires it and arXiv does not, and the labels
 put a structural signal on a shopfront that a moderator reads for what the
@@ -81,20 +89,20 @@ is restored before the journal submission.
 ```
 Three Voices renders a single maternal-health risk prediction as three stakeholder-specific action-signals, one each for a clinician, a community health worker, and a mother, and gates each signal on the model's own uncertainty. Below a fixed top-two margin the highest-severity signal is withheld from the mother's channel and the health worker's, while the clinician's view of the split is untouched: the derate is red to amber, never red to green, and amber still says "needs follow-up". Every string is a deterministic template filled from the case's SHAP attributions, with no language model at inference, so a rendering can be regenerated and audited line by line. Code, the rendered artifacts, the cross-validation and SHAP tables, and the evaluation matrix are archived, and all of it regenerates from five commands.
 
-This is a design and feasibility artifact. Its evaluation is a formative single-evaluator heuristic critique of our own renderings, which found five defects, all of them corrected. That is an instrument that improved the design, not evidence that any tier helps a reader. No mother, health worker or clinician has used the system; the data is public, the task is generic maternal-health risk, and we make no clinical-validity claim. User studies with the three groups are the next step, gated on ethics clearance. The abstention idea sits between stakeholder-tailored explanation and selective prediction, and we claim only their pairing, not either mechanism.
+We also report a leakage audit of the UCI Maternal Health Risk benchmark. Of the 1012 rows that survive a two-row plausibility filter, 561 are exact duplicates of an earlier row, and retaining them moves macro-recall from 0.580 to 0.859 under the same cross-validation. That is a cost we quantify, not a fault we claim to have found first.
 
-We also report a leakage audit of the UCI Maternal Health Risk benchmark. It contains 561 exact duplicate rows, and retaining them moves macro-recall from 0.580 to 0.859 under the same cross-validation. That is a cost we quantify, not a fault we claim to have found first.
+This is a design and feasibility artifact. Its evaluation is a formative single-evaluator heuristic critique of our own renderings, which found five defects, all of them corrected. That is an instrument that improved the design, not evidence that any tier helps a reader. No mother, health worker or clinician has used the system; the data is public, the task is generic maternal-health risk, and we make no clinical-validity claim. User studies with the three groups are the next step, gated on ethics clearance. The abstention idea sits between stakeholder-tailored explanation and selective prediction, and we claim only their pairing, not either mechanism.
 ```
 
-**1760 characters**, against the hard ceiling of 1920 that `prep.html` states
-("abstracts longer than 1920 characters will not be accepted"); 277 words. Both
+**1827 characters**, against the hard ceiling of 1920 that `prep.html` states
+("abstracts longer than 1920 characters will not be accepted"); 289 words. Both
 counts are machine-measured on the block above, not estimated. The block is
 generated from `sections/abstract.tex` rather than retyped, so it cannot drift
 from the manuscript the way the previous transcription did — that one still
 carried the pre-trim 250-word text after Decision Log #48 shortened the source
 to 237, and claimed to be word-for-word identical while it was not.
 
-277 words is over the 150–250 band SN Computer Science sets. That is accepted
+289 words is over the 150–250 band SN Computer Science sets. That is accepted
 here because arXiv sets no word limit, and because the labelled 237-word
 abstract is restored for the journal submission.
 

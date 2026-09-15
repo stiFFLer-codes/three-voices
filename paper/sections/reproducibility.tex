@@ -43,10 +43,12 @@ commands.
 One seed, fixed at 42 in \texttt{src/config.py}, is applied to Python's hash
 randomisation, the standard library generator and NumPy by a \texttt{set\_seeds()}
 call at the top of each script that touches randomness. The loader contains
-no random component and needs none. Dependencies are pinned to exact
-versions, and the dataset is cached after first download rather than
-re-fetched. Re-running the pipeline reproduces every PNG, CSV and text output
-byte for byte.
+no random component and needs none. Dependencies are pinned to exact versions
+and require Python 3.12, since the NumPy and scikit-learn releases named in
+\texttt{requirements.txt} predate the 3.13 and 3.14 wheels and will not build
+on a newer interpreter. The dataset is cached after first download rather
+than re-fetched. Re-running the pipeline reproduces every PNG, CSV and text
+output byte for byte.
 
 \subsection{The exception}
 

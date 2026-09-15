@@ -1,4 +1,6 @@
 # One Prediction, Three Voices — pinned dependencies
+# Requires Python 3.12. numpy 1.26.4 and scikit-learn 1.5.1 ship no wheels
+# for 3.13+, so a newer interpreter cannot install this set.
 # Install:  pip install -r requirements.txt
 
 # --- Phase 0-2: pipeline + SHAP ------------------------------------------

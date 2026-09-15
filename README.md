@@ -51,8 +51,11 @@ language model generates health text at inference.
 
 ## Quickstart
 
+Requires **Python 3.12**. The pinned NumPy and scikit-learn releases ship no
+wheels for 3.13 or later, so a newer interpreter cannot install this set.
+
 ```bash
-python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+python3.12 -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 

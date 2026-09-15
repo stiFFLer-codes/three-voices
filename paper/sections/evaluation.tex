@@ -14,6 +14,17 @@
 % validation" paragraph below is UNCHANGED and must stay that way: the new
 % paragraph gives the method standing, it does not upgrade what the method
 % proves, and it says so in its own last two sentences.
+%
+% 2026-09-15 consolidated edit pass (see STATE.md):
+%   (a) NEW Table 3 (tab:matrix), the 16 x 3 grid from heuristic_matrix.csv,
+%       symbols only, rationales left in the CSV. The abstract already named
+%       this matrix as archived and the paper had never shown it.
+%   (b) Four/five disambiguated. Both numbers were right and referred to
+%       different things: four Fail RATINGS on the first pass, arising from
+%       five distinct DEFECTS (C1-C5 in heuristic_evaluation.md). "Four" is
+%       NOT changed to "five"; a clause now says which is which.
+%   (c) One editorial tail cut. The single-evaluator / not-user-testing /
+%       not-validation paragraph is UNCHANGED, as its own header requires.
 \section{Formative Heuristic Evaluation}
 \label{sec:eval}
 
@@ -30,8 +41,7 @@ against is the refined ten~\citep{nielsen1990heuristic,
 nielsen1994enhancing}; conformance inspection against the WCAG 2.1 success
 criteria is the corresponding instrument on the accessibility
 side~\citep{w3c2025wcag21}. Neither substitutes for users. Both were built to
-find defects early, which is how a design claim gets tested before anyone is
-asked to rely on it.
+find defects early.
 
 This is a single-evaluator, author-conducted, formative assessment. It is not
 user testing and it is not validation. Nothing in it is evidence that the
@@ -40,9 +50,10 @@ what we report.
 
 \subsection{What it found}
 
-The first pass ran against the original renderer and returned four failures,
-three of them on the health worker's card. All were fixed and the tiers
-re-rendered; the ratings below describe the corrected artifacts.
+The first pass ran against the original renderer and returned four Fail
+ratings, three of them on the health worker's card, arising from five distinct
+defects. All five were fixed and the tiers re-rendered; the ratings below and
+in Table~\ref{tab:matrix} describe the corrected artifacts.
 
 \textbf{The driver list was sign-blind.} Features were ranked by absolute
 SHAP magnitude with no sign filter, so a reading that argued \emph{against}
@@ -75,12 +86,50 @@ exists to deliver.
 
 \subsection{What it could not settle}
 
-Across the 48 cells the distribution after those fixes is 29 pass, 12
-partial, 1 fail and 6 deferred. The count is a description of coverage and
-not a score, and it is worth less than the five defects above. The single
-failure is the clinician tier shipping as an image of text. The six deferred
-cells are all keyboard operability and assistive-technology semantics, which
-a static PNG cannot exercise and a deployed application would.
+Table~\ref{tab:matrix} gives the full matrix. Across the 48 cells the
+distribution after those fixes is 29 pass, 12 partial, 1 fail and 6 deferred.
+The count is a description of coverage and not a score, and the five defects
+above carry more weight. The single failure is the clinician tier shipping as
+an image of text. The six deferred cells are all keyboard operability and
+assistive-technology semantics, which a static PNG cannot exercise and a
+deployed application would.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{All 48 cells: 16 criteria rated against each tier, on the corrected
+artifacts. $\bullet$ pass, $\circ$ partial, $\times$ fail, -- deferred. The
+per-cell rationale for every rating is in
+\texttt{results/tables/heuristic\_matrix.csv}. Read by row the criteria are
+covered; read by column each tier fails where a single universal rendering
+would have to compromise.}
+\label{tab:matrix}
+\begin{tabular}{lccc}
+\toprule
+Criterion & Clinician & ASHA & Mother \\
+\midrule
+\multicolumn{4}{l}{\emph{WCAG 2.1}} \\
+1.1.1 Text alternatives for non-text content & $\circ$ & $\bullet$ & $\circ$ \\
+1.4.1 Colour not the only cue                & $\bullet$ & $\bullet$ & $\circ$ \\
+1.4.3 Contrast (minimum)                     & $\bullet$ & $\bullet$ & $\bullet$ \\
+1.4.5 Images of text                         & $\times$ & $\circ$ & $\bullet$ \\
+2.1 / 2.4 Keyboard, focus order, navigation  & -- & -- & -- \\
+3.1.1 / 3.1.2 Language of page and of parts  & $\bullet$ & $\circ$ & $\bullet$ \\
+3.1.5 Reading level / plain language         & $\circ$ & $\circ$ & $\bullet$ \\
+3.2.4 Consistent identification              & $\bullet$ & $\bullet$ & $\bullet$ \\
+4.1.2 Name, role, value                      & -- & -- & -- \\
+\addlinespace
+\multicolumn{4}{l}{\emph{Nielsen's heuristics}} \\
+1. Visibility of system status               & $\bullet$ & $\bullet$ & $\bullet$ \\
+2. Match between system and the real world   & $\bullet$ & $\bullet$ & $\bullet$ \\
+4. Consistency and standards                 & $\bullet$ & $\bullet$ & $\bullet$ \\
+5. Error prevention                          & $\bullet$ & $\bullet$ & $\bullet$ \\
+6. Recognition rather than recall            & $\circ$ & $\bullet$ & $\circ$ \\
+8. Aesthetic and minimalist design           & $\circ$ & $\bullet$ & $\bullet$ \\
+10. Help and documentation                   & $\circ$ & $\bullet$ & $\circ$ \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 Read by column, each tier fails where a single universal rendering would have
 to compromise: the clinician view needs chart and English literacy, the

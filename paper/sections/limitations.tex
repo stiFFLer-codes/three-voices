@@ -7,10 +7,25 @@
 % results/tables/p1_model_metrics.csv and the cached frame.
 % RULE: state each once, name what resolves it, do not re-litigate. A
 % limitation hedged three times reads weaker than one stated cleanly.
+% 2026-09-11: two subsection headings renamed to describe their content
+% instead of confessing an absence ("Nobody has used this" -> "Evaluation
+% without users"; "Nothing is deployed" -> "Evaluated on a
+% workstation"). Two independent external reviews read the old headings as
+% an incompleteness signal at ToC skim. NOT ONE SENTENCE OF BODY TEXT
+% MOVED: every limitation is stated exactly as before.
+%
+% 2026-09-15 consolidated edit pass (see STATE.md). Section 6 is a declared
+% collection point and its cross-section repetition was deliberately NOT
+% touched. Two changes only:
+%   (a) NEW entry in 6.2: the gate is one-sided, the low boundary is
+%       unprotected, extending the rule symmetrically is future work and this
+%       version does not do it. Pairs with the new paragraph in 4.2.
+%   (b) One framing sentence trimmed in 6.3. No limitation added, removed or
+%       reworded.
 \section{Limitations}
 \label{sec:limitations}
 
-\subsection{Nobody has used this}
+\subsection{Evaluation without users}
 
 No mother, health worker or clinician has seen any of these renderings. That
 is the limitation the rest depend on, and it bounds what the paper is allowed
@@ -56,10 +71,15 @@ fractions rather than calibrated posteriors. We treat $0.15$ as a design
 constant on an ordering, not as a statement about probability. Calibrating
 the model, and then asking whether the threshold should move, is future work.
 
+The gate also has only one side. It tests the margin at the high boundary and
+not at the low one (Section~\ref{sec:tiers}), so a near-tie that resolves to
+low risk renders an unqualified \textsc{green} to the mother and no derate is
+available for it. Extending the rule symmetrically is future work; this
+version does not do it.
+
 \subsection{Who the renderings still exclude}
 
-Each tier assumes something about its reader, and stating the assumption is
-what makes the gap findable.
+Each tier assumes something about its reader.
 
 The mother's visual carries no rendered text, so a deaf or hard-of-hearing
 mother gets nothing from it; the spoken sentence is her only channel and she
@@ -84,7 +104,7 @@ describes may not have. Deployment-grade Indian-language synthesis
 (AI4Bharat, Bhashini) is the stated path. What we treat as the artifact is
 the Hindi source string, not the audio file.
 
-\subsection{Nothing is deployed}
+\subsection{Evaluated on a workstation}
 
 This is a design and feasibility artifact evaluated on a workstation. We make
 no field claim, no claim about performance under real clinic conditions, and

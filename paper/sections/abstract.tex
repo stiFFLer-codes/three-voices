@@ -20,8 +20,21 @@
 % new will land. Nothing was dropped to achieve that, and one sentence was
 % ADDED to paragraph 1 naming the archived, regenerable artifact, which is
 % the paper's primary-research evidence and was previously absent here.
-% ORDERING RULE: the caveats stay EARLY, in paragraph 2, where a reader
-% meets them beside the thing they bound. Not one disclaimer was dropped ---
+% ORDERING RULE (SUPERSEDED 2026-09-11 — see below): the caveats stay EARLY,
+% in paragraph 2, where a reader meets them beside the thing they bound.
+%
+% 2026-09-11 SUPERSEDES the ordering rule above. Paragraphs 2 and 3 are
+% SWAPPED: the leakage measurement now sits at 2, the caveats at 3. Not one
+% word of either paragraph changed — this was a pure block swap, verified by
+% asserting both blocks matched byte-for-byte before and after.
+% WHY: two independent external reviews, run separately, both reported that
+% the stacked negatives on page one cause a moderator triaging in ~60 seconds
+% to over-weight them, and both recommended letting the hard number lead.
+% Convergence from two independent reads is why this outweighs the earlier
+% rule. The caveats are still IN the abstract, ~100 words later, not deferred
+% to a section; "past the fold" here means paragraph 3 of 3, nothing is
+% hidden. The eight-item checklist below is UNCHANGED and all eight items
+% survive verbatim. Not one disclaimer was dropped ---
 % the checklist that must survive any future edit is: (1) design and
 % feasibility artifact, (2) formative single-evaluator inspection of our own
 % renderings, (3) not evidence the tiers help anyone, (4) nobody in the three
@@ -43,6 +56,12 @@ audited line by line. Code, the rendered artifacts, the cross-validation and
 SHAP tables, and the evaluation matrix are archived, and all of it
 regenerates from five commands.
 
+We also report a leakage audit of the UCI Maternal Health Risk
+benchmark. Of the 1012 rows that survive a two-row plausibility filter, 561
+are exact duplicates of an earlier row, and retaining them moves macro-recall
+from $0.580$ to $0.859$ under the same cross-validation. That is
+a cost we quantify, not a fault we claim to have found first.
+
 This is a design and feasibility artifact. Its evaluation is a
 formative single-evaluator heuristic critique of our own renderings, which
 found five defects, all of them corrected. That is an instrument that
@@ -52,11 +71,6 @@ is generic maternal-health risk, and we make no clinical-validity claim. User
 studies with the three groups are the next step, gated on ethics clearance.
 The abstention idea sits between stakeholder-tailored explanation and
 selective prediction, and we claim only their pairing, not either mechanism.
-
-We also report a leakage audit of the UCI Maternal Health Risk
-benchmark. It contains 561 exact duplicate rows, and retaining them moves
-macro-recall from $0.580$ to $0.859$ under the same cross-validation. That is
-a cost we quantify, not a fault we claim to have found first.
 
 \medskip
 
