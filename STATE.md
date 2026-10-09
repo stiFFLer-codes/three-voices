@@ -2527,7 +2527,7 @@ Decision Log entries named.
   - 1013 is now "the repository page lists 1013 instances", cited to
     `ahmed2020maternal`. The UCI page and API were re-read this session: 1013.
   - The in-sample mechanism uses the brief's forest-and-leaves wording.
-  - "A false high call like this one". Bands appear as `	extsc{red}`.
+  - "A false high call like this one". Bands appear as `\textsc{red}`.
   - "On all 1014 records" (Yesmin).
   - The 5.9 pt overfull box in 3.4 was reworded away ("set to
     `n_estimators=300` and `random_state=42`").
@@ -2574,3 +2574,52 @@ Decision Log entries named.
   - Every /anti-ai item for Sections 3 and 5 was decided by the author and
     applied, and the Section 4 report items are applied or kept as §1b says,
     which satisfies CLAUDE.md rule 8 for these commits.
+
+- **2026-10-09 #67 — Claim audit (REVISION_BRIEF §12): every citing sentence
+  in every section, checked against its source. No prose was edited.** The
+  table is in `CLAIM_AUDIT.md` (repo root, untracked).
+  - **Scope.** The audit ran on the state at `30eafa9`: 40 typeset sentences
+    carrying `\citep`/`\citet`, covering all 37 `refs.bib` keys. The
+    conclusion, reproducibility and back matter cite nothing in typeset text.
+  - **Sources read this session.**
+    - Abstracts: OpenAlex by DOI, with Semantic Scholar or Crossref as
+      fallback; the arXiv API for Arya and Yesmin.
+    - Publisher pages: Nature (Imrie, Bernett), PMLR (Mozannar), Springer
+      (Peters).
+    - Primary pages: W3C TR/WCAG21 and the UCI page for id 863.
+    - The authors' own copy of Wobbrock & Kientz.
+  - **Not retrievable.**
+    - The Nielsen 1994 abstract: elided by the publisher, and ACM returned
+      403.
+    - The Mamun and Maisoon full texts (gold OA): Wiley's Cloudflare
+      challenge and IEEE's bot block. "Neither removes duplicate rows" rests
+      on the author's full-text read (#65).
+  - **Verdicts: 32 supported, 5 partly, 3 unsupported.**
+    - Unsupported: the Szymanski "co-vary" sentence (related_work:69–73), and
+      the Okolo/Solano-Kamaiko "even after simplification" claim at
+      related_work:123–130 and limitations:58–62. All three have pre-decided
+      fixes in §12.
+    - Partly:
+      - Imrie, "genuinely divergent … not differing degrees".
+      - The six-paper "same broad construction" sentence: cross-validation
+        and resampling are not in all six abstracts.
+      - Maisoon "systolic": the abstract says "Blood Pressure".
+      - Young et al., which is a scoping review, not a re-analysis.
+      - Nielsen "the refined ten", which cannot be checked.
+    - Each partly row carries a replacement sentence in `CLAIM_AUDIT.md`.
+  - **Two uncited follow-on sentences are partly supported.**
+    - Maisoon's "the same two-row outlier removal" (related_work:176)
+      contradicts the §2a decision.
+    - Yesmin's "fourteen clinicians …, 71.4% of whom" (related_work:189–190):
+      the source says 14 healthcare professionals, and 71.4% across three
+      cases.
+  - **Pre-decided §12 fixes, located.** Only §5.2 is done (`5652ad4`).
+    - Pending in batch B: the §6.1 sentence (limitations:58–62) and the §6.5
+      clause.
+    - Pending in batch C: §2.3 Okolo/Solano (related_work:123–130), §2.1
+      Szymanski, and the §2.3 Okolo 2022 counts (16 / 3 / 1).
+    - A grep confirms that the abstract, intro and conclusion do not repeat
+      the CHW claim.
+  - **Correction to #66.** A shell typo had written a tab character in place
+    of the backslash-t in "`\textsc{red}`" (Section 3 bullet). It is restored
+    here. The wording is unchanged.
