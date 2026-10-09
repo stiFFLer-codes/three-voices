@@ -4,7 +4,27 @@
 %     random, numpy. Called first in model.py, explain.py, render.py,
 %     evaluate.py. data.py contains no random component at all (verified by
 %     grep), so the loader needs no seeding — do NOT claim it calls it.
-%   requirements.txt: exact-version pins.
+%   requirements.txt: exact-version pins on 11 packages. Derivation: lines
+%     containing "==" that are not comments = 11 (ucimlrepo, numpy, pandas,
+%     scikit-learn, joblib, imbalanced-learn, xgboost, shap, matplotlib, gTTS,
+%     Pillow; jupyter is commented out). joblib is transitive, so the text
+%     does not call the eleven "direct".
+%   requirements-lock.txt: lines containing "==" = 35 packages. (Unrelated to
+%     the 35 conflicting feature vectors.)
+%   src.model writes five CSVs: p1_model_metrics, p1_duplicate_leakage,
+%     p1_cohort_summary, p1_oof_predictions, p1_gate_summary. src.explain
+%     writes three CSVs (global, case summary, case contributions: 3 to_csv
+%     calls) and five figures (shap_global_high.png + one waterfall per case
+%     in a loop over the four cases).
+%   2026-10-09 revision (REVISION_BRIEF §6): new CSVs and fold-model SHAP
+%     named; pin sentence replaced.
+%   2026-10-09 (REVISION_BRIEF §13a): the single-threaded sentence is scoped
+%     to out-of-fold scoring, the only path that sets clf__n_jobs=1
+%     (out_of_fold() in src/model.py). evaluate() still predicts with
+%     n_jobs=-1 for Table 2 and is deliberately unchanged, so the sentence
+%     must not be widened to "prediction". The three-"which" sentence in the
+%     src.model item is split; "rather than rounding it to either extreme" is
+%     deleted from the exception.
 %   Decision Log #10/#18 (gTTS not reliably byte-reproducible), #19 (a cold
 %     run must clear results/audio/ first).
 %   Zenodo concept DOI 10.5281/zenodo.22252076, confirmed via the Zenodo API.
@@ -22,13 +42,16 @@ commands.
     later run reads the cache, so the rest of the pipeline needs no network.
   \item[\texttt{python -m src.model}] Runs five-fold stratified
     cross-validation over three classifiers with and without SMOTE, fitting
-    scaling and resampling inside each training fold. Writes
-    \texttt{p1\_model\_metrics.csv}, \texttt{p1\_duplicate\_leakage.csv} and
+    scaling and resampling inside each training fold. Writes five CSVs:
+    \texttt{p1\_model\_metrics.csv}, \texttt{p1\_duplicate\_leakage.csv},
     \texttt{p1\_cohort\_summary.csv}, which carries every cohort count this
-    paper quotes. Saves the selected model.
+    paper quotes. \texttt{p1\_oof\_predictions.csv} scores every record with
+    the fold model that held it out, and \texttt{p1\_gate\_summary.csv} holds
+    the gate counts. Saves the selected model.
   \item[\texttt{python -m src.explain}] Computes global mean absolute SHAP
-    per feature per class and local SHAP for the four criterion-selected
-    cases. Writes three CSVs and five figures.
+    per feature per class from the final model fitted to all 451 records, and
+    local SHAP for the four criterion-selected cases from the fold model that
+    held each one out. Writes three CSVs and five figures.
   \item[\texttt{python -m src.render}] Renders the three tiers. It reads the
     saved SHAP tables rather than the model, so the renderer and the
     explainer cannot drift apart. \texttt{-{}-case all} does all four cases.
@@ -43,10 +66,14 @@ commands.
 One seed, fixed at 42 in \texttt{src/config.py}, is applied to Python's hash
 randomisation, the standard library generator and NumPy by a \texttt{set\_seeds()}
 call at the top of each script that touches randomness. The loader contains
-no random component and needs none. Dependencies are pinned to exact versions
-and require Python 3.12, since the NumPy and scikit-learn releases named in
-\texttt{requirements.txt} predate the 3.13 and 3.14 wheels and will not build
-on a newer interpreter. The dataset is cached after first download rather
+no random component and needs none. The out-of-fold scoring that produces
+every case probability and gate count runs single-threaded, so the forest's
+floating-point sums are added in a fixed order. All eleven packages in
+\texttt{requirements.txt} are pinned to exact versions, and
+\texttt{requirements-lock.txt} records the full environment of 35 packages.
+The pins require Python 3.12, since the NumPy and scikit-learn releases named
+in \texttt{requirements.txt} predate the 3.13 and 3.14 wheels and will not
+build on a newer interpreter. The dataset is cached after first download rather
 than re-fetched. Re-running the pipeline reproduces every PNG, CSV and text
 output byte for byte.
 
@@ -54,8 +81,8 @@ output byte for byte.
 
 Speech synthesis is not ours to seed. The Hindi audio is produced by a remote
 service, and re-running the renderer on unchanged input returns files that
-are sometimes byte-identical and sometimes not. We state that as it is rather
-than rounding it to either extreme. The determinism guarantee above covers
+are sometimes byte-identical and sometimes not. We state that as it is. The
+determinism guarantee above covers
 our pipeline and stops at that endpoint.
 
 What is deterministic, and what we therefore treat as the artifact of record,
