@@ -6,8 +6,12 @@
 % reviewed by the co-author), #17 (per-tier claim).
 % Novelty framed per related_work.md §2 — audience-aware SUPPRESSION, the
 % intersection only, mechanism not reclaimed.
-% Numbers: results/tables/shap_case_summary.csv (row 66, 0.013/0.487/0.499),
-% shap_case_contributions.csv (BS +0.204, BodyTemp +0.094), and the rendered
+% Numbers (current, out-of-fold; see the 2026-10-09 note below):
+% results/tables/shap_case_summary.csv (row 426: 0.233/0.382/0.384;
+% row 325: 0.411/0.148/0.441), p1_oof_predictions.csv (margins 0.002, 0.029),
+% shap_case_contributions.csv (row 426: BS +0.227, Age +0.052, Systolic -0.072,
+% HeartRate -0.050, BodyTemp -0.026, Diastolic +0.007; row 325: BodyTemp
+% +0.253), p1_gate_summary.csv (gate counts, Table in 4.5), and the rendered
 % artifacts tier_asha_boundary_mid.txt and tier_mother_boundary_mid_hi.txt.
 % BUDGET: 2 pp including the figure. If it runs long, cut prose, not the rule.
 %
@@ -27,6 +31,28 @@
 %   (d) 4.5 opener now points to Section 2 for the three literatures instead
 %       of restating them with the same cites; figure caption cut to what the
 %       figure needs; closing paragraph no longer re-narrates row 66.
+%
+% 2026-10-09 revision (REVISION_BRIEF §1): out-of-fold re-grounding.
+%   - 4.2: one sentence saying all probabilities are out of fold (points to
+%     sec:data-model); one sentence in the one-sidedness paragraph with the 22
+%     ungated near-ties and the 3 true-high among them; label sec:tiers-band.
+%   - 4.3: case re-grounded from row 66 to row 426 (figure caption, clinician,
+%     ASHA and icon-array paragraphs); ASHA absolute-value clause; mother
+%     provenance sentence replaced; "entitled" removed.
+%   - 4.4: re-grounded from row 382 (13-year-old) to row 325 (17-year-old).
+%   - 4.5: old "What we claim" deleted in full; new "The gate across all 451
+%     records" with the gate table (tab:gate), typeset by hand from
+%     p1_gate_summary.csv.
+%   - Rule-forced (WRITING_RULES §3): \textbf{} removed from 4.1, "---" removed
+%     from the band list, "not entitled"/"is entitled" removed from 4.1.
+%   - Then REVISION_BRIEF §1a (author-approved fixes, Decision Log #64): 4.1
+%     reworded; "what do I do next, not how likely is this" and "smaller, not
+%     correct" restored (design-content contrasts, allowed by the revised
+%     WRITING_RULES §3); gate-table row for the 22 ungated low-risk near-ties;
+%     4.5 gains the inside-vs-outside accuracy sentence and its caveat, the
+%     threshold sentence, and "outside the 0.15 margin, with margins from
+%     0.230 to 0.880" (min/max margin of the 11 true-high GREEN records with
+%     margin >= 0.15, p1_oof_predictions.csv).
 \section{Three Tiers from One Prediction}
 \label{sec:tiers}
 
@@ -38,13 +64,14 @@ raise: the red lamp and the urgent spoken message for the mother, the
 describes withholds that signal when the model is close to a coin flip, and
 substitutes a middle signal that still says \emph{needs follow-up}.
 
-The direction of that substitution is the whole design, so we state it before
-anything else. \textbf{The derate is red to amber, never red to green.} A
-near-tie does not mean relax. It means the system is not entitled to the
-loudest thing it can say, and falls back to the one below it, which still
-sends the mother to a health worker. Nothing here removes a mother from care.
+The direction of that substitution matters most, so we state it first: the
+derate is red to amber, never red to green. When the model is close to a tie,
+its output gives no basis for the loudest signal, and the system falls back to
+the one below it, which still sends the mother to a health worker. Nothing
+here removes a mother from care.
 
 \subsection{The band rule}
+\label{sec:tiers-band}
 
 Each rendering is driven by one band, computed once per prediction from the
 class probabilities and shared across all three tiers:
@@ -53,9 +80,13 @@ class probabilities and shared across all three tiers:
   \item \textsc{green} if the predicted class is low risk.
   \item \textsc{red} if the predicted class is high risk \emph{and} the
     top-two probability margin is at least $0.15$.
-  \item \textsc{amber} otherwise --- which covers every mid-risk prediction
+  \item \textsc{amber} otherwise, which covers every mid-risk prediction
     and every high-risk prediction that sits inside the margin.
 \end{itemize}
+
+All probabilities and SHAP values in this section are out of fold: each record
+is scored by the cross-validation fold model that did not see it
+(Section~\ref{sec:data-model}).
 
 The threshold of $0.15$ is a design constant. We did not tune it, and no
 experiment in this paper supports that value over $0.10$ or $0.20$; we return
@@ -66,7 +97,9 @@ to infer it. The margin test guards the high boundary only: \textsc{green}
 follows the argmax with no margin test at all, so a prediction that is
 low risk by a hair renders an unqualified all-clear to the mother. That is the
 opposite of the asymmetry Section~\ref{sec:data-model} argues for, where
-missing a higher-risk mother is the error that matters. This version does not
+missing a higher-risk mother is the error that matters. Out of fold, 22
+low-risk predictions fall inside the margin, and 3 of them are true high-risk
+records (Table~\ref{tab:gate}). This version does not
 implement the symmetric extension, derating an ungated near-tie
 \textsc{green} down to \textsc{amber} as the red-to-amber move already does;
 Section~\ref{sec:future} takes it up.
@@ -79,11 +112,12 @@ identities. Section~\ref{sec:eval} describes how that was caught.
 \subsection{One prediction, three renderings}
 
 Figure~\ref{fig:tiers} shows the same prediction rendered three ways. The
-case is row 66 of the deduplicated set, a true mid-risk record the model
-calls high risk, with class probabilities $0.013 / 0.487 / 0.499$ across low,
-mid and high. The top-two margin is $0.012$. Blood sugar contributes $+0.204$
-to the predicted class and body temperature $+0.094$; the remaining four
-features contribute negatively and together amount to less than $0.05$.
+case is row 426 of the deduplicated set, a true mid-risk record the model
+calls high risk. Scored out of fold, its class probabilities are
+$0.233 / 0.382 / 0.384$ across low, mid and high, and the top-two margin is
+$0.002$. Blood sugar ($+0.227$) and age ($+0.052$) push toward high risk.
+Systolic pressure ($-0.072$), heart rate ($-0.050$) and body temperature
+($-0.026$) push against it. Diastolic pressure is negligible ($+0.007$).
 
 \begin{figure}[t!]
 \centering
@@ -101,17 +135,18 @@ features contribute negatively and together amount to less than $0.05$.
   dark.\label{fig:tiers-mother}}%
   {\includegraphics[height=52mm]{tier_mother_boundary_mid.png}}
 
-\caption{Row 66 of the deduplicated set, rendered for all three readers. The
-clinician panel carries the near-tie intact at $0.487$ against $0.499$. The
-card and the lamp carry the derated band, and the red they would otherwise
-have shown is withheld from both. Amber still tells the mother to get checked.
-All four cases across all three tiers are in the archived repository.}
+\caption{Row 426 of the deduplicated set, scored out of fold and rendered for
+all three readers. The clinician panel carries the near-tie intact at $0.382$
+against $0.384$. The card and the lamp carry the derated band, and the red
+they would otherwise have shown is withheld from both. Amber still tells the
+mother to get checked. All four cases across all three tiers are in the
+archived repository.}
 \label{fig:tiers}
 \end{figure}
 
 \paragraph{Clinician.} The full decomposition, unmodified. Signed SHAP
 contributions per feature with numeric labels, all three class probabilities,
-and the six raw readings in clinical units. The $0.487$ against $0.499$ is
+and the six raw readings in clinical units. The $0.382$ against $0.384$ is
 shown as it stands. A reader who can interrogate the model is given what she
 needs to do so, including the fact that the call was nearly a tie.
 
@@ -122,9 +157,10 @@ on every card would print the same two words for every mother and explain
 nothing about any of them. And only features that push \emph{toward} the
 predicted class are listed, ranked by signed contribution, because a card
 headed ``what the model flagged'' that lists a reading arguing against its own
-prediction misleads the person making the referral. On this case the card
-reads \textsc{elevated --- needs follow-up}, lists raised blood sugar and
-raised body temperature, and asks the worker to arrange a check-up and share
+prediction misleads the person making the referral. On this case a ranking by
+absolute value would have listed systolic pressure, which argues against the
+call. The card reads \textsc{elevated --- needs follow-up}, lists raised blood
+sugar and older age, and asks the worker to arrange a check-up and share
 the readings. Every string is a fixed template constant filled from the
 attributions. No language model runs at inference, which is our stated
 alternative to LLM-mediated tiering~\citep{bello2025threelevel}: the card is
@@ -135,33 +171,33 @@ No probability, no percentage, no condition named, and no text required to
 use it. The tier answers \emph{what do I do next}, not \emph{how likely is
 this}. Here the amber lamp lights and the message says, in Hindi, that some
 findings need attention, not to panic, and to get checked soon at her ANM or
-nearest health centre. The Hindi strings were written and clinically reviewed
-by the second author, a physician and native speaker; they are neither
-machine-translated nor author-invented.
+nearest health centre. The Hindi
+strings were written and reviewed by the second author, a final-year MBBS
+student and native Hindi speaker; they are not machine-translated.
 
 Stripping magnitude departs from the risk-communication literature of
 Section~\ref{sec:rw-riskcomm}, which recommends conveying magnitude through an
 icon array or a visible denominator, and we take that departure on a stated
-condition. An icon array communicates a magnitude the sender is entitled to
-assert. At $0.487$ against $0.499$ the model is not so entitled, and rendering
-that split as roughly fifty chances in a hundred would carry a precision it
-does not have, to the reader least equipped to discount it. Where the
-magnitude is trustworthy, show it; where the gate has fired, an ordinal band
-and one action is what the model can support. That is the uncertainty argument
-of Section~\ref{sec:rw-uncertainty} arriving from the health-communication
-side, and it remains an argument rather than a result, since whether the band
-is understood as intended is untested here.
+condition. An icon array conveys a magnitude the model can support. At
+$0.382$ against $0.384$ it cannot support one, and drawing that split as 38
+chances in 100 would give the reader least able to discount it a precision the
+model does not have. Where the magnitude is trustworthy, show it; where the
+gate has fired, an ordinal band and one action is what the model can support.
+That is the uncertainty argument of Section~\ref{sec:rw-uncertainty} arriving
+from the health-communication side, and it remains an argument rather than a
+result, since whether the band is understood as intended is untested here.
 
 \subsection{Derating a false alarm}
 \label{sec:tiers-failure}
 
-Row 66 shows the rule behaving correctly on a near-tie between mid and high.
-Row 382 shows what it is for. That record is true low risk, the model calls it
-high risk at $0.451 / 0.097 / 0.453$ across low, mid and high, and the top-two
-margin is $0.002$. A 13-year-old with a body temperature of
-101\,\textdegree F, the case Section~\ref{sec:data-age} designates as the
-vehicle's failure mode, would have received a red lamp and an urgent spoken
-message on the argmax alone. The gate withheld it and both derated channels
+Row 426 shows the rule behaving correctly on a near-tie between mid and high.
+Row 325 shows what it is for. That record is true low risk, the model calls it
+high risk at $0.411 / 0.148 / 0.441$ across low, mid and high, and the top-two
+margin is $0.029$. It belongs to a 17-year-old with a recorded body
+temperature of 101\,\textdegree F, and body temperature drives the call
+($+0.253$). This is the case Section~\ref{sec:data-age} designates as the
+vehicle's failure mode. On the argmax alone she would have received a red lamp
+and an urgent spoken message. The gate withheld it and both derated channels
 show amber instead.
 
 Amber on a true-low record is still a false referral. The gate made the error
@@ -169,25 +205,57 @@ smaller, not correct, and it did nothing about the underlying misprediction,
 which the clinician tier carries unmodified here as it does on every case.
 What it changed is what the mother was told.
 
-\subsection{What we claim}
+\subsection{The gate across all 451 records}
+\label{sec:tiers-gate}
 
-Section~\ref{sec:related} places the three literatures this design sits in and
-states what each has settled: tiering explanations by audience, withholding a
-prediction under uncertainty, and fitting a classifier with SHAP attributions
-to this dataset. We claim none of them.
+% Table source: results/tables/p1_gate_summary.csv (long format:
+% section,row,column,value). Upper block, section predicted_high:
+%   row predicted_high -> low risk 11, mid risk 22, high risk 81, total 114;
+%   row to_RED         -> 8, 17, 78, 103   (shown as "Kept RED");
+%   row derated_to_AMBER -> 3, 5, 3, 11.
+% Row "Predicted low, inside margin (no gate)", section
+% predicted_low_margin_below_0.15, row ungated_green_near_ties -> 14, 5, 3, 22.
+% Lower block, section true_high_reaches (column count): RED 78, AMBER 20,
+% GREEN 14. The block total 112 is their sum (it equals the high-risk column
+% sum of band_x_true_label: 14 + 20 + 78).
+\begin{table}[t]
+\centering
+\caption{What the gate does to the 451 records, scored out of fold at a margin
+of $0.15$. Upper block: the 114 high-risk predictions, by true label and by
+the band they receive, and the 22 low-risk predictions inside the margin,
+which the one-sided gate does not test. Lower block: the 112 true high-risk
+records, by the band they receive.}
+\label{tab:gate}
+\begin{tabular}{lrrrr}
+\toprule
+ & \textbf{True low} & \textbf{True mid} & \textbf{True high} & \textbf{Total} \\
+\midrule
+Predicted high   & 11 & 22 & 81 & 114 \\
+Kept \textsc{red}      & 8  & 17 & 78 & 103 \\
+Derated to \textsc{amber} & 3  & 5  & 3  & 11  \\
+\addlinespace
+Predicted low, inside margin (no gate) & 14 & 5 & 3 & 22 \\
+\midrule
+ & \textbf{Red} & \textbf{Amber} & \textbf{Green} & \textbf{Total} \\
+\midrule
+True high-risk records & 78 & 20 & 14 & 112 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-What we claim is the intersection, and it is narrow. Prior work on
-audience-specific uncertainty makes the \emph{display} of uncertainty
-audience-aware~\citep{bhatt2021uncertainty}; the reader with less expertise
-receives the same uncertainty in a gentler presentation. Here the abstention
-decision is taken once and then rendered as \emph{different assertions}. The
-clinician receives $0.487$ against $0.499$. The health worker and the mother
-both receive amber, and the red they would otherwise have received is
-withheld from each. The gate draws its line at who can interrogate the
-model: the reader who can argue with it keeps the split, and the two who
-cannot lose the alarm. What separates those two is how much of the model's
-state each is asked to hold, not severity. The card carries the drivers and
-a next step; the lamp carries neither.
+Table~\ref{tab:gate} gives the counts. The gate derates 11 of the 114
+high-risk calls. Of the 103 calls it keeps as red, 78 are true high-risk
+records; of the 11 it derates, 3 are. A high-risk call inside the margin was
+right far less often than one outside it. Eleven calls are too few to estimate
+that difference precisely, and this is one dataset. Those 3 are the cost of
+the rule: they receive amber instead of red, and amber still routes them to a
+health worker.
 
-Both cases in this section are ones the model gets wrong. The rendering that
-reaches the mother is the one that survives being wrong.
+The number of red bands changes little with the threshold: 105, 103 and 102
+at margins of $0.10$, $0.15$ and $0.20$.
+
+The gate leaves 14 true high-risk records with a green band. Only 3 of them
+sit inside the margin, among the 22 low-risk near-ties of
+Section~\ref{sec:tiers-band}. The other 11 are outside the $0.15$ margin, with
+margins from $0.230$ to $0.880$. Overall, 98 of the 112 true high-risk records receive a band
+that routes them to follow-up.

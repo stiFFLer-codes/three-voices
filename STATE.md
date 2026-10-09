@@ -25,7 +25,8 @@ started (both untracked; the rules file sits in `.claude/agents/`).** #63 is
 the housekeeping: the author's four re-rate decisions, `refs.bib` fixes plus
 the dataset entry, `requirements-lock.txt`, and the `.gitkeep` by-product.
 The paper is revised one section per task, each committed only after author
-approval, starting with Section 4.
+approval, starting with Section 4. **Section 4 is committed (#64).** Next is
+batch A: Sections 3 and 5, each awaiting approval before its commit.
 
 **P5 CLOSED 2026-09-03. Now in P6 — pre-submission pass.** Branch
 `revision/sncs-framing`, unmerged, carries a journal-alignment framing pass
@@ -2398,3 +2399,79 @@ Decision Log entries named.
   **Untracked, not committed:** `.claude/agents/paper-writer.md` was
   rewritten for this paper. It reads WRITING_RULES.md and REVISION_BRIEF.md
   before every task and follows them over anything else.
+
+- **2026-10-09 #64 — Section 4 finished and committed: the 9 Oct draft plus
+  the author-approved fixes in REVISION_BRIEF §1a; two `refs.bib` fixes.**
+  - The author replaced `REVISION_BRIEF.md` and `WRITING_RULES.md` with new
+    versions at the repo root (both untracked). The superseded copy at
+    `.claude/agents/WRITING_RULES.md` was deleted, and `paper-writer.md` now
+    reads the root file.
+  - The rules changed in three ways. A verbatim artifact quote may keep its
+    em dash. Contrasts that carry design content are allowed, at most one
+    per paragraph. §10 is now the checklist.
+  - The 9 Oct draft was written under the `paper-writer` instructions, on
+    Sonnet. It ran as a general-purpose agent, because the agent type had
+    not registered: its frontmatter carried the full model ID. With the
+    alias `sonnet` it now registers.
+
+  **§1a, as applied to `paper/sections/three_tiers.tex`.**
+  1. 4.1 uses the brief's wording ("The direction of that substitution
+     matters most, …").
+  2. "what do I do next, not how likely is this" is restored.
+  3. "smaller, not correct" is restored.
+  4. The gate table has a new row, "Predicted low, inside margin (no gate)":
+     14 / 5 / 3 / 22, from `p1_gate_summary.csv`
+     `predicted_low_margin_below_0.15`. The caption is updated to match.
+  5. 4.5 adds the two sentences: inside-margin calls were right far less
+     often, and eleven calls on one dataset are too few to estimate the
+     difference precisely.
+  6. The threshold sentence now reads "changes little … 105, 103 and 102".
+  7. "Outside the 0.15 margin, with margins from 0.230 to 0.880" replaces
+     "no margin rule can catch". The 0.230 and 0.880 are the minimum and
+     maximum margin of the 11 true-high GREEN records with margin ≥ 0.15 in
+     `p1_oof_predictions.csv` (raw 0.22999…, 0.87999…).
+  10. The stale `% NEW Table 3 (tab:matrix)` comment in `evaluation.tex` is
+     fixed. This is a comment-only change.
+
+  Items 8 and 9 needed no edit: the card's em dash stays, and the §3.4 /
+  §3.5 cross-references become true in batch A. The file's header comment
+  records the §1a changes.
+
+  **`refs.bib`.**
+  - `O'Connor` reverted to `O Connor`, matching the W3C primary record.
+  - Bradley journal: `\&amp;` → `\&`; the reference list now prints "&".
+  - Still unapplied from `refs_fixed.bib`: the Widyawati double space, which
+    has no visible effect.
+
+  **`/anti-ai`, report-only (author instruction; nothing applied).** CLAUDE.md
+  rule 8 says to fix what the audit finds; the author directed report-only
+  for this section. 11 suggestions on the committed file:
+  - L67 signposting (approved wording).
+  - L71 aphoristic closer.
+  - L95 signposting contrast.
+  - L107 unsupported comparative.
+  - Verbless fragments opening the three tier paragraphs.
+  - L166-167 rhythm triplet.
+  - "can support" ×3 at L181-185.
+  - L184-185 imperative antithesis.
+  - L206 cleft closer.
+  - L248-249 "far less often" where 78/103 and 3/11 exist.
+  - L250 "Those 3" with a distant referent.
+
+  None is a banned word. No paragraph has more than one contrast.
+
+  **WRITING_RULES §10 checks on Section 4.**
+  - Every typeset number traces to `shap_case_summary.csv`,
+    `shap_case_contributions.csv`, `p1_gate_summary.csv` or
+    `p1_oof_predictions.csv`.
+  - Citations: `bello2025threelevel`, in an unchanged sentence.
+    `bhatt2021uncertainty` left §4 with "What we claim" and is still cited in
+    §2.
+  - §3 grep: no banned words. The only em dash is the card-header quote
+    (allowed). Bold appears only in table headers.
+  - Old-values grep: one typeset hit, `102`, which is the new RED count at
+    margin 0.20.
+  - Scratch build: 0 errors, 0 undefined references, 0 bibtex warnings (also
+    under `\nocite{*}`). **21 pages, previously 20.** The gate table (Table 3)
+    grew, and the matrix (now Table 4) floats from p. 12 to p. 13. There are
+    no new overfull or underfull boxes.
