@@ -26,8 +26,9 @@ the housekeeping: the author's four re-rate decisions, `refs.bib` fixes plus
 the dataset entry, `requirements-lock.txt`, and the `.gitkeep` by-product.
 The paper is revised one section per task, each committed only after author
 approval, starting with Section 4. **Sections 4, 3 and 5 are committed
-(#64-#66); batch A is closed.** The claim audit (REVISION_BRIEF §12,
-`CLAIM_AUDIT.md`, #67) runs before batches B and C.
+(#64-#66); batch A is closed.** The claim audit is done (#67), and its
+decisions are #68. Batches B and C come next; see "Next step" for the
+handoff.
 
 **P5 CLOSED 2026-09-03. Now in P6 — pre-submission pass.** Branch
 `revision/sncs-framing`, unmerged, carries a journal-alignment framing pass
@@ -239,110 +240,149 @@ Since Decision Log #11 the SAME band also drives the ASHA card header —
 GREEN → "LOW — routine care", AMBER → "ELEVATED — needs follow-up",
 RED → "HIGH — needs follow-up".
 
-## Next step — P6, the pre-submission pass
+## Next step — handoff for a fresh session (written 2026-10-09)
 
-Three gates, in order. **Do not start a later gate before an earlier one
-closes** — a cold run against prose that is still moving wastes the run, and
-tagging before the cold run tags something unverified.
+**Phase.** P6, pre-submission. The manuscript is mid-revision under
+`REVISION_BRIEF.md`, which re-grounds the paper on out-of-fold scoring.
+- Batch A (Sections 3, 4 and 5) is committed.
+- The claim audit is done (#67); its decisions are #68.
+- Batches B and C are next. Nothing has been pushed.
 
-### Gate A — read and settle the content (nothing here is layout)
+**Branch and commits.** Branch `revision/sncs-framing`.
+- The last commit before this handoff is `4a4e6e5` (#67). The handoff
+  itself is the next commit (#68); `git log -1` gives its hash.
+- The branch is 12 commits ahead of `origin/revision/sncs-framing`, which
+  sits at `ea4aa99`.
+- `origin/main` is stale at `f41c4ab`.
 
-1. **Author's end-to-end read of `paper/main.pdf`** (now **20 pp**, #56).
-   Never done. No part of this manuscript has been read on the page by a
-   human. Blocking: every later gate assumes the prose is final. **#56 raised
-   the stakes on this item** — it added a Section 7 Conclusion, a Section 4.4,
-   and two tables, none of which any human has read, and it disclosed a
-   one-sided gate that a reader should check against Section 4.2 and 6.2 with
-   their own eyes.
-1a. **Re-run Gate B (cold run) after Gate A closes.** #55 closed it against a
-   19 pp manuscript with one table. #56 changed content, so that run no longer
-   describes what would be tagged. Nothing in #56 touched `src/`, so the
-   artifacts should be unchanged, but the claim "verified cold" now needs a
-   fresh run to be true.
-1b. **Regenerate `paper/ARXIV_SUBMISSION.md`** — **DONE 2026-09-15 (#57).**
-   Sixteen upload files including `sections/conclusion.tex`, 20 pp, 36
-   bibitems, abstract block re-derived mechanically (1824 chars / 284 words),
-   Comments field corrected to "20 pages, 1 figure, 3 tables". `arxiv/` was
-   stale in the same way and is regenerated; packaging is scripted now.
-2. **Co-author read (Patil).** Specifically: the Hindi strings and their
-   clinical framing (#14), the ASHA-tier card wording, and her own CRediT
-   role list — of her four roles only *Validation* is an official CRediT
-   term (#42), and whether to keep the three custom descriptors is hers to
-   decide, not a layout call.
-3. **Pull Mamun et al. 2025** (Engineering Reports, 10.1002/eng2.70491) —
-   #23. Paywalled and still unread; it is cited from resolved Crossref
-   metadata only. It is simultaneously the closest novelty check on Axis 1
-   and the best external leakage check. If it documents the duplicate rows,
-   the leakage framing in Data & Vehicle needs a sentence, not a rewrite.
-4. **Decide Clark et al. (BJGP 2022)** — #24b, still quarantined. Cite it
-   against ourselves (NICE traffic light comprehensible but not accurate) or
-   drop it and say so. If cited, `refs.bib` goes 31 -> 32 and the citation
-   gate applies in full: §7 of `related_work.md` requires the paper to have
-   been READ, not merely resolved.
-5. #24a **calibration is CLOSED** — `limitations.tex` carries the honest
-   sentence ("vote fractions rather than calibrated posteriors... a design
-   constant on an ordering, not a statement about probability"). Do not
-   reopen it.
-6. The `failure_mode` triptych **stays cut** (#33, reaffirmed #38). Do not
-   reopen it either.
+**Read first, in this order.**
+1. `CLAUDE.md`.
+2. This file: "Current phase", this section, and Decision Log #59-#68.
+3. `REVISION_BRIEF.md` (repo root, untracked). Read in full; then reread §0
+   (facts and old values), §12a (approved claim fixes), §13 (batches B and
+   C) and the section briefs §4-§10.
+4. `WRITING_RULES.md` (repo root, untracked): the rules, and the §10
+   checklist.
+5. `CLAIM_AUDIT.md` (repo root, untracked): one row per citing sentence,
+   each with a verdict and a fix.
+6. `.claude/agents/paper-writer.md`: the subagent that drafts each section.
+   Its `model:` must stay the alias `sonnet`; a full model ID stops it
+   registering.
+7. `RECON.md` (untracked), findings A1 and C4-C5: the repo, Zenodo and
+   packaging facts behind open items 6 and 7.
 
-### Gate B — cold run — **DONE 2026-09-11 (#55). PASSED.**
+**Committed in this revision** (on top of `c657617`, #57/#58):
 
-Items 7-11 below were all executed and all passed; they are kept for the
-record and as the recipe if the pipeline ever changes. Re-run only if `src/`
-moves.
+| Commit | Content |
+|---|---|
+| `d93f4f6` | #59 pre-registration |
+| `5b9fe6d` | #60 out-of-fold gate analysis (`p1_oof_predictions.csv`, `p1_gate_summary.csv`) |
+| `06716f7` | #61 pre-registration |
+| `0d649d2` | #62 cases scored out of fold (rows 48 / 99 / 426 / 325), artifacts regenerated |
+| `d9880f8` | #63 re-rate decisions, `refs.bib` fixes and dataset entry, `requirements-lock.txt`, `.gitkeep` |
+| `b3d3aab` | #64 Section 4 |
+| `549f485` | #65 Section 3 |
+| `5652ad4` | Section 5 |
+| `30eafa9` | #66 Section 4 polish |
+| `4a4e6e5` | #67 claim audit |
 
-7. Fresh clone into a clean directory, fresh virtualenv, pinned deps. The
-   point is to catch what only works because this machine has been running
-   the pipeline for days.
-8. **`rm -rf results/audio/*` FIRST** (#19). Re-rendering over an existing
-   MP3 reports success, updates the mtime and can leave the stale blob in
-   place. Skipping this certifies audio that was never regenerated.
-9. Run the five gates in order: `python -m src.{data,model,explain,render,
-   evaluate}`.
-10. Verify every PNG, CSV and TXT is byte-identical to what is committed.
-    The MP3s are the one documented exception (#10, #18) — same length,
-    different bytes. Expect that; do not "fix" it.
-11. **Rebuild the PDF from the regenerated figures** and confirm it is still
-    17 pp with a clean log. The three tier PNGs feed Figure 1 directly, so a
-    changed renderer is a changed figure.
+**What is still pre-revision.**
+- **Sections still on pre-revision text:** §1 Introduction, §2 Related work,
+  §6 Limitations, §7 Conclusion, §8 Reproducibility, the abstract, the back
+  matter, and the `main.tex` metadata. Several still quote the in-sample
+  rows 66 / 382; the brief §0 old-values grep finds them.
+- **`paper/main.pdf` and `paper/main.bbl` (tracked) are stale.** Every build
+  in this revision ran in a scratch copy; `paper/` was never rebuilt in
+  place. Regenerate them with the upload package (item 7).
 
-### Gate C — package, release, submit
+**Known untracked files.** Leave them untracked:
+- `.claude/agents/` and three `.claude/commands/*.md` files.
+- `RECON.md`, `REVISION_BRIEF.md`, `WRITING_RULES.md`, `CLAIM_AUDIT.md`.
+- `refs_fixed.bib` and `paper/refs_fixed.bib`, the author's file. Of its
+  two non-casing differences, Bradley's `\&` is applied (#64) and the
+  Widyawati double space is not.
 
-12. **arXiv packaging blocker — CLOSED 2026-09-03 (#45).** `main.tex` now sets
-    `\graphicspath{{./}{../results/figures/}}`, so the archive root matches
-    before the `../` entry is ever consulted and the upload needs no source
-    edit. The repo is unrestructured and the PNGs are not re-rendered, per
-    #44. Packaging is now a pure copy; the commands are in
-    `paper/ARXIV_SUBMISSION.md`. **Re-run the standalone compile after the
-    Gate B cold run**, since a re-rendered PNG is a changed figure.
-13. Ship `main.bbl` in the upload — DONE and verified in the standalone
-    compile (#45). arXiv runs LaTeX but not BibTeX, so the `.bbl` is the
-    bibliography. It is already tracked for this reason.
-14. Final firewall grep before upload — **run 2026-09-03 (#45), clean**: no
-    "novel framework", no clinical-validity claim, no named condition (#21),
-    31/31/31 citations with zero orphans, every numeric token in the abstract
-    and introduction present in a body section. Re-run if any prose moves in
-    Gate A.
-15. Tag `v1.0.0`, push the tag, confirm Zenodo minted the version under the
-    concept DOI 10.5281/zenodo.22252076 (the concept DOI is what the paper
-    cites, deliberately, so it tracks later releases).
-16. Submit to arXiv, **cs.HC**.
+**Open items, in order.**
+1. **Batch B** (brief §13). One `paper-writer` task per section:
+   - §6 Limitations: brief §4, the §12 sentence for 6.1, and the §12 clause
+     for 6.5 (an explorable card as future work).
+   - §7 Conclusion: brief §5.
+   - §8 Reproducibility: brief §6. 8.3 becomes true only after item 6.
 
-### Reference material P4 hands the remaining sections:
+   After each section, run the WRITING_RULES §10 checks, re-check every
+   citation sentence against `CLAIM_AUDIT.md`, report, and stop. Commit
+   nothing until the author approves, then one section per commit.
+2. **Batch C** (brief §13):
+   - §2 Related work: brief §7; the §12 fixes for 2.1 and 2.3 (Okolo 2022
+     counts 16 / 3 / 1); and every §12a fix in related_work (:44, :165, :176,
+     :183, :189-190, and Szymanski at :69-73 in its short form).
+   - §1 Introduction: brief §8.
+   - The §3.4 sentence from §12a (68 / 66), committed on its own.
+   - **Unassigned:** §12a approves the audit fixes at data_and_vehicle:164
+     (Eltawil / Young) and evaluation:59 (Nielsen "revised heuristics", no
+     count), but §13 places neither in a batch. Ask the author. The natural
+     fit is beside the §3.4 touch, one commit per section.
+3. **Batch D:**
+   - The abstract (brief §9): at most 200 words, no thousands separators.
+   - The back matter (brief §10): CRediT, the generative-AI statement in the
+     exact WRITING_RULES §8 wording, and the dataset citation in data
+     availability.
+   - `main.tex` `\hypersetup`.
+4. **`/anti-ai` before every prose commit** (CLAUDE.md rule 8). The pattern
+   that held: the audit runs report-only, the author decides each item, and
+   the decisions are applied before the commit.
+5. **Verification:**
+   - Whole-paper checks: the old-values grep, the WRITING_RULES §3 grep, a
+     claim re-audit of every changed citing sentence, and a build with 0
+     errors, 0 undefined references and 0 overfull boxes.
+   - A cold run (recipe below).
+   - **Both authors read and approve the final PDF** (brief §10). No
+     end-to-end human read has happened yet (old Gate A), and Patil's read is
+     outstanding.
+6. **Repo and Zenodo** (RECON A1). Nothing is pushed or tagged without the
+   author.
+   - The concept DOI 10.5281/zenodo.22252076 resolves only to v1.0.0, which
+     is tag `v1.0.0` = `b8853a5`, the P3 commit. That snapshot has no
+     `src/evaluate.py`, no `paper/` and several missing tables.
+   - The next release is **v1.1.0**, because `v1.0.0` is taken.
+   - The Zenodo licence is MIT, while `ARXIV_SUBMISSION.md` claims CC BY
+     4.0, and the Zenodo creators list one author.
+   - `origin/main` is stale.
+   - Decide what is public before pushing: the tracked STATE.md holds the
+     enrollment-number address and moderation notes (RECON).
+7. **Upload package:**
+   - Regenerate `paper/ARXIV_SUBMISSION.md` and `arxiv/`, scripted off
+     `main.tex`'s `\input` lines (#57). Both are stale: the paper is now
+     21 pp, with 4 tables and 37 bib entries.
+   - Ship `main.bbl`.
+   - Compile standalone.
+   - Run a final firewall grep.
+   - Submit to arXiv, cs.HC.
 
-- **Evaluation section** — the matrix and synthesis in
-  `results/tables/heuristic_evaluation.md`. Frame it as formative and
-  single-evaluator, in the words of the verbatim method note in that file.
-- **Limitations** — the five inherent gaps in that file's "Inherent
-  limitations" section (mother-tier colour reliance, no rendered text
-  alternative for a deaf reader, clinician chart/English literacy, images of
-  text, ASHA tier English-only), plus the 35 conflicting-label rows, the
-  0.15 RED threshold as a stated design choice, and Decision Log #10 on gTTS
-  reproducibility.
-- **The design-process argument** — five defects were found by reading the
-  artifacts as their users, not from any model metric, and were fixed; the
-  "Defects found and corrected" section is the evidence.
+**Cold-run recipe** (from #55; re-run because `src/` moved in #60-#63):
+1. Fresh clone, and a fresh venv on Python 3.12 from `requirements.txt`.
+   Compare it with `requirements-lock.txt`.
+2. Delete `results/audio/*.mp3` first.
+3. Run `python -m src.{data,model,explain,render,evaluate}`.
+4. Every PNG, CSV and TXT must come back byte-identical. The MP3s are the
+   documented exception: same length, different bytes.
+5. Rebuild the PDF.
+
+Prediction runs with `n_jobs=1`, so the out-of-fold CSVs are byte-stable
+(#60).
+
+**Do not reopen:** the calibration sentence (#24a); the `failure_mode`
+triptych cut (#33, #38); Clark et al. stays quarantined (WRITING_RULES §6);
+no p-value (brief §0); `RED_MARGIN = 0.15` as a design constant.
+
+**Working method that held.**
+- Build only in a scratch copy, never in `paper/`.
+- Check scripts are not kept in the repo. Re-create them as needed: the
+  banned-pattern and contrast grep, the old-values grep, number tracing
+  against `results/tables/`, label-to-page from `main.aux`, and `pdftoppm`
+  page renders.
+- Numbers come from committed files only. External facts are cited, and
+  derived counts carry a `%` derivation.
 
 ## Decision Log (append-only)
 
@@ -2623,3 +2663,44 @@ Decision Log entries named.
   - **Correction to #66.** A shell typo had written a tab character in place
     of the backslash-t in "`\textsc{red}`" (Section 3 bullet). It is restored
     here. The wording is unchanged.
+
+- **2026-10-09 #68 — Claim-audit decisions (REVISION_BRIEF §12a) and the
+  fresh-session handoff.** The author supplied a new `REVISION_BRIEF.md`
+  (adding §12a and §13), which replaced the old file. It stays untracked.
+  - **Every proposed fix in `CLAIM_AUDIT.md` is approved**, with these
+    refinements:
+    - **Szymanski** (related_work:69-73), short form only: "Szymanski et al.
+      propose treating role and expertise as separate dimensions, because
+      the field has often conflated them. Where role and the reader's deficit
+      come apart, a deployment would have to select on the deficit."
+      Lines 64-66 already say each tier is designed against the deficit.
+    - **The audit's fix text, as written:** Imrie (related_work:44), the
+      saturated-construction sentence (:165), the Maisoon / Widyawati
+      attributions (:183), Eltawil / Young (data_and_vehicle:164) and
+      Nielsen / WCAG (evaluation:59). For Nielsen: "revised heuristics",
+      with no count.
+    - **Uncited follow-ons.** related_work:176 becomes "a two-row outlier
+      removal". related_work:189-190 says "14 healthcare professionals" and
+      gives the 71.4% as the source frames it (across three clinical cases),
+      with the source passage quoted in a `%` comment.
+    - **§3.4 conflicting vectors.** The file wins on 68 / 66: "Out of fold,
+      each such record is usually scored by a fold model that saw its twin
+      with the other label: 68 of the 71 are scored outside the 0.15 margin,
+      66 are mispredicted, and they produce 10 `\textsc{red}` bands, none for
+      a true high-risk record." Both derivations go in a `%` comment. This is
+      a batch C touch to a committed section, committed separately.
+  - **Batches B and C (brief §13).**
+    - Batch B: §6, §7 and §8.
+    - Batch C: §2 with all its §12a fixes, §1, and the §3.4 sentence.
+    - One subagent task per section. Each is followed by the §10 checks and a
+      re-check of its citation sentences against `CLAIM_AUDIT.md`, then a
+      stop for approval. Nothing is committed before approval.
+  - **Gap recorded for the author.** §13 assigns no batch to the approved
+    fixes at data_and_vehicle:164 and evaluation:59. The handoff lists them
+    as unassigned.
+  - **"Next step" rewritten** as a handoff for a fresh session: phase,
+    commits, what is and is not committed, open items (batches B, C and D,
+    verification, repo and Zenodo, upload package), and the files to read
+    first. The old Gate A/B/C list is superseded. Its live items (the
+    author read, the cold-run recipe, packaging) are carried into the
+    handoff, and its history stays in #43-#57.
