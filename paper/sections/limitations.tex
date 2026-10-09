@@ -43,8 +43,33 @@
 %   (d) Line-level compression throughout, ~45 words, entirely grammatical:
 %       clause joins, dropped auxiliaries, one possessive. No limitation, no
 %       number, no citation and no cross-reference touched.
-% Body word count is 719 words, exactly the pre-pass figure: the section
-% absorbed a whole new subsection at zero net cost. Keep it that way.
+% (Body word count after this pass was 719 words, equal to the pre-pass figure.)
+%
+% 2026-10-09 revision (REVISION_BRIEF §4, §12; CLAIM_AUDIT row 39):
+%   (a) 6.1: the CHW sentence is replaced by the §12 wording (Okolo and
+%       Solano-Kamaiko find CHWs can struggle with AI explanations and that
+%       explanation design changes understanding). The count "four claims"
+%       is unchanged.
+%   (b) 6.2: "35 of the 451 distinct records are feature vectors" becomes
+%       "35 feature vectors, covering 71 of the 451 records"; "the honest
+%       figure rather than the inflated one" becomes "the leak-free figure"
+%       and "rather than calibrated posteriors" becomes "uncalibrated as
+%       posteriors" (one contrast per paragraph, WRITING_RULES §3).
+%   (c) 6.2: the one-sided-gate paragraph now carries the out-of-fold count
+%       (22 low-risk predictions inside the margin, 3 true high-risk); its
+%       old "near-tie resolving to low risk" sentence is merged into it.
+%   (d) 6.2: NEW paragraph, the 14 true high-risk records that receive
+%       GREEN (3 inside the margin, 11 outside, margins 0.230 to 0.880).
+%   (e) 6.5: the symmetric extension would move those 22 records to AMBER
+%       (reported analysis, not implemented); one clause on an explorable
+%       health-worker card as future work (Solano-Kamaiko et al.).
+% Body word count was 802 words after this pass (718 before; the earlier 719
+% ceiling is exceeded, all from items (a), (c), (d), (e)).
+% 2026-10-09 (REVISION_BRIEF §13a): growth accepted (Decision 3). /anti-ai
+%   items applied: "which are vote fractions and are not calibrated"; the 6.5
+%   "22 near-ties" sentence now points at 6.2 (new label sec:lim-data); the
+%   explorable-card clause is "A third direction", without "is future work".
+% Counted with: grep -v '^\s*%' limitations.tex | wc -w.
 \section{Limitations and Future Work}
 \label{sec:limitations}
 
@@ -56,10 +81,10 @@ to conclude: we have a design and a formative critique of our own artifact,
 not evidence that the design works.
 
 Four claims sit downstream of it. Whether a health worker reads the card as
-intended is assumed rather than shown, and the nearest evidence argues
-against assuming it: community health workers in India have been reported
-struggling with AI explanations even after
-simplification~\citep{okolo2024easy,solanokamaiko2024explorable}. Whether
+intended is assumed and not shown; the nearest studies find that health
+workers can struggle with AI explanations and that the design of an
+explanation changes how well they understand
+it~\citep{okolo2024easy,solanokamaiko2024explorable}. Whether
 withholding magnitude from the mother helps or harms her is an argument from
 the model's uncertainty, and Section~\ref{sec:rw-riskcomm} makes it, but the
 risk-communication literature it departs from is empirical and our departure
@@ -75,6 +100,7 @@ no claim about performance under real clinic conditions, and no claim that
 these renderings have reached anyone by any delivery channel.
 
 \subsection{What one public dataset can support}
+\label{sec:lim-data}
 
 The work uses the UCI Maternal Health Risk dataset and nothing else. It is
 public, carries generic three-level risk labels, and names no clinical
@@ -82,20 +108,36 @@ condition, so neither do we. Nothing here is clinically validated and nothing
 predicts an outcome for a real patient.
 
 Two properties bound the vehicle. Macro-recall is $0.580$ after
-deduplication, the honest figure rather than the inflated one
-(Section~\ref{sec:data-leakage}); and 35 of the 451 distinct records are
-feature vectors carrying more than one risk label, an ambiguity no model can
-resolve from six features. That is a ceiling on the data, not a shortfall in
-the classifier.
+deduplication, the leak-free figure (Section~\ref{sec:data-leakage}); and 35
+feature vectors, covering 71 of the 451 records, carry more than one risk
+label, an ambiguity no model can resolve from six features. That is a ceiling
+on the data, not a shortfall in the classifier.
+
+% Derivations (WRITING_RULES §5), all from results/tables/:
+%  35 = p1_cohort_summary.csv conflicting_label_feature_vectors; 451 = n_clean.
+%  71 = rows of p1_oof_predictions.csv with conflict_vector == True.
 
 One assumption inside the gate deserves naming. The margin rule thresholds a
 difference between random-forest class probabilities, which are vote
-fractions rather than calibrated posteriors. We treat $0.15$ as a design
+fractions and are not calibrated. We treat $0.15$ as a design
 constant on an ordering, not a statement about probability.
 
 The gate also has only one side. It tests the margin at the high boundary and
-not the low one (Section~\ref{sec:tiers}), so a near-tie resolving to low risk
-renders an unqualified \textsc{green} to the mother, with no derate available.
+not the low one (Section~\ref{sec:tiers}). Out of fold, 22 low-risk
+predictions sit inside the margin and render an unqualified \textsc{green} to
+the mother; 3 of them are true high-risk records (Table~\ref{tab:gate}).
+
+The most serious error mode is a missed alarm. Out of fold, 14 true high-risk
+records receive \textsc{green}: 3 inside the $0.15$ margin and 11 outside it,
+with margins from $0.230$ to $0.880$. Neither the current gate nor its
+symmetric extension would reach them.
+
+% Derivations: 22 and 3 = p1_gate_summary.csv, section
+%  predicted_low_margin_below_0.15, row ungated_green_near_ties (total, high
+%  risk). 14 = p1_gate_summary.csv true_high_reaches GREEN. 3 / 11 split:
+%  p1_oof_predictions.csv rows with true_label == high risk and band == GREEN
+%  (14), of which margin < 0.15 gives 3 and margin >= 0.15 gives 11; the 11
+%  have margin min 0.2299999 and max 0.8799999 (typeset 0.230, 0.880).
 
 \subsection{Who the renderings still exclude}
 \label{sec:excl}
@@ -132,6 +174,10 @@ item and the one the others wait on; they are gated on ethics clearance, which
 this preprint does not have and does not claim. Two changes to the rule
 are specified enough to name now. The gate should extend to the low boundary,
 derating an ungated near-tie \textsc{green} to \textsc{amber} as the
-red-to-amber move already does; and the forest's vote fractions should be
-calibrated, after which the threshold is worth re-asking.
+red-to-amber move already does. On these data it would move the 22 near-ties
+of Section~\ref{sec:lim-data} to \textsc{amber}; we report that count, and the
+extension is not implemented. The forest's vote fractions should also be
+calibrated, after which the threshold is worth re-asking. A third direction is
+an explorable version of the health worker's card, which the findings of
+Solano-Kamaiko et al.~\citep{solanokamaiko2024explorable} suggest.
 Sections~\ref{sec:excl} and~\ref{sec:voice} name their own paths.
