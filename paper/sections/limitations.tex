@@ -22,7 +22,30 @@
 %       version does not do it. Pairs with the new paragraph in 4.2.
 %   (b) One framing sentence trimmed in 6.3. No limitation added, removed or
 %       reworded.
-\section{Limitations}
+%
+% 2026-09-15 REPOSITIONING PASS. The section is now "Limitations and Future
+% Work" and owns every forward-looking claim in the manuscript. Structural,
+% not substantive: NO LIMITATION WAS REMOVED.
+%   (a) The three scattered "is future work" tails — one in three_tiers.tex,
+%       two here — are gone. The factual half of each statement stays exactly
+%       where it was; only the forward-looking half moves into the new final
+%       subsection. arXiv lists "proposals for future research" among content
+%       types it does not accept, and future work scattered as three apologies
+%       leans that way where one bounded subsection is ordinary convention.
+%   (b) NEW final subsection "Future work": user studies (pulled from 6.1's
+%       closing paragraph), the symmetric gate and calibration (pulled from
+%       6.2). Sections 6.3 and 6.4 already name their own forward paths and
+%       are pointed at rather than restated.
+%   (c) "Evaluated on a workstation" folded into 6.1 — same limitation family
+%       (what the evaluation did not cover), one fewer heading. Its
+%       "design and feasibility artifact" opening is dropped per the
+%       contribution-type reframe; the no-field-claim content is unchanged.
+%   (d) Line-level compression throughout, ~45 words, entirely grammatical:
+%       clause joins, dropped auxiliaries, one possessive. No limitation, no
+%       number, no citation and no cross-reference touched.
+% Body word count is 719 words, exactly the pre-pass figure: the section
+% absorbed a whole new subsection at zero net cost. Keep it that way.
+\section{Limitations and Future Work}
 \label{sec:limitations}
 
 \subsection{Evaluation without users}
@@ -34,8 +57,8 @@ not evidence that the design works.
 
 Four claims sit downstream of it. Whether a health worker reads the card as
 intended is assumed rather than shown, and the nearest evidence argues
-against assuming it, since community health workers in India have been
-reported struggling with AI explanations even after
+against assuming it: community health workers in India have been reported
+struggling with AI explanations even after
 simplification~\citep{okolo2024easy,solanokamaiko2024explorable}. Whether
 withholding magnitude from the mother helps or harms her is an argument from
 the model's uncertainty, and Section~\ref{sec:rw-riskcomm} makes it, but the
@@ -43,70 +66,72 @@ risk-communication literature it departs from is empirical and our departure
 is not. The $0.15$ margin is a design constant with no experiment behind it,
 as Section~\ref{sec:tiers} states. And role remains a proxy: we design
 against what each reader lacks in modality, literacy and decision authority,
-but we recruit nobody to check that the proxy holds, which is the substance
-of the objection Suresh et al.\ raise against role-based
-tiering~\citep{suresh2021beyond}.
+but recruit nobody to check the proxy holds, which is the substance of Suresh
+et al.'s objection to role-based tiering~\citep{suresh2021beyond}.
 
-All four resolve the same way. Studies with mothers, community health workers
-and clinicians, gated on ethics clearance, which this preprint does not have
-and does not claim.
+All four resolve the same way, and Section~\ref{sec:future} says how.
+Everything here was produced and inspected on a workstation: no field claim,
+no claim about performance under real clinic conditions, and no claim that
+these renderings have reached anyone by any delivery channel.
 
 \subsection{What one public dataset can support}
 
 The work uses the UCI Maternal Health Risk dataset and nothing else. It is
-public, it carries generic three-level risk labels, and it names no clinical
+public, carries generic three-level risk labels, and names no clinical
 condition, so neither do we. Nothing here is clinically validated and nothing
 predicts an outcome for a real patient.
 
 Two properties bound the vehicle. Macro-recall is $0.580$ after
-deduplication, which we report as the honest figure rather than the inflated
-one (Section~\ref{sec:data-leakage}); and 35 of the 451 distinct records are
+deduplication, the honest figure rather than the inflated one
+(Section~\ref{sec:data-leakage}); and 35 of the 451 distinct records are
 feature vectors carrying more than one risk label, an ambiguity no model can
-resolve from these six features. That is a ceiling on the data, not a
-shortfall in the classifier.
+resolve from six features. That is a ceiling on the data, not a shortfall in
+the classifier.
 
 One assumption inside the gate deserves naming. The margin rule thresholds a
-difference between random-forest class probabilities, and those are vote
+difference between random-forest class probabilities, which are vote
 fractions rather than calibrated posteriors. We treat $0.15$ as a design
-constant on an ordering, not as a statement about probability. Calibrating
-the model, and then asking whether the threshold should move, is future work.
+constant on an ordering, not a statement about probability.
 
 The gate also has only one side. It tests the margin at the high boundary and
-not at the low one (Section~\ref{sec:tiers}), so a near-tie that resolves to
-low risk renders an unqualified \textsc{green} to the mother and no derate is
-available for it. Extending the rule symmetrically is future work; this
-version does not do it.
+not the low one (Section~\ref{sec:tiers}), so a near-tie resolving to low risk
+renders an unqualified \textsc{green} to the mother, with no derate available.
 
 \subsection{Who the renderings still exclude}
+\label{sec:excl}
 
 Each tier assumes something about its reader.
 
 The mother's visual carries no rendered text, so a deaf or hard-of-hearing
 mother gets nothing from it; the spoken sentence is her only channel and she
-cannot hear it. A rendered caption or an SMS companion would close this, and
+cannot hear it. A rendered caption or an SMS companion would close this, but
 it reopens the literacy assumption the tier exists to avoid, so it needs user
 input rather than a unilateral design call. Colour is the lamp's primary cue.
-Position and the lit-versus-unlit luminance step are real redundancies and
-the spoken line is a second channel, but a reader who is both colour-blind
-and deaf is left with position alone, and position assumes the traffic-light
-convention. The clinician view needs chart literacy and English. The health
-worker's card is English-only, which is a scoped exposition choice rather
-than a claim about the architecture, since every string is a fixed template
-constant and localising it is substitution deferred to deployment. All three
-tiers ship as rasterised images of text.
+Position, the lit-versus-unlit luminance step and the spoken line are real
+redundancies, but a reader who is both colour-blind and deaf is left with
+position alone, which assumes the traffic-light convention. The clinician view
+needs chart literacy and English. The health worker's card is English-only;
+every string is a fixed template constant, so localising it is substitution
+deferred to deployment. All three tiers ship as rasterised images of text.
 
 \subsection{The voice is a stand-in}
+\label{sec:voice}
 
 Audio is synthesised with a general-purpose engine reached over the network.
-It is not tuned for Indian-language health speech, it handles acronyms
-unpredictably, and it needs connectivity that the setting this design
-describes may not have. Deployment-grade Indian-language synthesis
-(AI4Bharat, Bhashini) is the stated path. What we treat as the artifact is
-the Hindi source string, not the audio file.
+It is not tuned for Indian-language health speech, handles acronyms
+unpredictably, and needs connectivity the setting this design describes may
+not have. Deployment-grade Indian-language synthesis (AI4Bharat, Bhashini) is
+the stated path. What we treat as the artifact is the Hindi source string, not
+the audio file.
 
-\subsection{Evaluated on a workstation}
+\subsection{Future work}
+\label{sec:future}
 
-This is a design and feasibility artifact evaluated on a workstation. We make
-no field claim, no claim about performance under real clinic conditions, and
-no claim that the renderings have been carried to anyone by any delivery
-channel.
+Studies with mothers, community health workers and clinicians are the first
+item and the one the others wait on; they are gated on ethics clearance, which
+this preprint does not have and does not claim. Two changes to the rule
+are specified enough to name now. The gate should extend to the low boundary,
+derating an ungated near-tie \textsc{green} to \textsc{amber} as the
+red-to-amber move already does; and the forest's vote fractions should be
+calibrated, after which the threshold is worth re-asking.
+Sections~\ref{sec:excl} and~\ref{sec:voice} name their own paths.

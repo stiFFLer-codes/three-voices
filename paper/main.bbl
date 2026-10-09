@@ -1,4 +1,4 @@
-\begin{thebibliography}{35}
+\begin{thebibliography}{36}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -347,6 +347,13 @@ Lilik Widyawati and Neny Sulistianingsih.
 \newblock ISSN 2580-0760.
 \newblock \doi{10.29207/resti.v9i5.6765}.
 \newblock URL \url{http://dx.doi.org/10.29207/resti.v9i5.6765}.
+
+\bibitem[Wobbrock and Kientz(2016)]{wobbrock2016contributions}
+Jacob~O. Wobbrock and Julie~A. Kientz.
+\newblock Research contributions in human-computer interaction.
+\newblock \emph{Interactions}, 23\penalty0 (3):\penalty0 38--44, 2016.
+\newblock \doi{10.1145/2907069}.
+\newblock URL \url{https://doi.org/10.1145/2907069}.
 
 \bibitem[Yesmin et~al.(2026)Yesmin, Shirmin, and Bristy]{yesmin2026trust}
 Farjana Yesmin, Nusrat Shirmin, and Suraiya~Shabnam Bristy.

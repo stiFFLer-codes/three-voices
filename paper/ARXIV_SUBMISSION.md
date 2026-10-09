@@ -86,23 +86,35 @@ put a structural signal on a shopfront that a moderator reads for what the
 paper contributes. The labelled version is recoverable from commit 6993541 and
 is restored before the journal submission.
 
+Reordered again 2026-09-15, inside paragraph 3 only, and the count moved to
+1824. The abstract no longer ENDS on a disclaimer: the novelty-boundary
+sentence moved to the head of paragraph 3 and the paragraph now closes on what
+the work delivers. Decision Log #49 moved that same sentence out of the end of
+paragraph 1 because the last line of a paragraph is where a skimming moderator
+lands; the identical reasoning applies to the last line of the abstract, which
+#49 did not follow through on. Nothing is softened — the sentence is intact,
+one position earlier — and all eight checklist items in
+`sections/abstract.tex` survive. The self-label "This is a design and
+feasibility artifact" is gone from the manuscript entirely; the Introduction
+now names the contribution types in HCI's own vocabulary instead.
+
 ```
-Three Voices renders a single maternal-health risk prediction as three stakeholder-specific action-signals, one each for a clinician, a community health worker, and a mother, and gates each signal on the model's own uncertainty. Below a fixed top-two margin the highest-severity signal is withheld from the mother's channel and the health worker's, while the clinician's view of the split is untouched: the derate is red to amber, never red to green, and amber still says "needs follow-up". Every string is a deterministic template filled from the case's SHAP attributions, with no language model at inference, so a rendering can be regenerated and audited line by line. Code, the rendered artifacts, the cross-validation and SHAP tables, and the evaluation matrix are archived, and all of it regenerates from five commands.
+Three Voices renders a single maternal-health risk prediction as three stakeholder-specific action-signals, one each for a clinician, a community health worker, and a mother, and gates each signal on the model's own uncertainty. Below a fixed top-two margin the highest-severity signal is withheld from the mother's channel and the health worker's, while the clinician's view of the split is untouched: the derate is red to amber, never red to green, and amber still says "needs follow-up". Every string is a deterministic template filled from the case's SHAP attributions, with no language model at inference, so a rendering can be regenerated and audited line by line. Code, the rendered artifacts, the tables and the evaluation matrix are archived, and all of it regenerates from five commands.
 
-We also report a leakage audit of the UCI Maternal Health Risk benchmark. Of the 1012 rows that survive a two-row plausibility filter, 561 are exact duplicates of an earlier row, and retaining them moves macro-recall from 0.580 to 0.859 under the same cross-validation. That is a cost we quantify, not a fault we claim to have found first.
+We also report a leakage audit of the UCI Maternal Health Risk benchmark. Of the 1012 rows surviving a two-row plausibility filter, 561 are exact duplicates of an earlier row, and retaining them moves macro-recall from 0.580 to 0.859 under the same cross-validation. We quantify that cost; we do not claim to have found it first.
 
-This is a design and feasibility artifact. Its evaluation is a formative single-evaluator heuristic critique of our own renderings, which found five defects, all of them corrected. That is an instrument that improved the design, not evidence that any tier helps a reader. No mother, health worker or clinician has used the system; the data is public, the task is generic maternal-health risk, and we make no clinical-validity claim. User studies with the three groups are the next step, gated on ethics clearance. The abstention idea sits between stakeholder-tailored explanation and selective prediction, and we claim only their pairing, not either mechanism.
+The abstention rule sits between stakeholder-tailored explanation and selective prediction; we claim their pairing, not either mechanism. Our evaluation is a formative single-evaluator heuristic critique of our own renderings; it found five defects, all corrected. It improved the design; it is not evidence that any tier helps a reader. No mother, health worker or clinician has used the system, the data is public, the task is generic maternal-health risk, and we make no clinical-validity claim; user studies with the three groups are the next step, gated on ethics clearance. The paper delivers the rendering mechanism, an auditable implementation, and a reproducible benchmark measurement.
 ```
 
-**1827 characters**, against the hard ceiling of 1920 that `prep.html` states
-("abstracts longer than 1920 characters will not be accepted"); 289 words. Both
+**1824 characters**, against the hard ceiling of 1920 that `prep.html` states
+("abstracts longer than 1920 characters will not be accepted"); 284 words. Both
 counts are machine-measured on the block above, not estimated. The block is
 generated from `sections/abstract.tex` rather than retyped, so it cannot drift
 from the manuscript the way the previous transcription did — that one still
 carried the pre-trim 250-word text after Decision Log #48 shortened the source
 to 237, and claimed to be word-for-word identical while it was not.
 
-289 words is over the 150–250 band SN Computer Science sets. That is accepted
+284 words is over the 150–250 band SN Computer Science sets. That is accepted
 here because arXiv sets no word limit, and because the labelled 237-word
 abstract is restored for the journal submission.
 
@@ -121,15 +133,18 @@ health workers; risk communication.
 ## Comments field (optional, suggested)
 
 ```
-19 pages, 1 figure, 1 table. Code, figures and audio artifacts at https://github.com/stiFFLer-codes/three-voices and archived at https://doi.org/10.5281/zenodo.22252076
+20 pages, 1 figure (3 panels), 3 tables. Code, figures and audio artifacts at https://github.com/stiFFLer-codes/three-voices and archived at https://doi.org/10.5281/zenodo.22252076
 ```
 
 ---
 
 ## Upload file list
 
-Fifteen files. Preserve the `sections/` subdirectory; everything else sits at
-the archive root.
+Sixteen files. Preserve the `sections/` subdirectory; everything else sits at
+the archive root. The list below is the order `main.tex` inputs them, and it is
+generated from `main.tex` rather than maintained by hand — the fifteen-file
+version of this list silently omitted `sections/conclusion.tex` for four days
+after the Conclusion was added.
 
 ```
 main.tex
@@ -145,6 +160,7 @@ sections/data_and_vehicle.tex
 sections/three_tiers.tex
 sections/evaluation.tex
 sections/limitations.tex
+sections/conclusion.tex
 sections/reproducibility.tex
 sections/backmatter.tex
 ```
@@ -220,31 +236,41 @@ reason given here was wrong.
 The same page requires that "the name of the `.bbl` file _must_ match the name
 of the main `.tex` file". `main.bbl` against `main.tex` satisfies that.
 
-The `.bbl` is current: 34 `\bibitem` entries against 34 `\cite` keys against 34
-`refs.bib` entries, no orphans in either direction. Two of those keys
-(`nielsen1990heuristic`, `nielsen1994enhancing`) are cited in a `\citep` that
-spans a line break in `sections/evaluation.tex`, so a line-oriented grep
-undercounts to 32 — count with a multiline match. All 34 identifiers were
-re-resolved on 2026-09-09: 31 against the Crossref API, plus arXiv 1909.03012,
-PMLR `v119/mozannar20b`, and the W3C WCAG 2.1 Recommendation. `refs.bib` is
-included for provenance. `pdflatex` never opens it while the `.bbl` is present,
-so dropping it would change nothing in the output.
+The `.bbl` is current: **36 `\bibitem` entries against 36 `\cite` keys against
+36 `refs.bib` entries**, no orphans in either direction (re-measured
+2026-09-15). Some keys are cited in a `\citep` that spans a line break in
+`sections/evaluation.tex`, so a line-oriented grep undercounts — count with a
+multiline match. All 36 identifiers have been resolved against a Crossref DOI,
+an arXiv ID, a PMLR record or the W3C Recommendation, per the CLAUDE.md
+citation gate; the two added since 2026-09-09 are `yesmin2026trust` (arXiv
+2601.07866) and `wobbrock2016contributions` (Crossref 10.1145/2907069).
+`refs.bib` is included for provenance. `pdflatex` never opens it while the
+`.bbl` is present, so dropping it would change nothing in the output.
 
 ### Standalone compile, verified
 
-The fifteen files above were copied into an empty directory containing nothing
+The sixteen files above were copied into an empty directory containing nothing
 else (no `.aux`, `.log`, `.out` or `.pdf`) and compiled with `pdflatex` alone,
 three passes, no BibTeX run. That is what arXiv does with a shipped `.bbl`.
 
-**Result: 19-page PDF, 0 errors, 0 overfull boxes, no undefined citations or
-references.** All 34 citations and every internal cross-reference resolve from
-the shipped `.bbl`, numbered [1] through [34]. Re-verified 2026-09-09 after the
-moderation repositioning, for the stripped and unstripped variants both.
+**Result: 20-page PDF, 0 errors, 0 overfull boxes, 0 undefined citations or
+references, 0 LaTeX warnings.** All 36 citations and every internal
+cross-reference resolve from the shipped `.bbl`, numbered [1] through [36].
+Re-verified 2026-09-15 after the repositioning pass (#57).
 
-The page count moved from 18 to 19 in that pass: the four-line ADIT affiliation
-and the longer abstract push the last five references onto a page of their own.
-That page carries entries [30] to [34] and is a third full, so it is a real
-page rather than a dangling stub.
+The page count has moved twice. 18 to 19 at the #49 moderation repositioning:
+the four-line ADIT affiliation and the longer abstract pushed the last
+references onto a page of their own. 19 to 20 across #56 and #57, which added
+a Conclusion, a Section 4.4, two tables and one reference. Every figure is a
+real page rather than a dangling stub.
+
+**`\graphicspath` differs between the two copies, deliberately.**
+`paper/main.tex` carries `{{./}{../results/figures/}}` so the repo build
+resolves figures from the renderer's committed output with no duplicated copy
+that can drift. The packaged `arxiv/main.tex` carries `{{./}}` alone: the
+three PNGs sit beside the sources in the upload, and a submission tree should
+not contain a path that reaches above its own root. The packaging script makes
+that substitution; do not hand-edit it back.
 
 ### Packages
 

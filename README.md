@@ -9,23 +9,24 @@ adjacent risk levels. A clinician can read that margin and discount it; a
 mother handed a red alarm for the same prediction cannot. This repository
 renders that single prediction three ways and gates the rendering on the
 model's own uncertainty: below a fixed top-two margin the highest-severity
-signal is withheld from the mother's channel and from no other. The derate is
-red to amber, never red to green, and amber still says *needs follow-up*. That
-is the thesis: abstention graded by stakeholder vulnerability rather than
+signal is withheld from the mother's channel and the health worker's, while
+the clinician's view of the split is untouched. The derate is red to amber,
+never red to green, and amber still says *needs follow-up*. That is the
+thesis: abstention graded by what each stakeholder can interrogate rather than
 applied uniformly.
 
-This is a design and feasibility artifact. **Nobody in the three groups has
-used the system.** The evaluation is a formative, single-evaluator, heuristic
-critique of our own renderings; it found five defects and is not evidence that
-the tiers help anyone. The data is public, the task is generic maternal-health
-risk with no condition named anywhere, and we make **no clinical-validity
-claim** about predicting real patients' outcomes.
+**Nobody in the three groups has used the system.** The evaluation is a
+formative, single-evaluator, heuristic critique of our own renderings; it
+found five defects and is not evidence that the tiers help anyone. The data is
+public, the task is generic maternal-health risk with no condition named
+anywhere, and we make **no clinical-validity claim** about predicting real
+patients' outcomes.
 
 ## Links
 
 | | |
 |---|---|
-| Paper | [`paper/main.pdf`](paper/main.pdf) (17 pp) |
+| Paper | [`paper/main.pdf`](paper/main.pdf) (20 pp) |
 | Preprint | `[arXiv:XXXX.XXXXX]` — **placeholder, fill in after submission** (cs.HC, cross-list cs.LG) |
 | Archive | [10.5281/zenodo.22252076](https://doi.org/10.5281/zenodo.22252076) — concept DOI, resolves to the latest release |
 | Dataset | [UCI Maternal Health Risk](https://doi.org/10.24432/C5DP5D), id 863, CC BY 4.0 |
@@ -99,7 +100,7 @@ the MP3.
 | Path | What it holds |
 |---|---|
 | `src/` | The five pipeline gates. `config.py` (seeds, paths), `data.py`, `model.py`, `explain.py`, `render.py`, `evaluate.py` |
-| `paper/` | LaTeX sources, `refs.bib` (31 entries), `main.bbl`, the compiled `main.pdf`, and the arXiv submission sheet |
+| `paper/` | LaTeX sources, `refs.bib` (36 entries), `main.bbl`, the compiled `main.pdf`, and the arXiv submission sheet |
 | `results/` | Every figure, table and audio file the paper cites, all regenerable from the five gates |
 | `data/` | Provenance and licence for the dataset. The cached CSV is gitignored; `python -m src.data` recreates it |
 | `related_work.md` | The literature sweep the Related Work section was drafted from. `main.tex` cites it by section number as the source for each claim |

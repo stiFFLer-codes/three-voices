@@ -66,10 +66,10 @@ to infer it. The margin test guards the high boundary only: \textsc{green}
 follows the argmax with no margin test at all, so a prediction that is
 low risk by a hair renders an unqualified all-clear to the mother. That is the
 opposite of the asymmetry Section~\ref{sec:data-model} argues for, where
-missing a higher-risk mother is the error that matters. The symmetric
-extension, derating an ungated near-tie \textsc{green} down to \textsc{amber}
-as the red-to-amber move already does, is the natural next version of this
-rule and is future work. This version does not implement it.
+missing a higher-risk mother is the error that matters. This version does not
+implement the symmetric extension, derating an ungated near-tie
+\textsc{green} down to \textsc{amber} as the red-to-amber move already does;
+Section~\ref{sec:future} takes it up.
 
 Computing the band once matters as much as the threshold does. In the first
 version of the renderer the health worker's card banded on its own rule and

@@ -85,9 +85,11 @@ backwards.
 
 \subsection{What we claim, and what we do not}
 
-We contribute three things, and they are different kinds of object: a
-rendering mechanism, the artifact that implements it, and a measurement on
-the benchmark underneath both.
+We contribute three things, and they are different kinds of object. In the
+terms HCI uses for its own contribution
+types~\citep{wobbrock2016contributions}, two are artifact contributions --- a
+rendering mechanism and the pipeline that implements it --- and the third is
+an empirical one, a measurement on the benchmark underneath both.
 
 \paragraph{A mechanism: abstention graded across stakeholder channels.}
 The decision to withhold is taken once, from the model's output, then rendered
@@ -134,29 +136,25 @@ up, and we report what they cost rather than asserting we found them first.
 
 \subsection{What kind of evidence this is}
 
-This is a design and feasibility artifact, and we would rather say so here
-than let a reader discover it in Section~\ref{sec:limitations}. No mother, no
-community health worker and no clinician has used any of these renderings.
+No mother, no community health worker and no clinician has used any of these
+renderings, and we would rather say so here than let a reader discover it in
+Section~\ref{sec:limitations}.
 
-Our evaluation is a formative, single-evaluator heuristic critique conducted
-on our own artifact. It found five defects, including a driver list that
-could print a reading arguing against its own prediction under a heading
-announcing it as a flag, and all five were fixed before this paper was
-written. That is what the evaluation is: an instrument that improved the
-design. It is not evidence that any tier helps anyone, and the nearest
-empirical work argues against assuming so, since community health workers in
-India have been reported struggling with AI explanations even after
-simplification~\citep{okolo2024easy,solanokamaiko2024explorable}.
+Our evaluation is a formative, single-evaluator heuristic critique of our own
+artifact. It found five defects --- including a driver list that could print
+a reading arguing against its own prediction under a heading announcing it as
+a flag --- and all five were fixed before this paper was written. It is an
+instrument that improved the design, not evidence that any tier helps anyone,
+and Section~\ref{sec:eval} reports those defects first.
 
 We ask to be judged on the following. The rendering rule and the pipeline that
 implements it are the object; the artifact is validated by formative
 inspection against published usability and accessibility criteria; the leakage
-effect on the benchmark is quantified and reproducible in either direction
-from a committed table. The data here is public, the task is generic
-maternal-health risk, and nothing in this paper predicts an outcome for a real
-patient. Whether any of it helps a mother, a health worker or a clinician is a
-question this paper does not answer, and answering it is gated on ethics
-clearance rather than on effort.
+effect is quantified and reproducible in either direction from a committed
+table. The data is public, the task is generic maternal-health risk, and
+nothing here predicts an outcome for a real patient. Whether any of it helps a
+mother, a health worker or a clinician is a question Section~\ref{sec:future}
+takes up rather than one this paper answers.
 
 Section~\ref{sec:related} places the work against the two literatures it
 claims between and the three it is answerable to, Section~\ref{sec:data}

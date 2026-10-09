@@ -35,13 +35,36 @@
 % to a section; "past the fold" here means paragraph 3 of 3, nothing is
 % hidden. The eight-item checklist below is UNCHANGED and all eight items
 % survive verbatim. Not one disclaimer was dropped ---
-% the checklist that must survive any future edit is: (1) design and
-% feasibility artifact, (2) formative single-evaluator inspection of our own
+% the checklist that must survive any future edit is: (1) the contribution
+% type is named and no user-validated system is claimed, (2) formative
+% single-evaluator inspection of our own
 % renderings, (3) not evidence the tiers help anyone, (4) nobody in the three
 % groups has used it and user studies are ethics-gated, (5) public data,
 % generic risk, no clinical-validity claim, (6) red to amber never green,
 % (7) the intersection is claimed, not the gating mechanism, (8) the leakage
 % number is a measurement, not a discovery.
+%
+% 2026-09-15 REPOSITIONING PASS. Paragraph 3 reordered and the closing
+% sentence replaced. ALL EIGHT CHECKLIST ITEMS SURVIVE; verify before any
+% further edit. What changed and why:
+%   * The abstract no longer ENDS on a disclaimer. The novelty-boundary
+%     sentence ("we claim their pairing, not either mechanism") moves to the
+%     HEAD of paragraph 3, and the paragraph now closes on what the work
+%     delivers. #49 moved that sentence out of paragraph 1 because the last
+%     line of a paragraph is where a skimming moderator lands; the same
+%     reasoning applies to the last line of the abstract, which #49 did not
+%     follow through on. Nothing is softened: the sentence is intact, one
+%     position earlier.
+%   * Checklist item (1) is restated. "This is a design and feasibility
+%     artifact" is GONE from the manuscript. That label appears in no
+%     taxonomy and reads as an apology; the Introduction now names the
+%     contribution types in HCI's own vocabulary instead
+%     (wobbrock2016contributions, resolved against Crossref 2026-09-15).
+%     What item (1) protects -- that no user-validated system is claimed --
+%     is carried by items (2), (3) and (4), which are untouched.
+%   * ~90 characters trimmed elsewhere, all grammatical, so the arXiv
+%     abstract field stays clear of its 1920-character ceiling. No number, no
+%     citation and no claim moved.
 \begin{abstract}
 \noindent Three Voices renders a single maternal-health risk prediction as
 three stakeholder-specific action-signals, one each for a clinician, a
@@ -52,25 +75,25 @@ clinician's view of the split is untouched: the derate is red to amber, never
 red to green, and amber still says \emph{needs follow-up}. Every
 string is a deterministic template filled from the case's SHAP attributions,
 with no language model at inference, so a rendering can be regenerated and
-audited line by line. Code, the rendered artifacts, the cross-validation and
-SHAP tables, and the evaluation matrix are archived, and all of it
-regenerates from five commands.
+audited line by line. Code, the rendered artifacts, the tables and the
+evaluation matrix are archived, and all of it regenerates from five commands.
 
 We also report a leakage audit of the UCI Maternal Health Risk
-benchmark. Of the 1012 rows that survive a two-row plausibility filter, 561
+benchmark. Of the 1012 rows surviving a two-row plausibility filter, 561
 are exact duplicates of an earlier row, and retaining them moves macro-recall
-from $0.580$ to $0.859$ under the same cross-validation. That is
-a cost we quantify, not a fault we claim to have found first.
+from $0.580$ to $0.859$ under the same cross-validation. We quantify that
+cost; we do not claim to have found it first.
 
-This is a design and feasibility artifact. Its evaluation is a
-formative single-evaluator heuristic critique of our own renderings, which
-found five defects, all of them corrected. That is an instrument that
-improved the design, not evidence that any tier helps a reader. No mother,
-health worker or clinician has used the system; the data is public, the task
-is generic maternal-health risk, and we make no clinical-validity claim. User
+The abstention rule sits between stakeholder-tailored explanation and
+selective prediction; we claim their pairing, not either mechanism. Our
+evaluation is a formative single-evaluator heuristic critique of our own
+renderings; it found five defects, all corrected. It improved the design; it
+is not evidence that any tier helps a reader. No mother, health worker or
+clinician has used the system, the data is public, the task
+is generic maternal-health risk, and we make no clinical-validity claim; user
 studies with the three groups are the next step, gated on ethics clearance.
-The abstention idea sits between stakeholder-tailored explanation and
-selective prediction, and we claim only their pairing, not either mechanism.
+The paper delivers the rendering mechanism, an auditable implementation,
+and a reproducible benchmark measurement.
 
 \medskip
 

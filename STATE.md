@@ -26,15 +26,33 @@ side to leave open. Section 2 was re-textured so every subsection opens on the
 work rather than the literature. **Now 20 pp**, clean build, no locked number
 changed, Section 6 duplication deliberately untouched. Not committed.
 
-**BLOCKING THE UPLOAD, NEW IN #56:** `paper/ARXIV_SUBMISSION.md` is stale.
-Its upload list names fifteen files and omits `sections/conclusion.tex`; the
-page count (19), byte length (609826) and bibitem count (34) are all wrong.
-The build recipe globs `sections/*.tex` so it still works, but the file list
-must be regenerated before anyone packages from it.
+**THAT BLOCKER IS CLOSED (#57, 2026-09-15).** `paper/ARXIV_SUBMISSION.md` is
+regenerated — sixteen upload files including `sections/conclusion.tex`, 20 pp,
+36 bibitems, and a corrected Comments field (it had said "1 table"; the paper
+has three). `arxiv/` itself had drifted the same way and is regenerated too;
+packaging is now scripted off `main.tex`'s own `\input` lines rather than
+hand-copied, so the file list cannot drift again.
 
-**OPEN against #49:** `sections/intro.tex` was NOT repositioned — the three
-intro diffs the session called for were lost when the prior session cleared.
-Revisit before submission.
+**REPOSITIONING PASS LANDED (#57).** Section 6 is now Section 7 "Limitations
+and Future Work" and owns every forward-looking claim; the three scattered
+`is future work` tails are consolidated into one subsection 7.5, and the
+section still came out one word shorter than before. The invented self-label
+"This is a design and feasibility artifact" is **gone from all four sites** —
+the Introduction now names the contribution types in HCI's own vocabulary
+(Wobbrock & Kientz 2016, resolved against Crossref; `refs.bib` 35 -> 36), and
+the abstract no longer ends on a disclaimer. No limitation was removed, no
+number and no claim changed.
+
+**OPEN against #49 — now partly closed by #57.** `sections/intro.tex` had
+never been repositioned; the three intro diffs the earlier session called for
+were lost when it cleared. #57 rewrote 1.1's contribution opener and
+compressed 1.2, so the Introduction has now had a repositioning pass, though
+not the specific lost one. **The #53 position-paper risk turned out to be
+already closed** — the flagged phrases ("entitled to be told",
+"vulnerability", "least power") are not in the file; #56's compression had
+removed them. See #57(d), which also records why that risk was worse than #53
+knew: since 2025-10-31 a cs.* position paper must already have completed peer
+review or is likely to be **declined**, not held.
 
 **GATE B IS CLOSED (#55, 2026-09-11).** The cold run has been done: fresh
 clone, fresh venv, pinned deps, audio purged first. 33 of 33 non-audio
@@ -217,9 +235,11 @@ tagging before the cold run tags something unverified.
    describes what would be tagged. Nothing in #56 touched `src/`, so the
    artifacts should be unchanged, but the claim "verified cold" now needs a
    fresh run to be true.
-1b. **Regenerate `paper/ARXIV_SUBMISSION.md`** (Gate C material, listed here
-   because #56 invalidated it): sixteen upload files including
-   `sections/conclusion.tex`, 20 pp, the new byte length, and 35 bibitems.
+1b. **Regenerate `paper/ARXIV_SUBMISSION.md`** — **DONE 2026-09-15 (#57).**
+   Sixteen upload files including `sections/conclusion.tex`, 20 pp, 36
+   bibitems, abstract block re-derived mechanically (1824 chars / 284 words),
+   Comments field corrected to "20 pages, 1 figure, 3 tables". `arxiv/` was
+   stale in the same way and is regenerated; packaging is scripted now.
 2. **Co-author read (Patil).** Specifically: the Hindi strings and their
    clinical framing (#14), the ASHA-tier card wording, and her own CRediT
    role list — of her four roles only *Validation* is an official CRediT
@@ -1703,3 +1723,221 @@ Decision Log entries named.
   undefined citations or references, 0 LaTeX warnings**; in-repo `main.pdf`
   content-identical to the cold build. `paper/main.pdf` at this commit is the
   faculty package.
+
+- **2026-09-15 #57 — REPOSITIONING PASS: one "Limitations and Future Work"
+  section, the contribution type named, and the invented self-label removed.**
+  Branch `revision/sncs-framing`, not committed at time of writing. Structural
+  and rhetorical only. **No limitation was removed from the paper, no number,
+  no citation and no claim changed.** The governing rule for the whole pass:
+  *state each limitation once, in the section that owns it, and point from
+  everywhere else.* Net honesty constant, net repetition down.
+
+  **Why now.** The census below is the finding. Every disclaimer in the
+  manuscript was individually defensible and collectively disabling:
+
+  | disclaimer | sites before | after |
+  |---|---|---|
+  | "design and feasibility artifact" | 4 | **0** |
+  | "formative / single-evaluator" | 4 | 4 (one is the Section 5 title) |
+  | "no mother / CHW / clinician has used it" | 3 | 3 |
+  | "gated on ethics clearance" | 5 | 4 (one is Declarations, required) |
+  | "not evidence that any tier helps" | 3 | 3 |
+  | "future work" | 3, no owner | **2, both Section 7 headings** |
+
+  A moderator reading the abstract and page one met self-negation as the
+  dominant move. That is arXiv's "lacks originality, novelty, significance"
+  decline reason, restated by us, in our own shopfront.
+
+  **(a) Section 6 is now Section 7 "Limitations and Future Work"** and owns
+  every forward-looking claim in the manuscript. New final subsection 7.5
+  "Future work" collects the three scattered `is future work` tails — one in
+  `three_tiers.tex`, two in `limitations.tex`. The factual half of each
+  statement stayed exactly where it was; only the forward-looking half moved.
+  "Evaluated on a workstation" folded into 7.1 (same limitation family, one
+  fewer heading). **The section absorbed a whole new subsection and still came
+  out one word SHORTER than before: 719 -> 718 body words**, paid for by
+  line-level grammatical compression. Keep it that way.
+  *Moderation rationale:* arXiv lists "proposals for future research" among
+  content types it does not accept. Future work scattered as three apologies
+  leans that way; one bounded subsection is ordinary research convention.
+
+  **(b) "This is a design and feasibility artifact" is GONE from the
+  manuscript** — all four sites. That phrase appears in no taxonomy and can
+  only read as an apology. The Introduction now names the contribution types
+  in HCI's own vocabulary instead: two artifact contributions and one
+  empirical one. **New citation, resolved in-session against Crossref per the
+  CLAUDE.md gate** (`api.crossref.org/works/10.1145/2907069`, record fetched,
+  title / both authors / journal / volume / issue / pages / year / publisher
+  read off it): Wobbrock & Kientz, *Research contributions in human-computer
+  interaction*, Interactions 23(3):38-44, 2016. `refs.bib` 35 -> 36.
+  This is the pass's highest-leverage change and it is also more ACCURATE than
+  what it replaced.
+
+  **(c) The abstract no longer ENDS on a disclaimer.** Paragraph 3 reordered:
+  the novelty-boundary sentence moved to its head, and the paragraph closes on
+  what the work delivers. #49 moved that same sentence out of the end of
+  paragraph 1 on exactly this reasoning and did not follow it through to the
+  end of the abstract. **All eight checklist items survive**; item (1) is
+  restated to "the contribution type is named and no user-validated system is
+  claimed", which items (2)(3)(4) already carry. 1827 -> **1824 characters**,
+  289 -> 284 words, against the 1920 ceiling.
+
+  **(d) The position-paper risk recorded in #53 turned out to be already
+  closed.** #53 left three phrases in the Introduction — "entitled to be
+  told", "vulnerability", "least power" — deferred to "revisit only if faculty
+  flag it". They are **not in the file**: #56's compression removed them. What
+  remains of that register is three uses of "entitled" in `three_tiers.tex`,
+  and all three apply to the MODEL or the SENDER, not to a person — a claim
+  about evidential warrant, not advocacy. **Kept deliberately.** One genuine
+  fix in `related_work.tex`: the novelty claim said the rendering is a
+  function of "stakeholder vulnerability"; per #54 the gate actually keys on
+  what each reader can interrogate, so it now says that. More accurate, and it
+  takes the advocacy word out of the highest-visibility sentence in Section 2.
+  *This matters more than #53 knew.* Since 2025-10-31 a cs.* **position paper
+  must already have completed peer review**, with documentation, or is
+  "likely to be rejected" — so a moderator who files this as a position paper
+  DECLINES it rather than holding it, and appeals are final and carry no
+  feedback. Had the phrases survived #56, this pass would have removed them.
+
+  **(e) `arxiv/` regenerated — it had silently drifted.** The packaged upload
+  set was built 2026-09-11 and **did not contain `sections/conclusion.tex`**;
+  `arxiv/main.tex` had no `\input` for it. #56 flagged this as BLOCKING and it
+  is now closed. Packaging is now scripted rather than hand-copied: whole-line
+  comments only (trailing `%` is load-bearing in `three_tiers.tex`'s subfigure
+  block and must survive), and the file list is read off `main.tex`'s own
+  `\input` lines so it cannot drift again. 532 comment lines stripped,
+  **16 files**, 0 leaked comment lines, 0 dot-prefixed entries.
+
+  **(f) `ARXIV_SUBMISSION.md` regenerated.** Abstract block re-derived from
+  `sections/abstract.tex` mechanically, not retyped. Upload list now sixteen
+  files. **The Comments field said "1 figure, 1 table" and the paper has
+  THREE tables** (`tab:models`, `tab:leakage`, `tab:matrix`, counted from
+  `main.aux`) — understated since #56 added two of them. Now "20 pages, 1
+  figure, 3 tables".
+
+  **`/anti-ai` run on every changed block** (use case 3.1, academic). Found
+  and fixed: one ungrammatical sentence this pass introduced ("reports it
+  defects first"), one precious antithesis ("re-asking rather than
+  re-asserting"), one broken parallelism ("no field claim, no claim..., and
+  none that..."), and one over-compressed ellipsis ("name their own"). Left
+  alone deliberately: ~11 instances of "X, not Y" across the changed prose.
+  Scope-drawing is this paper's rhetorical job and the construction is precise
+  here, not evasive. Burstiness of the new 7.5 is 35/11/39/7 words, well
+  outside the flat 15-25 band.
+
+  **Verified, not asserted.** In-repo build: **20 pp, 0 errors, 0 overfull
+  boxes, 0 undefined citations or references, 0 LaTeX warnings.** Citations
+  reconcile **36 cited / 36 in `refs.bib` / 36 `\bibitem`**, no orphans in
+  either direction. Cold build from the regenerated package, extracted into an
+  empty directory, `pdflatex` x3 and **no bibtex** (the shipped `.bbl` is
+  used, as arXiv would): 16 files, **20 pp, 0/0/0/0**. Oversell-firewall greps
+  clean: no `novel`+`framework`, no clinical-validity claim, the Decision Log
+  #21 condition name absent.
+
+  **What this pass did NOT do.** No new experiment, no calibration run, no
+  symmetric gate implementation — it stays future work, which is the point of
+  (a). The Section 1.1 / 1.2 headings are untouched (#50 considered and
+  rejected renaming them; that stands). No publisher template, no
+  reference-style conversion, no bibliography reordering (#47 defers these).
+  Gate A — the author's end-to-end read — is **still open and still blocks the
+  tag**, and this pass moved prose, so it needs the read more than before.
+
+- **2026-09-15 #58 — ADVERSARIAL MODERATION AUDIT RUN AGAINST #57, AND THE
+  FOUR THINGS IT FOUND.** Full `arxiv-moderator` pass over the regenerated
+  upload set, live policy fetched the same day (10 arXiv pages + 2 external).
+  **Verdict: SUBMIT, no blocking finding.** No reclassify risk; `cs.HC`
+  primary with `cs.LG` cross-list confirmed as earned rather than scattershot.
+  Reference integrity independently re-measured: **36 checked / 36 resolved /
+  0 failed**, including `wobbrock2016contributions` added hours earlier.
+  Abstract 1824 / 1920 characters, pure ASCII. Zero leaked comment lines in
+  the upload — the only `%` surviving are the five line-joining ones inside
+  `three_tiers.tex`'s subcaption block and four escaped `\%`, which is
+  correct. All eight abstract checklist disclaimers verified present after
+  #57's reorder.
+
+  **(a) THE FINDING, and it is the #54 defect class again.** `README.md`
+  still carried **"withheld from the mother's channel and from no other"** —
+  the exact false exclusivity claim that commit `a119504` corrected in the
+  manuscript on 2026-09-09, and that `src/render.py:165-169` carries an
+  explicit comment warning against. The paper stakes its artifact claim on
+  that repo (`backmatter.tex`, `reproducibility.tex` both cite it), so the
+  archive of record was asserting what the manuscript disclaims.
+  **#54 recorded the lesson as "the firewall needs a check that reads the
+  claim against the renderer." The check was added and then run only over
+  `paper/`.** CLAUDE.md non-negotiable #8 says the prose gate covers
+  "everything under `paper/` **and README prose**"; the README half was not
+  swept, by me, in the pass whose entire subject was claim hygiene. Fixed at
+  four sites: the exclusivity claim, "stakeholder vulnerability" (the phrase
+  #57 removed from `related_work.tex` on the same grounds), the
+  "design and feasibility artifact" self-label, and a stale "(17 pp)".
+  A fifth, which the audit did not catch: the repo map said `refs.bib` holds
+  31 entries; it holds 36.
+  **Standing rule from here: any sweep for a claim defect runs over
+  `README.md` in the same pass, not as a follow-up.**
+
+  **(b) `\graphicspath` reached above the submission root.** The packaged
+  `main.tex` carried `{{./}{../results/figures/}}`. Harmless in fact — the
+  cold build resolved all three PNGs from `./` and never consulted the second
+  root — but a path-traversal entry has no business in an upload tree. The
+  packaging script now narrows it to `{{./}}` in the packaged copy only;
+  `paper/main.tex` keeps both roots so the repo build still resolves figures
+  from the renderer's committed output with no duplicated copy that can
+  drift. Do not hand-edit it back.
+
+  **(c) `ARXIV_SUBMISSION.md` disagreed with itself.** Its Comments field and
+  upload list were regenerated in #57; the *verification prose* below them was
+  not, and still claimed 34 references, fifteen files and a 19-page PDF.
+  Whoever pasted the form would have been reading a document contradicting
+  its own numbers. Regenerated to 36 / sixteen / 20 pp, with the
+  `\graphicspath` divergence documented so it does not read as an error.
+  Comments field also now says "1 figure (3 panels)" — one float, three
+  subfigures.
+
+  **(d) SUPERSEDES #56 ON ONE POLICY FACT.** #56 recorded "arXiv never runs
+  BibTeX, so they are inert surface." That is **false as of 2026-09-15**:
+  `submit_tex.html` states arXiv now processes `.bib` via bibtex/biblatex and
+  **blocks a submission carrying neither a `.bbl` nor the needed `.bib`**.
+  No effect on this submission — `arxiv/main.bbl` ships, its name matches
+  `main.tex`, and the cold build runs `pdflatex` three times with no bibtex —
+  but a future session reusing #56's sentence would be reasoning from a
+  retired fact.
+
+  **(e) NOT VERIFIED, and it needs the author before a submission window
+  opens: the cs.HC endorsement.** #56 records it as confirmed, but that is an
+  author claim and no session can check it. The endorsement page fetched this
+  run says automatic endorsement now requires **both** a qualifying
+  institutional email **and** having claimed ownership of a co-author's
+  submission. The corresponding address is `maitreyasapariya@gmail.com`, set
+  deliberately by #52 to avoid the enrollment-number reading, and a personal
+  address does not satisfy the institutional half. If the standing
+  endorsement is real it carries; if the form asks, the route is a personal
+  endorsement from an established cs.HC author. **Identify a fallback
+  endorser before opening the form, not after.** #52's trade is still the
+  right one and should not be reversed — an enrollment-number address against
+  the "undergraduate or high-school research" exclusion is the worse
+  exposure.
+
+  **Considered and declined:** the audit's suggestion that `intro.tex`'s
+  "two artifact contributions — a rendering mechanism and the pipeline that
+  implements it" counts one system twice under the Wobbrock & Kientz
+  taxonomy. The reading is arguable and the audit rated it "very low"
+  confidence, but collapsing it to one artifact contribution costs the
+  three-item stack that `main.tex`'s CONTRIBUTION STACK pins. Left as is;
+  recorded here so the next session does not rediscover it as novel.
+
+  **Also confirmed by the audit, worth keeping:** the three surviving uses of
+  "entitled" in `three_tiers.tex` hold up to a hostile read — each predicates
+  evidential warrant on the model or the sender, never a person's claim on
+  anyone, and `:116-117` is load-bearing justification for departing from the
+  risk-communication literature. The 60-second cold triage reads as a
+  research paper, not a position paper. The prior decline was a different
+  paper, so no declined text is being recycled.
+
+  **Verified after (a)-(c): cold build from the repackaged set, extracted into
+  an empty directory, `pdflatex` x3 and no bibtex — 16 files, 20 pp, 0
+  errors, 0 overfull boxes, 0 undefined citations or references, 0 LaTeX
+  warnings, and all three PNGs confirmed loaded from `./`.**
+
+  **Gate A — the author's end-to-end read of the 20 pp PDF — remains OPEN and
+  still blocks the tag.** Nothing in this audit substitutes for it. Nothing in
+  #57 or #58 has been committed, tagged or uploaded.
