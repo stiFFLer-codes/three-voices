@@ -27,6 +27,23 @@
 %       NOT changed to "five"; a clause now says which is which.
 %   (c) One editorial tail cut. The single-evaluator / not-user-testing /
 %       not-validation paragraph is UNCHANGED, as its own header requires.
+%
+% 2026-10-09 revision (REVISION_BRIEF §3). 5.1 now says the first pass ran on
+% the original renderer with cases selected from in-sample probabilities, and
+% that the re-render scores the cases out of fold (Decision Log #62; the
+% in-sample/out-of-fold argument is in sec:data-model). "On the false-positive
+% case" became "On the original false-positive case". Counts in 5.2 are
+% unchanged (29 / 12 / 1 / 6, heuristic_matrix.csv); the author's four
+% re-rate decisions (Decision Log #63) kept every rating, so the matrix
+% symbols are unchanged. WRITING_RULES §3 fixes in kept text: the five defect
+% run-in heads were \textbf (now \paragraph, as in Section 4) and one em dash
+% became a colon. The single-evaluator paragraph is still unchanged.
+% Then REVISION_BRIEF §2a and §12 (author decisions, Decision Log #66): the
+% CHW sentence replaced with the §12 wording (the old "even after they have
+% been simplified" was not supported by either abstract); "Both were built to
+% find defects early" replaced; matrix caption trimmed so it no longer repeats
+% the paragraph after the table; "could have shown it, because metrics never
+% read the card"; "met by the three tiers together, and by no single one".
 \section{Formative Heuristic Evaluation}
 \label{sec:eval}
 
@@ -42,8 +59,9 @@ problems against a small set of stated principles, and the set we rate
 against is the refined ten~\citep{nielsen1990heuristic,
 nielsen1994enhancing}; conformance inspection against the WCAG 2.1 success
 criteria is the corresponding instrument on the accessibility
-side~\citep{w3c2025wcag21}. Neither substitutes for users. Both were built to
-find defects early.
+side~\citep{w3c2025wcag21}. Neither substitutes for users. Heuristic
+evaluation was designed to find usability problems without users; WCAG
+conformance inspection checks an artifact against stated success criteria.
 
 This is a single-evaluator, author-conducted, formative assessment. It is not
 user testing and it is not validation. Nothing in it is evidence that the
@@ -52,36 +70,40 @@ what we report.
 
 \subsection{What it found}
 
-The first pass ran against the original renderer and returned four Fail
-ratings, three of them on the health worker's card, arising from five distinct
-defects. All five were fixed and the tiers re-rendered; the ratings below and
-in Table~\ref{tab:matrix} describe the corrected artifacts.
+The first pass ran against the original renderer, on cases selected from
+in-sample probabilities. It returned four Fail ratings, three of them on the
+health worker's card, arising from five distinct defects. All five were fixed
+and the tiers re-rendered, with the cases now scored out of fold
+(Section~\ref{sec:data-model}). The ratings below and in
+Table~\ref{tab:matrix} describe the corrected artifacts.
 
-\textbf{The driver list was sign-blind.} Features were ranked by absolute
+\paragraph{Sign-blind driver list.} Features were ranked by absolute
 SHAP magnitude with no sign filter, so a reading that argued \emph{against}
 the prediction could be printed under a heading announcing it as a flag. On
-the false-positive case the card listed low blood sugar, whose contribution
-to the predicted class was $-0.085$. The routine card was worse: it listed
-the two features that were the model's reasons for saying \emph{low} under
-that same heading, above a next step telling the reader to arrange a
+the original false-positive case the card listed low blood sugar, whose
+contribution to the predicted class was $-0.085$. The routine card was worse:
+it listed the two features that were the model's reasons for saying \emph{low}
+under that same heading, above a next step telling the reader to arrange a
 check-up. This is the defect that could have put a wrong cue in front of the
-person making a referral, and no model metric would have shown it.
+person making a referral, and no model metric could have shown it, because
+metrics never read the card.
 
-\textbf{The two tiers banded independently}, so the confident high-risk case
-rendered an amber card beside a red lamp --- one prediction with two
-identities. The band is now computed once and passed to both.
+\paragraph{Two bands for one prediction.} The health worker's card and the
+mother's lamp banded independently, so the confident high-risk case rendered
+an amber card beside a red lamp: one prediction with two identities. The band
+is now computed once and passed to both.
 
-\textbf{Header contrast was assumed rather than measured.} White header text
-was hardcoded; on the amber header, which is the state for two of the four
-rendered cases, it measured $2.12{:}1$. Ink is now chosen per band by measured
-contrast, worst case $5.14{:}1$, and a self-check asserts it.
+\paragraph{Unmeasured header contrast.} White header text was hardcoded; on
+the amber header, which is the state for two of the four rendered cases, it
+measured $2.12{:}1$. Ink is now chosen per band by measured contrast, worst
+case $5.14{:}1$, and a self-check asserts it.
 
-\textbf{Direction words had no deadband}, so a blood sugar of $7.7$ against a
-median of $7.5$ was worded as ``raised''. The word now attaches only outside
+\paragraph{Direction words without a deadband.} A blood sugar of $7.7$ against
+a median of $7.5$ was worded as ``raised''. The word now attaches only outside
 $0.25$ IQR of the median.
 
-\textbf{The mother's transcript carried no provenance}, while both other
-tiers printed the disclaimer. It now records case, band and disclaimer under
+\paragraph{No provenance on the mother's transcript.} The transcript carried
+none, while both other tiers printed the disclaimer. It now records case, band and disclaimer under
 an explicit written-not-spoken rule; the spoken line is unchanged, because
 appending provenance to every message would bury the one action the tier
 exists to deliver.
@@ -102,9 +124,7 @@ deployed application would.
 \caption{All 48 cells: 16 criteria rated against each tier, on the corrected
 artifacts. $\bullet$ pass, $\circ$ partial, $\times$ fail, -- deferred. The
 per-cell rationale for every rating is in
-\texttt{results/tables/heuristic\_matrix.csv}. Read by row the criteria are
-covered; read by column each tier fails where a single universal rendering
-would have to compromise.}
+\texttt{results/tables/heuristic\_matrix.csv}.}
 \label{tab:matrix}
 \begin{tabular}{lccc}
 \toprule
@@ -137,12 +157,12 @@ Read by column, each tier fails where a single universal rendering would have
 to compromise: the clinician view needs chart and English literacy, the
 mother's view needs hearing, and neither gap closes inside its own tier
 without destroying what that tier is for. Read by row, the criteria are
-covered. The architecture is what conforms; no single output does.
+covered. The criteria are met by the three tiers together, and by no single
+one of them.
 
 None of this tells us whether a health worker or a mother understands what
-she is handed. That question needs users, and the nearest prior work is not
-encouraging about assuming the answer: studies with community health workers
-in India report difficulty interpreting AI explanations even after they have
-been simplified~\citep{okolo2024easy,solanokamaiko2024explorable}. Studies with
-mothers, health workers and clinicians are the next step
-(Section~\ref{sec:future}).
+she is handed. Studies with community health workers in India show that how
+well they understand an AI explanation depends on its
+design~\citep{okolo2024easy,solanokamaiko2024explorable}, so the answer cannot
+be assumed. Studies with mothers, health workers and clinicians are the next
+step (Section~\ref{sec:future}).
