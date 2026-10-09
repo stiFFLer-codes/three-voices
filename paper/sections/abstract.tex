@@ -1,99 +1,44 @@
-% SOURCE: written LAST, to the stabilised body. Every number here already
-% appears in a drafted section and traces to a committed table:
-%   0.487/0.499       -> shap_case_summary.csv (Three Tiers)
-%   561, 0.580, 0.859 -> p1_duplicate_leakage.csv, p1_cohort_summary.csv
-%   five defects      -> heuristic_evaluation.md (Evaluation)
-% No claim, number or citation is introduced that the body does not deliver.
-% FIREWALL: derate direction stated explicitly; no user study claimed; no
-% clinical validity; generic maternal-health risk only.
-%
-% STRUCTURE (2026-09-09, Decision Log #49). Three unlabelled paragraphs, for
-% arXiv moderation: artifact and mechanism first, scope limits second,
-% measurement last. This SUPERSEDES the Purpose / Methods / Results /
-% Conclusion labelling of Decision Log #47/#48, which SN Computer Science
-% requires and arXiv does not. The labelled version is recoverable from
-% commit 6993541 and must be restored before the journal submission.
-% The novelty-boundary sentence ('we claim only their pairing, not either
-% mechanism') moved from the end of paragraph 1 to the end of paragraph 2,
-% where the other scope limits already sit: it is a disclaimer, and the last
-% line of the opening paragraph is where a moderator skimming for what is
-% new will land. Nothing was dropped to achieve that, and one sentence was
-% ADDED to paragraph 1 naming the archived, regenerable artifact, which is
-% the paper's primary-research evidence and was previously absent here.
-% ORDERING RULE (SUPERSEDED 2026-09-11 — see below): the caveats stay EARLY,
-% in paragraph 2, where a reader meets them beside the thing they bound.
-%
-% 2026-09-11 SUPERSEDES the ordering rule above. Paragraphs 2 and 3 are
-% SWAPPED: the leakage measurement now sits at 2, the caveats at 3. Not one
-% word of either paragraph changed — this was a pure block swap, verified by
-% asserting both blocks matched byte-for-byte before and after.
-% WHY: two independent external reviews, run separately, both reported that
-% the stacked negatives on page one cause a moderator triaging in ~60 seconds
-% to over-weight them, and both recommended letting the hard number lead.
-% Convergence from two independent reads is why this outweighs the earlier
-% rule. The caveats are still IN the abstract, ~100 words later, not deferred
-% to a section; "past the fold" here means paragraph 3 of 3, nothing is
-% hidden. The eight-item checklist below is UNCHANGED and all eight items
-% survive verbatim. Not one disclaimer was dropped ---
-% the checklist that must survive any future edit is: (1) the contribution
-% type is named and no user-validated system is claimed, (2) formative
-% single-evaluator inspection of our own
-% renderings, (3) not evidence the tiers help anyone, (4) nobody in the three
-% groups has used it and user studies are ethics-gated, (5) public data,
-% generic risk, no clinical-validity claim, (6) red to amber never green,
-% (7) the intersection is claimed, not the gating mechanism, (8) the leakage
-% number is a measurement, not a discovery.
-%
-% 2026-09-15 REPOSITIONING PASS. Paragraph 3 reordered and the closing
-% sentence replaced. ALL EIGHT CHECKLIST ITEMS SURVIVE; verify before any
-% further edit. What changed and why:
-%   * The abstract no longer ENDS on a disclaimer. The novelty-boundary
-%     sentence ("we claim their pairing, not either mechanism") moves to the
-%     HEAD of paragraph 3, and the paragraph now closes on what the work
-%     delivers. #49 moved that sentence out of paragraph 1 because the last
-%     line of a paragraph is where a skimming moderator lands; the same
-%     reasoning applies to the last line of the abstract, which #49 did not
-%     follow through on. Nothing is softened: the sentence is intact, one
-%     position earlier.
-%   * Checklist item (1) is restated. "This is a design and feasibility
-%     artifact" is GONE from the manuscript. That label appears in no
-%     taxonomy and reads as an apology; the Introduction now names the
-%     contribution types in HCI's own vocabulary instead
-%     (wobbrock2016contributions, resolved against Crossref 2026-09-15).
-%     What item (1) protects -- that no user-validated system is claimed --
-%     is carried by items (2), (3) and (4), which are untouched.
-%   * ~90 characters trimmed elsewhere, all grammatical, so the arXiv
-%     abstract field stays clear of its 1920-character ceiling. No number, no
-%     citation and no claim moved.
+% SOURCE: REVISION_BRIEF §9 draft, as revised by the author in batch D
+% (decision A, 2026-10-10; Decision Log #70). Written last, to the revised
+% body. Every number traces to a committed table:
+%   0.15            -> RED_MARGIN in src/render.py; p1_gate_summary.csv
+%                      band_counts_at_margin
+%   11 of 114       -> p1_gate_summary.csv predicted_high: derated_to_AMBER
+%                      total / predicted_high total
+%   3 of those 11   -> p1_gate_summary.csv derated_to_AMBER, high risk
+%   78 of the 103   -> p1_gate_summary.csv to_RED, high risk / to_RED total
+%   14              -> p1_gate_summary.csv true_high_reaches GREEN (the
+%                      predicted-low cell of the high row, [14, 17, 81])
+%   561, 1012       -> p1_cohort_summary.csv dropped_exact_duplicates;
+%                      n_start 1014 minus dropped_impossible_heartrate 2;
+%                      p1_duplicate_leakage.csv kept n_rows
+%   0.580, 0.859    -> p1_duplicate_leakage.csv macro_recall, dropped / kept
+%   five commands   -> Section 8 (python -m src.{data,model,explain,render,
+%                      evaluate})
+% Scope limits are two sentences (WRITING_RULES §4); the boundaries are
+% stated in Section 1.1 and in Limitations, not here. This supersedes the
+% eight-item checklist of Decision Log #49 and #57. The arXiv form copy is
+% ABSTRACT_ARXIV.txt (repo root, untracked): at most 200 words and 1920
+% characters. The labelled Purpose / Methods / Results / Conclusion version
+% that SN Computer Science requires is recoverable from commit 6993541.
 \begin{abstract}
-\noindent Three Voices renders a single maternal-health risk prediction as
-three stakeholder-specific action-signals, one each for a clinician, a
-community health worker, and a mother, and gates each signal on the model's
-own uncertainty. Below a fixed top-two margin the highest-severity signal is
-withheld from the mother's channel and the health worker's, while the
-clinician's view of the split is untouched: the derate is red to amber, never
-red to green, and amber still says \emph{needs follow-up}. Every
-string is a deterministic template filled from the case's SHAP attributions,
-with no language model at inference, so a rendering can be regenerated and
-audited line by line. Code, the rendered artifacts, the tables and the
-evaluation matrix are archived, and all of it regenerates from five commands.
-
-We also report a leakage audit of the UCI Maternal Health Risk
-benchmark. Of the 1012 rows surviving a two-row plausibility filter, 561
-are exact duplicates of an earlier row, and retaining them moves macro-recall
-from $0.580$ to $0.859$ under the same cross-validation. We quantify that
-cost; we do not claim to have found it first.
-
-The abstention rule sits between stakeholder-tailored explanation and
-selective prediction; we claim their pairing, not either mechanism. Our
-evaluation is a formative single-evaluator heuristic critique of our own
-renderings; it found five defects, all corrected. It improved the design; it
-is not evidence that any tier helps a reader. No mother, health worker or
-clinician has used the system, the data is public, the task
-is generic maternal-health risk, and we make no clinical-validity claim; user
-studies with the three groups are the next step, gated on ethics clearance.
-The paper delivers the rendering mechanism, an auditable implementation,
-and a reproducible benchmark measurement.
+\noindent Three Voices renders one maternal-health risk prediction as three
+action signals: a decomposition for a clinician, a referral card for a
+community health worker, and a three-lamp visual with one spoken Hindi
+sentence for the mother. One band (green, amber or red) is computed from the
+model's class probabilities. When a high-risk call falls within a fixed
+top-two margin of 0.15, red is withheld from the health worker and the mother
+and replaced by amber, which still asks for follow-up; the clinician sees the
+probabilities unchanged. All text comes from templates filled from the band
+and the SHAP attributions, with no language model at inference. On out-of-fold
+scores from the UCI Maternal Health Risk dataset, the gate derates 11 of 114
+high-risk calls; 3 of those 11 are truly high-risk, against 78 of the 103 it
+keeps. It does not address the 14 high-risk records the model labels low. We
+also quantify benchmark leakage: 561 of the 1012 usable rows duplicate an
+earlier row, and keeping them raises macro-recall from 0.580 to 0.859 under
+the same cross-validation. The evaluation is a formative heuristic inspection
+by one author; no user study has been run. Five commands regenerate every
+table and rendering.
 
 \medskip
 
