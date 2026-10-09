@@ -4,9 +4,15 @@ Read this at the start of every session. Update it at the end (phase, status,
 next step) and **append** to the Decision Log — never edit or delete an
 existing entry; supersede it with a new dated one.
 
-_Last updated: 2026-09-15_
+_Last updated: 2026-10-09_
 
 ## Current phase
+
+**2026-10-09: out-of-fold gate analysis done (#59 pre-registered, #60
+results).** `python -m src.model` now also writes `p1_oof_predictions.csv` and
+`p1_gate_summary.csv`. The paper's case probabilities are in-sample; the
+out-of-fold numbers are in #60. No paper prose or figure has been changed in
+response, and that is an open author decision ahead of Gate A.
 
 **P5 CLOSED 2026-09-03. Now in P6 — pre-submission pass.** Branch
 `revision/sncs-framing`, unmerged, carries a journal-alignment framing pass
@@ -2006,3 +2012,99 @@ Decision Log entries named.
   against UCI's listed 1,013 instances, and rows 66 / 156 / 382 / 403 in-sample
   next to out-of-fold. **Results go in a separate entry, #60**, so that this
   text stays as committed (author decision, 2026-10-09).
+
+- **2026-10-09 #60 — RESULTS of the #59 pre-registration: out-of-fold
+  probabilities and what the gate does with them.** Reporting only. No
+  threshold, model, band rule or selection criterion changed, nothing under
+  `paper/` or `results/figures/` was touched, and `src.explain`, `src.render`
+  and `src.evaluate` were not run. Implemented as `oof_gate_analysis()` in
+  `src/model.py`, called at the end of `run()`, so `python -m src.model` now
+  writes five CSVs instead of three.
+
+  **Consistency check passed.** The pooled out-of-fold confusion matrix equals
+  the summed matrix `evaluate()` reports for RF/none, `[[184, 38, 11], [60, 24,
+  22], [14, 17, 81]]`. This is asserted in code before anything is written.
+
+  **One deviation from #59's wording, found and fixed in the run.** The first
+  two runs gave different bytes for `p1_oof_predictions.csv`: 38 of 451 rows
+  differed in the last bit (max 2.2e-16), while `p1_gate_summary.csv` was
+  identical. The root cause is in scikit-learn (`_forest.py:731-737, 956-958`):
+  with `n_jobs=-1`, `predict_proba` adds per-tree probabilities into one array
+  under a lock, in the order threads finish. A scratch test confirmed it: 15
+  calls with `n_jobs=-1` gave 15 distinct byte outputs, `n_jobs=1` gave 1, and
+  a refit was bitwise identical, so fitting is deterministic. **Fix:** each
+  fold forest predicts with `n_jobs=1`, set after fitting. The trees are the
+  same and only the summation order is fixed. Against the parallel output the
+  probabilities moved by at most 2.2e-16, and no prediction, band or count
+  changed. **The same latent issue exists at `src/explain.py:127`** (in-sample
+  `predict_proba`, `n_jobs=-1`). It was not touched. `shap_case_summary.csv`
+  came back byte-identical in #55's cold run, but nothing in the code
+  guarantees that it always will.
+
+  **Hash proof.** SHA-256 was taken before #59 was written and re-checked after
+  two final runs (A, B). All seven existing CSVs are byte-identical:
+  heuristic_matrix `e3b2acb9…748c`, p1_cohort_summary `7ad4214b…776f`,
+  p1_duplicate_leakage `1ab11cac…2286`, p1_model_metrics `68086a33…6851`,
+  shap_case_contributions `d1b4c12d…e2e1`, shap_case_summary `16f5ca6b…dc65`,
+  shap_global_mean_abs `bda07763…594a`. The new files are byte-identical
+  across runs A and B: `p1_oof_predictions.csv` `a6f2422b…9d96`,
+  `p1_gate_summary.csv` `aa87b621…712b`.
+
+  **Gate counts, out-of-fold, `RED_MARGIN = 0.15`** (columns: true low / mid /
+  high = total):
+  - GREEN 184 / 60 / 14 = 258.
+  - AMBER 41 / 29 / 20 = 90.
+  - RED 8 / 17 / 78 = 103.
+  - Predicted high: 11 / 22 / 81 = 114. Of these, RED 8 / 17 / 78 = 103 and
+    derated to AMBER 3 / 5 / 3 = 11.
+  - The 112 true-high records reach RED 78, AMBER 20 (17 predicted mid plus 3
+    derated) and GREEN 14.
+  - Ungated GREEN near-ties (predicted low, margin < 0.15): 14 / 5 / 3 = 22.
+  - Split by `conflict_vector`. True (71 rows on the 35 vectors): GREEN
+    5 / 23 / 4, AMBER 21 / 1 / 7, RED 4 / 6 / 0. False (380 rows): GREEN
+    179 / 37 / 10, AMBER 20 / 28 / 13, RED 4 / 11 / 78.
+  - Sensitivity, reported only: at margin 0.10, GREEN 258, AMBER 88, RED 105.
+    At 0.15: 258 / 90 / 103. At 0.20: 258 / 91 / 102.
+
+  **`explain.select_cases` re-applied to out-of-fold probabilities, with fold
+  SHAP for the driver condition.** The in-sample picks were 196 / 16 / 66 /
+  382. Out of fold:
+  - `confident_low` = row 48 (P(low) 1.0; two rows tie and the argmax takes
+    the first).
+  - `confident_high` = row 99 (0.997; two rows tie).
+  - `boundary_mid` = **row 426**, true mid, predicted high at 0.233 / 0.382 /
+    0.384, margin 0.0018, AMBER.
+  - `failure_mode` = **row 325**, true low, predicted high at 0.411 / 0.148 /
+    0.441, margin 0.029, AMBER.
+  - None of the four sits on a conflicting vector.
+
+  **The twin rows, in-sample next to out-of-fold** (low / mid / high):
+  - **Row 66** (true mid, fold 3). In-sample 0.013 / 0.487 / 0.499, predicted
+    high, margin 0.012, AMBER. **Out of fold 0.050 / 0.193 / 0.757, predicted
+    high, margin 0.563, RED.**
+  - **Row 156** (true high, its twin, fold 0). In-sample: not in any committed
+    file. Out of fold 0.073 / 0.843 / 0.083, predicted mid, margin 0.760,
+    AMBER.
+  - **Row 382** (true low, fold 3). In-sample 0.451 / 0.097 / 0.453, predicted
+    high, margin 0.002, AMBER. **Out of fold 0.264 / 0.719 / 0.017, predicted
+    mid, margin 0.455, AMBER.**
+  - **Row 403** (true high, its twin, fold 3). In-sample: not in any committed
+    file. Out of fold identical to 382: both were held out by the same fold
+    model and have identical features. Predicted mid, AMBER.
+  - Because a forest's output depends only on the six features, the in-sample
+    values for 156 and 403 would equal those of 66 and 382, up to the last bit.
+
+  **Raw-file side check.** `data/raw/maternal_health_risk.csv` has 1015
+  physical lines: one header and 1014 records. There are no blank lines, no
+  repeated header and no malformed rows (every line has 7 fields), lines are
+  CRLF and the file ends in a newline. pandas reads 1014 rows, with 562 exact
+  duplicates and 2 rows at HR < 20. UCI's own API (`/api/dataset?id=863`)
+  reports `num_instances: 1013`. Nothing in the file accounts for the
+  difference.
+
+  **Facts for the next session, recorded without proposing any change.**
+  - `reproducibility.tex` names three CSVs for `src.model`; it now writes five.
+  - #55's cold-run count of 33 non-audio artifacts is now 35.
+  - Every case probability the paper quotes is still the in-sample one from
+    `shap_case_summary.csv`. Whether and how the manuscript responds is an
+    author decision, and Gate A is still open.

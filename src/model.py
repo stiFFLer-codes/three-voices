@@ -312,6 +312,7 @@ def run() -> pd.DataFrame:
         print("\n[warn] joblib not available — model not saved.")
 
     duplicate_leakage_check()
+    oof_gate_analysis(X, y, final_cm)
 
     print("OK")
     return table
@@ -351,6 +352,117 @@ def duplicate_leakage_check() -> pd.DataFrame:
     print(table.to_string(index=False))
     print(f"leakage table -> {out_csv}")
     return table
+
+
+def oof_gate_analysis(X: pd.DataFrame, y: pd.Series, expected_cm: np.ndarray) -> None:
+    """Out-of-fold probabilities for FINAL_MODEL, and what the gate does with them.
+
+    Pre-registered in STATE.md Decision Log #59. The case probabilities in
+    src.explain are in-sample (fit on all 451 rows, predicted on those same
+    rows); here each record is scored by the fold model that never saw it.
+    Reporting only: no threshold, rule, model or case row changes because of it.
+
+    Same pipeline and splitter as ``evaluate()``, so the pooled confusion matrix
+    must equal ``expected_cm``; that is asserted before anything is written.
+    Bands come from ``render.band_for`` and the case picks from
+    ``explain.select_cases``, imported rather than reimplemented. Both modules
+    import this one, hence the local imports.
+    """
+    from unittest.mock import patch
+
+    import shap
+
+    from src import render
+    from src.explain import select_cases
+
+    config.set_seeds()
+    spec = _model_factories()[FINAL_MODEL[0]]
+    skf = StratifiedKFold(n_splits=N_SPLITS, shuffle=True, random_state=SEED)
+    proba = np.zeros((len(X), len(CLASSES)))
+    values = np.zeros((len(X), len(FEATURES), len(CLASSES)))
+    for tr, te in skf.split(X, y):
+        pipe = _build_pipeline(spec, FINAL_MODEL[1])
+        pipe.fit(X.iloc[tr], y.iloc[tr])
+        # Predict sequentially: with n_jobs=-1 the forest sums per-tree
+        # probabilities in thread-finish order, so the last bit varies run to
+        # run. Same trees either way; this only fixes the summation order.
+        pipe.set_params(clf__n_jobs=1)
+        proba[te] = pipe.predict_proba(X.iloc[te])
+        # SHAP from the fold model that produced the probability (#59(c)).
+        values[te] = shap.TreeExplainer(pipe.named_steps["clf"])(X.iloc[te]).values
+
+    pred = proba.argmax(axis=1)
+    assert (confusion_matrix(y, pred, labels=CLASSES) == expected_cm).all(), \
+        "out-of-fold predictions disagree with evaluate() — stop (Decision Log #59)"
+    p_sorted = np.sort(proba, axis=1)
+    margin = p_sorted[:, -1] - p_sorted[:, -2]
+    pred_name = [CLASS_NAMES[c] for c in pred]
+
+    def bands(threshold: float) -> list[str]:
+        with patch.object(render, "RED_MARGIN", threshold):
+            return [render.band_for(p, m) for p, m in zip(pred_name, margin)]
+
+    # Rows sharing a six-feature vector. After dedup any such twin carries a
+    # different label, but conflict is tested on the labels, as in the cohort count.
+    gid = X.groupby(FEATURES, sort=False).ngroup().to_numpy()
+    conflict = pd.Series(y.to_numpy()).groupby(gid).transform("nunique").to_numpy() > 1
+    twins = [";".join(str(j) for j in np.flatnonzero(gid == g) if j != i)
+             for i, g in enumerate(gid)]
+
+    oof = pd.DataFrame({
+        "row_index": range(len(X)),
+        "true_label": [CLASS_NAMES[c] for c in y],
+        "p_low": proba[:, 0], "p_mid": proba[:, 1], "p_high": proba[:, 2],
+        "pred": pred_name,
+        "margin": margin,
+        "band": [render.band_for(p, m) for p, m in zip(pred_name, margin)],
+        "conflict_vector": conflict,
+        "twin_rows": twins,
+    })
+
+    rows: list[dict] = []
+
+    def add(section: str, row, column: str, value) -> None:
+        rows.append({"section": section, "row": row, "column": column, "value": value})
+
+    def by_true(section: str, row: str, mask) -> None:
+        for t in CLASS_NAMES:
+            add(section, row, t, int((mask & (oof.true_label == t)).sum()))
+        add(section, row, "total", int(mask.sum()))
+
+    def band_x_true(section: str, mask) -> None:
+        for b in ("GREEN", "AMBER", "RED"):
+            by_true(section, b, mask & (oof.band == b))
+
+    band_x_true("band_x_true_label", np.ones(len(oof), dtype=bool))
+    hi = oof.pred == "high risk"
+    by_true("predicted_high", "predicted_high", hi)
+    by_true("predicted_high", "to_RED", hi & (oof.band == "RED"))
+    by_true("predicted_high", "derated_to_AMBER", hi & (oof.band == "AMBER"))
+    for b in ("RED", "AMBER", "GREEN"):
+        add("true_high_reaches", b, "count",
+            int(((oof.true_label == "high risk") & (oof.band == b)).sum()))
+    by_true(f"predicted_low_margin_below_{render.RED_MARGIN:.2f}", "ungated_green_near_ties",
+            (oof.pred == "low risk") & (oof.margin < render.RED_MARGIN))
+    band_x_true("band_x_true_label_conflict_vector_True", oof.conflict_vector)
+    band_x_true("band_x_true_label_conflict_vector_False", ~oof.conflict_vector)
+    for t in (0.10, 0.15, 0.20):  # sensitivity, reported only; RED_MARGIN stays 0.15
+        bt = bands(t)
+        for b in ("GREEN", "AMBER", "RED"):
+            add("band_counts_at_margin", f"{t:.2f}", b, bt.count(b))
+    for case, i in select_cases(proba, pred, y, values).items():
+        for col in ("row_index", "true_label", "pred", "p_low", "p_mid", "p_high",
+                    "margin", "band"):
+            add("case_selection", case, col, oof.at[i, col])
+
+    oof_csv = config.TABLES_DIR / "p1_oof_predictions.csv"
+    gate_csv = config.TABLES_DIR / "p1_gate_summary.csv"
+    oof.to_csv(oof_csv, index=False)
+    pd.DataFrame(rows).to_csv(gate_csv, index=False)
+    print("\nOut-of-fold gate analysis (Decision Log #59): pooled confusion matrix "
+          "matches evaluate()")
+    print(f"oof predictions -> {oof_csv}")
+    print(f"gate summary    -> {gate_csv}")
 
 
 if __name__ == "__main__":

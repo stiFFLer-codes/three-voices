@@ -1,0 +1,97 @@
+section,row,column,value
+band_x_true_label,GREEN,low risk,184
+band_x_true_label,GREEN,mid risk,60
+band_x_true_label,GREEN,high risk,14
+band_x_true_label,GREEN,total,258
+band_x_true_label,AMBER,low risk,41
+band_x_true_label,AMBER,mid risk,29
+band_x_true_label,AMBER,high risk,20
+band_x_true_label,AMBER,total,90
+band_x_true_label,RED,low risk,8
+band_x_true_label,RED,mid risk,17
+band_x_true_label,RED,high risk,78
+band_x_true_label,RED,total,103
+predicted_high,predicted_high,low risk,11
+predicted_high,predicted_high,mid risk,22
+predicted_high,predicted_high,high risk,81
+predicted_high,predicted_high,total,114
+predicted_high,to_RED,low risk,8
+predicted_high,to_RED,mid risk,17
+predicted_high,to_RED,high risk,78
+predicted_high,to_RED,total,103
+predicted_high,derated_to_AMBER,low risk,3
+predicted_high,derated_to_AMBER,mid risk,5
+predicted_high,derated_to_AMBER,high risk,3
+predicted_high,derated_to_AMBER,total,11
+true_high_reaches,RED,count,78
+true_high_reaches,AMBER,count,20
+true_high_reaches,GREEN,count,14
+predicted_low_margin_below_0.15,ungated_green_near_ties,low risk,14
+predicted_low_margin_below_0.15,ungated_green_near_ties,mid risk,5
+predicted_low_margin_below_0.15,ungated_green_near_ties,high risk,3
+predicted_low_margin_below_0.15,ungated_green_near_ties,total,22
+band_x_true_label_conflict_vector_True,GREEN,low risk,5
+band_x_true_label_conflict_vector_True,GREEN,mid risk,23
+band_x_true_label_conflict_vector_True,GREEN,high risk,4
+band_x_true_label_conflict_vector_True,GREEN,total,32
+band_x_true_label_conflict_vector_True,AMBER,low risk,21
+band_x_true_label_conflict_vector_True,AMBER,mid risk,1
+band_x_true_label_conflict_vector_True,AMBER,high risk,7
+band_x_true_label_conflict_vector_True,AMBER,total,29
+band_x_true_label_conflict_vector_True,RED,low risk,4
+band_x_true_label_conflict_vector_True,RED,mid risk,6
+band_x_true_label_conflict_vector_True,RED,high risk,0
+band_x_true_label_conflict_vector_True,RED,total,10
+band_x_true_label_conflict_vector_False,GREEN,low risk,179
+band_x_true_label_conflict_vector_False,GREEN,mid risk,37
+band_x_true_label_conflict_vector_False,GREEN,high risk,10
+band_x_true_label_conflict_vector_False,GREEN,total,226
+band_x_true_label_conflict_vector_False,AMBER,low risk,20
+band_x_true_label_conflict_vector_False,AMBER,mid risk,28
+band_x_true_label_conflict_vector_False,AMBER,high risk,13
+band_x_true_label_conflict_vector_False,AMBER,total,61
+band_x_true_label_conflict_vector_False,RED,low risk,4
+band_x_true_label_conflict_vector_False,RED,mid risk,11
+band_x_true_label_conflict_vector_False,RED,high risk,78
+band_x_true_label_conflict_vector_False,RED,total,93
+band_counts_at_margin,0.10,GREEN,258
+band_counts_at_margin,0.10,AMBER,88
+band_counts_at_margin,0.10,RED,105
+band_counts_at_margin,0.15,GREEN,258
+band_counts_at_margin,0.15,AMBER,90
+band_counts_at_margin,0.15,RED,103
+band_counts_at_margin,0.20,GREEN,258
+band_counts_at_margin,0.20,AMBER,91
+band_counts_at_margin,0.20,RED,102
+case_selection,confident_low,row_index,48
+case_selection,confident_low,true_label,low risk
+case_selection,confident_low,pred,low risk
+case_selection,confident_low,p_low,1.0
+case_selection,confident_low,p_mid,0.0
+case_selection,confident_low,p_high,0.0
+case_selection,confident_low,margin,1.0
+case_selection,confident_low,band,GREEN
+case_selection,confident_high,row_index,99
+case_selection,confident_high,true_label,high risk
+case_selection,confident_high,pred,high risk
+case_selection,confident_high,p_low,0.0
+case_selection,confident_high,p_mid,0.0033333333333333335
+case_selection,confident_high,p_high,0.9966666666666667
+case_selection,confident_high,margin,0.9933333333333334
+case_selection,confident_high,band,RED
+case_selection,boundary_mid,row_index,426
+case_selection,boundary_mid,true_label,mid risk
+case_selection,boundary_mid,pred,high risk
+case_selection,boundary_mid,p_low,0.23333333333333334
+case_selection,boundary_mid,p_mid,0.3824444444444444
+case_selection,boundary_mid,p_high,0.38422222222222224
+case_selection,boundary_mid,margin,0.0017777777777778225
+case_selection,boundary_mid,band,AMBER
+case_selection,failure_mode,row_index,325
+case_selection,failure_mode,true_label,low risk
+case_selection,failure_mode,pred,high risk
+case_selection,failure_mode,p_low,0.41111111111111115
+case_selection,failure_mode,p_mid,0.14833333333333334
+case_selection,failure_mode,p_high,0.44055555555555553
+case_selection,failure_mode,margin,0.029444444444444384
+case_selection,failure_mode,band,AMBER
