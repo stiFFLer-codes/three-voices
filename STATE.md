@@ -2108,3 +2108,59 @@ Decision Log entries named.
   - Every case probability the paper quotes is still the in-sample one from
     `shap_case_summary.csv`. Whether and how the manuscript responds is an
     author decision, and Gate A is still open.
+
+- **2026-10-09 #61 — PRE-REGISTRATION: the four illustrative cases are scored
+  by the fold model that held each row out. Committed BEFORE any code
+  changes.** This changes how cases are scored and rendered. It changes no
+  threshold, no template, no Hindi string, and nothing under `paper/`.
+
+  (a) **Case probabilities and local SHAP come from the fold model that did
+  not see the row**: `FINAL_MODEL` (RF, no resampling, `n_estimators=300`,
+  `random_state=42`) over the same `StratifiedKFold(5, shuffle=True,
+  random_state=42)`. One helper in `src/model.py` returns, for every row, the
+  held-out probabilities, the fold model's SHAP toward each class, its base
+  values and the fold index. `oof_gate_analysis()` and `src/explain.py` both
+  call it. A single splitter function serves `evaluate()`, that helper and
+  nothing else, and `src/explain.py` builds no splitter of its own (author
+  decision: one splitter everywhere).
+  (b) **The existing `select_cases` rule, unchanged, picks the cases from
+  out-of-fold probabilities and fold-model SHAP, as in #60.** Expected rows:
+  `confident_low` 48, `confident_high` 99, `boundary_mid` 426, `failure_mode`
+  325. `shap_case_summary.csv` and `shap_case_contributions.csv` gain two
+  columns, `scoring = "out_of_fold"` and `fold`, appended after the existing
+  ones. The code asserts that each case's `p_low / p_mid / p_high` equal its
+  row in `p1_oof_predictions.csv` exactly (round-trip float parse) and fails
+  loudly otherwise.
+  (c) **Global SHAP is unchanged**: still the final model fitted on all 451
+  rows. It is labelled as final-model in code and on stdout only, not in the
+  CSV or the figure (author decision). `shap_global_mean_abs.csv` must stay
+  byte-identical, proved by hash; `shap_global_high.png` is expected to stay
+  byte-identical too and will be reported either way.
+  (d) **`RED_MARGIN` (0.15), `band_for`, every ASHA template constant and the
+  three Hindi strings are unchanged.** `src/render.py` is not edited.
+  (e) **Prediction uses `n_jobs=1` after fitting.** The in-sample
+  `predict_proba` at `src/explain.py:127` is removed, because nothing uses it
+  once cases are scored out-of-fold. That closes the latent nondeterminism #60
+  recorded.
+  (f) **`src/evaluate.py`, under the author's three conditions.** Only
+  rationale facts that describe the CURRENT artifacts are updated: row
+  numbers, probabilities, SHAP values, card text, contrast. Sentences
+  describing the first-pass defects are history and stay as written. **No
+  rating changes.** Any cell whose rating no longer rests on a true fact keeps
+  its rating and is listed in #62 for the author to re-rate. Every changed
+  sentence is listed in #62 as before → after. Those facts can only be read
+  off the regenerated artifacts, so `evaluate.py` is edited after the first
+  `src.explain` and `src.render` runs and before the first `src.evaluate` run.
+  (g) **Verification.**
+  - `python -m src.model` is re-run, because `evaluate()` and the
+    out-of-fold path are refactored. All five `p1_*.csv` files must come back
+    byte-identical.
+  - Then `results/audio/` is emptied (Reproducibility 8.2) and the following
+    are run: `python -m src.explain`, `python -m src.render --case all`,
+    `python -m src.evaluate`.
+  - All three are then run a second time. Every CSV, TXT and PNG must be
+    byte-identical across the two runs; MP3 is excepted, as documented.
+  (h) **Consequences stated in advance.** The `tier_*_boundary_mid.png` files
+  that Figure 1 reads will depict row 426. Nothing under `paper/` is edited or
+  rebuilt, so `paper/main.pdf` still embeds the previous rendering, and the
+  gitignored `arxiv/` staging copies are untouched. Results go in #62.
