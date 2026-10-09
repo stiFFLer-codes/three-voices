@@ -27,7 +27,9 @@ the dataset entry, `requirements-lock.txt`, and the `.gitkeep` by-product.
 The paper is revised one section per task, each committed only after author
 approval, starting with Section 4. **Sections 4, 3 and 5 are committed
 (#64-#66); batch A is closed.** The claim audit is done (#67), and its
-decisions are #68. Batches B and C come next; see "Next step" for the
+decisions are #68. **Batches B and C are committed (#69): Sections 1, 2, 6, 7
+and 8, plus the claim-audit fixes to Sections 3 and 5.** Batch D (abstract,
+back matter, `main.tex`) is next, in a fresh session; see "Next step" for the
 handoff.
 
 **P5 CLOSED 2026-09-03. Now in P6 — pre-submission pass.** Branch
@@ -246,21 +248,26 @@ RED → "HIGH — needs follow-up".
 `REVISION_BRIEF.md`, which re-grounds the paper on out-of-fold scoring.
 - Batch A (Sections 3, 4 and 5) is committed.
 - The claim audit is done (#67); its decisions are #68.
-- Batches B and C are next. Nothing has been pushed.
+- Batches B and C (Sections 1, 2, 6, 7, 8 and the claim-audit fixes to 3
+  and 5) are committed; the author's decisions on them are #69.
+- **Batch D (brief §14) is next and must run in a fresh session.**
+- **Whole-paper verification (brief §15) runs after batch D, in another new
+  session that has written nothing.** That session is report-only.
+- Nothing has been pushed.
 
 **Branch and commits.** Branch `revision/sncs-framing`.
-- The last commit before this handoff is `4a4e6e5` (#67). The handoff
-  itself is the next commit (#68); `git log -1` gives its hash.
-- The branch is 12 commits ahead of `origin/revision/sncs-framing`, which
+- The last commit before this handoff is `8e4aa62` (Section 5). The handoff
+  itself is the next commit (#69); `git log -1` gives its hash.
+- The branch is 20 commits ahead of `origin/revision/sncs-framing`, which
   sits at `ea4aa99`.
 - `origin/main` is stale at `f41c4ab`.
 
 **Read first, in this order.**
 1. `CLAUDE.md`.
-2. This file: "Current phase", this section, and Decision Log #59-#68.
+2. This file: "Current phase", this section, and Decision Log #59-#69.
 3. `REVISION_BRIEF.md` (repo root, untracked). Read in full; then reread §0
-   (facts and old values), §12a (approved claim fixes), §13 (batches B and
-   C) and the section briefs §4-§10.
+   (facts and old values), §13a (decisions on batches B and C), §14 (batch
+   D), §15 (verification) and the section briefs §9-§11.
 4. `WRITING_RULES.md` (repo root, untracked): the rules, and the §10
    checklist.
 5. `CLAIM_AUDIT.md` (repo root, untracked): one row per citing sentence,
@@ -269,7 +276,7 @@ RED → "HIGH — needs follow-up".
    Its `model:` must stay the alias `sonnet`; a full model ID stops it
    registering.
 7. `RECON.md` (untracked), findings A1 and C4-C5: the repo, Zenodo and
-   packaging facts behind open items 6 and 7.
+   packaging facts behind open items 5 and 6.
 
 **Committed in this revision** (on top of `c657617`, #57/#58):
 
@@ -285,15 +292,25 @@ RED → "HIGH — needs follow-up".
 | `5652ad4` | Section 5 |
 | `30eafa9` | #66 Section 4 polish |
 | `4a4e6e5` | #67 claim audit |
+| `e201fa4` | #68 claim-audit decisions and handoff |
+| `ae5931e` | #69 Section 6 |
+| `0da7566` | #69 Section 7 |
+| `e2fed0f` | #69 Section 8 |
+| `41b5f8c` | #69 Section 2 |
+| `45158a3` | #69 Section 1 |
+| `9345154` | #69 Section 3 claim-audit fixes |
+| `8e4aa62` | #69 Section 5 claim-audit fix |
 
 **What is still pre-revision.**
-- **Sections still on pre-revision text:** §1 Introduction, §2 Related work,
-  §6 Limitations, §7 Conclusion, §8 Reproducibility, the abstract, the back
-  matter, and the `main.tex` metadata. Several still quote the in-sample
-  rows 66 / 382; the brief §0 old-values grep finds them.
+- **Still on pre-revision text:** the abstract, the back matter, and the
+  `main.tex` metadata (batch D). The brief §0 old-values grep still finds
+  old values in `%` comments in the abstract; no edited section has any.
 - **`paper/main.pdf` and `paper/main.bbl` (tracked) are stale.** Every build
   in this revision ran in a scratch copy; `paper/` was never rebuilt in
-  place. Regenerate them with the upload package (item 7).
+  place. Batch D's last step rebuilds them (brief §14).
+- The last scratch build (after #69) is clean: 21 pages, 0 errors, 0
+  undefined references or citations, 0 overfull boxes, 2 underfull (both
+  pre-existing).
 
 **Known untracked files.** Leave them untracked:
 - `.claude/agents/` and three `.claude/commands/*.md` files.
@@ -303,44 +320,31 @@ RED → "HIGH — needs follow-up".
   Widyawati double space is not.
 
 **Open items, in order.**
-1. **Batch B** (brief §13). One `paper-writer` task per section:
-   - §6 Limitations: brief §4, the §12 sentence for 6.1, and the §12 clause
-     for 6.5 (an explorable card as future work).
-   - §7 Conclusion: brief §5.
-   - §8 Reproducibility: brief §6. 8.3 becomes true only after item 6.
-
-   After each section, run the WRITING_RULES §10 checks, re-check every
-   citation sentence against `CLAIM_AUDIT.md`, report, and stop. Commit
-   nothing until the author approves, then one section per commit.
-2. **Batch C** (brief §13):
-   - §2 Related work: brief §7; the §12 fixes for 2.1 and 2.3 (Okolo 2022
-     counts 16 / 3 / 1); and every §12a fix in related_work (:44, :165, :176,
-     :183, :189-190, and Szymanski at :69-73 in its short form).
-   - §1 Introduction: brief §8.
-   - The §3.4 sentence from §12a (68 / 66), committed on its own.
-   - **Unassigned:** §12a approves the audit fixes at data_and_vehicle:164
-     (Eltawil / Young) and evaluation:59 (Nielsen "revised heuristics", no
-     count), but §13 places neither in a batch. Ask the author. The natural
-     fit is beside the §3.4 touch, one commit per section.
-3. **Batch D:**
-   - The abstract (brief §9): at most 200 words, no thousands separators.
-   - The back matter (brief §10): CRediT, the generative-AI statement in the
-     exact WRITING_RULES §8 wording, and the dataset citation in data
-     availability.
-   - `main.tex` `\hypersetup`.
-4. **`/anti-ai` before every prose commit** (CLAUDE.md rule 8). The pattern
+1. **Batch D** (brief §14), **in a fresh session**:
+   - The abstract (brief §9 draft): at most 200 words and at most 1920
+     characters, no thousands separators. Also `ABSTRACT_ARXIV.txt`
+     (untracked), plain text.
+   - The back matter (brief §10): CRediT for Aditi Patil, the generative-AI
+     statement in the exact WRITING_RULES §8 wording, the dataset citation
+     in data availability. CRediT role names keep their en dash.
+   - `main.tex` `\hypersetup` (title and both authors, as §14 gives them).
+   - Last step: rebuild the tracked `paper/main.pdf` and `paper/main.bbl`,
+     five passes, one commit.
+   - Report and stop for approval, as in batches B and C.
+2. **Whole-paper verification** (brief §15), **in another new session that
+   has written nothing**. Report only; it edits nothing and writes
+   `VERIFICATION.md` (untracked). Afterwards the reviewer runs the arXiv
+   moderation check on the final PDF.
+3. **`/anti-ai` before every prose commit** (CLAUDE.md rule 8). The pattern
    that held: the audit runs report-only, the author decides each item, and
    the decisions are applied before the commit.
-5. **Verification:**
-   - Whole-paper checks: the old-values grep, the WRITING_RULES §3 grep, a
-     claim re-audit of every changed citing sentence, and a build with 0
-     errors, 0 undefined references and 0 overfull boxes.
+4. **Cold run and read:**
    - A cold run (recipe below).
    - **Both authors read and approve the final PDF** (brief §10). No
      end-to-end human read has happened yet (old Gate A), and Patil's read is
      outstanding.
-6. **Repo and Zenodo** (RECON A1). Nothing is pushed or tagged without the
-   author.
+5. **Repo and Zenodo** (brief §16, RECON A1), fresh session. Nothing is
+   pushed or tagged without the author.
    - The concept DOI 10.5281/zenodo.22252076 resolves only to v1.0.0, which
      is tag `v1.0.0` = `b8853a5`, the P3 commit. That snapshot has no
      `src/evaluate.py`, no `paper/` and several missing tables.
@@ -350,7 +354,7 @@ RED → "HIGH — needs follow-up".
    - `origin/main` is stale.
    - Decide what is public before pushing: the tracked STATE.md holds the
      enrollment-number address and moderation notes (RECON).
-7. **Upload package:**
+6. **Upload package** (brief §17, same session as item 5):
    - Regenerate `paper/ARXIV_SUBMISSION.md` and `arxiv/`, scripted off
      `main.tex`'s `\input` lines (#57). Both are stale: the paper is now
      21 pp, with 4 tables and 37 bib entries.
@@ -368,8 +372,10 @@ RED → "HIGH — needs follow-up".
    documented exception: same length, different bytes.
 5. Rebuild the PDF.
 
-Prediction runs with `n_jobs=1`, so the out-of-fold CSVs are byte-stable
-(#60).
+Out-of-fold scoring (`out_of_fold()`) runs with `n_jobs=1`, so the
+out-of-fold CSVs are byte-stable (#60). `evaluate()` still predicts with
+`n_jobs=-1` for Table 2; Section 8 claims single-threading for the
+out-of-fold path only (#69).
 
 **Do not reopen:** the calibration sentence (#24a); the `failure_mode`
 triptych cut (#33, #38); Clark et al. stays quarantined (WRITING_RULES §6);
@@ -2704,3 +2710,94 @@ Decision Log entries named.
     first. The old Gate A/B/C list is superseded. Its live items (the
     author read, the cold-run recipe, packaging) are carried into the
     handoff, and its history stays in #43-#57.
+- **2026-10-09 #69 — Batches B and C closed: the author's decisions on the
+  drafts (REVISION_BRIEF §13a), applied and committed.** The author supplied a
+  new `REVISION_BRIEF.md` (adding §13a-§17), which replaced the old file. It
+  stays untracked.
+  - **Drafts.** One `paper-writer` task per section (§6, §7, §8, §2, §1)
+    plus the claim-audit touches to §3 and §5. Each was followed by the
+    WRITING_RULES §10 checks and a citation re-check against
+    `CLAIM_AUDIT.md`, then a stop for approval.
+  - **Decision 1 (§8).** The brief's "prediction runs single-threaded" is
+    false as a general statement, because `evaluate()` predicts with
+    `n_jobs=-1` for Table 2. Section 8 now says "The out-of-fold scoring that
+    produces every case probability and gate count runs single-threaded, so
+    the forest's floating-point sums are added in a fixed order."
+    `evaluate()` is unchanged.
+  - **Decision 2 (§3.4).** The author's split replaces the §12a wording: "Out
+    of fold, each such record is usually scored by a fold model that saw its
+    twin with the other label. Of the 71 records on the 35 conflicting
+    vectors (Section 3.2), 68 are scored outside the 0.15 margin and 66 are
+    mispredicted; they produce 10 red bands, none for a true high-risk
+    record." The table pointer is kept. "Usually" is 57 of 71; the
+    derivation is in a `%` comment.
+  - **Decision 3 (length).** Growth accepted, no forced trims. Body words,
+    HEAD before the batches to committed: §6 718 to 811, §7 194 to 228, §8
+    539 to 607, §2 1429 to 1329, §1 1044 to 1045, §3 1709 to 1741, §5 989
+    to 960.
+  - **Decision 4 (commits).** WRITING_RULES §1 wins over brief §13: one
+    commit per file. The §3 and §5 claim-audit fixes are two commits, both
+    citing this entry.
+  - **Decision 5 (§2 announcements).** All five rewritten:
+    - opener: "Two literatures frame the design ... the standard it has to
+      meet";
+    - "and that divergence is one of our stated contributions" cut;
+    - "That intersection, and only that intersection, is what we claim."
+      deleted;
+    - 2.3 ends at "the artifact that implements it.";
+    - the Yesmin close is "Their study does not ask what a health worker or
+      a mother makes of a derated signal."
+  - **Decision 6, other §2 wording.**
+    - "That is the gap this paper sits in." is deleted.
+    - 2.3 ends "which is why a user study is the next step. We propose a
+      rendering rule and evaluate the artifact that implements it." The
+      untrue "every paper named in this subsection has users" is gone.
+    - Yesmin's participants are "healthcare professionals".
+    - §2.5 says "We use the same pipeline as a vehicle." The "adds nothing
+      to that modelling work" boundary lives only in §1.1, and the opener's
+      "and use it as a vehicle" is removed so the phrase appears once.
+    - §2.2: ", rather than a shortfall in coverage" is dropped, and the
+      Bhatt paragraph reads "The mother receives a different assertion,
+      while the clinician receives the split probabilities unmodified."
+  - **Decision 6, /anti-ai.**
+    - §6: all three proposals.
+    - §7: both. "Three" is spelled out at the start of the split sentence.
+    - §8: both.
+    - §1: the duplicates sentence is "We found no published report of these
+      duplicates (Section 3.3), and we report what they cost without
+      claiming to have found them first". "Three boundaries go with those
+      claims." is deleted. "not an emergency / not a concern" is kept, and
+      the 1.2 merge accepted.
+    - §3: the split above; "Young et al.'s scoping review finds ...";
+      "exactly our situation" becomes "our situation".
+    - §5: the "designed to find usability problems without users" sentence
+      is deleted. The Nielsen row labels stay.
+  - **Implementation notes.**
+    - The 6.5 pointer to Section 6.2 needed a label, so
+      `\label{sec:lim-data}` is added there.
+    - §1's new duplicates sentence rests on §3.3's "We searched for prior
+      documentation of them in this benchmark and found none".
+  - **Checks and build.**
+    - The §3 greps are clean on all seven files. The only "novelty" is
+      Hendrickx's term. Each paragraph has at most one of the WRITING_RULES
+      contrast forms.
+    - Citation re-check: Kompa now matches audit row 14 exactly, Yesmin
+      matches N3, and no other citing clause changed.
+    - Scratch build: 21 pp, 0 errors, 0 undefined, 0 overfull, 2 underfull
+      (both pre-existing).
+  - **Housekeeping.** The §8 subagent reported leaving an idle python
+    process. All four running python processes were listed with their
+    command lines, and none runs from this session's scratchpad or this
+    repo: two `-m ielts_tts` from 6 Oct, and two `D:\files` `main.py`. The
+    subagent's process had already exited. Nothing was stopped.
+  - **Commits.** `ae5931e` §6, `0da7566` §7, `e2fed0f` §8, `41b5f8c` §2,
+    `45158a3` §1, `9345154` §3, `8e4aa62` §5. This entry and the handoff
+    are the next commit.
+  - **Handoff.** "Next step" is rewritten:
+    - batch D (brief §14) is next, in a fresh session;
+    - §15 verification runs in another new session that has written
+      nothing;
+    - then the cold run and both authors' read, §16 repo and Zenodo, and
+      the §17 upload package.
+
+    The cold-run note now says only out-of-fold scoring is single-threaded.
