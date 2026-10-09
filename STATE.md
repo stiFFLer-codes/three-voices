@@ -2475,3 +2475,36 @@ Decision Log entries named.
     under `\nocite{*}`). **21 pages, previously 20.** The gate table (Table 3)
     grew, and the matrix (now Table 4) floats from p. 12 to p. 13. There are
     no new overfull or underfull boxes.
+
+- **2026-10-09 #65 — Batch A (Sections 3 and 5) drafted; author statement on
+  Mamun et al. and Maisoon et al.** Committed with Section 3. The author's
+  decisions on both drafts are recorded in #66.
+
+  **Author statement, 9 Oct 2026.** The author read the full texts of Mamun
+  et al. (`mamun2025identification`) and Maisoon et al.
+  (`maisoon2026stratification`) and found no duplicate removal in either.
+  Section 3.3's "Neither removes duplicate rows" rests on this, together with
+  the verified facts in WRITING_RULES §6:
+  - Mamun: 1014 samples, 99.51%, 10-fold CV.
+  - Maisoon: two implausible outliers removed (N = 1012), 83.74% at a tuned
+    threshold of 0.67, stratified 5-fold CV.
+
+  **Drafts.** The `paper-writer` subagent wrote `data_and_vehicle.tex`
+  (REVISION_BRIEF §2) and `evaluation.tex` (REVISION_BRIEF §3). The main
+  session checked them:
+  - Every number traces to its file.
+  - All 48 matrix symbols and the 29/12/1/6 counts match
+    `heuristic_matrix.csv`.
+  - The §3 grep and the old-values grep are clean in typeset text.
+
+  **Citation finding in Section 5's last paragraph.** "Studies with community
+  health workers in India report difficulty interpreting AI explanations even
+  after they have been simplified" (okolo2024easy,
+  solanokamaiko2024explorable) was checked against both abstracts:
+  - Okolo et al. 2024 (Crossref): "CHWs struggled to understand the AI
+    explanations". Nothing on simplification.
+  - Solano-Kamaiko et al. 2024 (Semantic Scholar): explorable explanations
+    "help develop a more nuanced understanding of AI", the opposite
+    direction.
+  - The sentence was replaced under REVISION_BRIEF §12 (#66), and the
+    all-section claim audit is #67.

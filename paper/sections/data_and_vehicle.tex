@@ -22,18 +22,48 @@
 % No locked number changed. Data spine re-verified from the raw cache:
 % 1014 / 2 at HR=7 / 1012 / 561 / 451 (233 low, 106 mid, 112 high) / 35 / 95
 % under 18 / min age 10.
+%
+% 2026-10-09 revision (REVISION_BRIEF §2). Changes:
+%   3.1 dataset cited as ahmed2020maternal; the file holds 1014 records, the
+%       repository metadata lists 1013. SOURCE OF 1013: STATE.md Decision Log
+%       #60 ("Raw-file side check": UCI API /api/dataset?id=863 reports
+%       num_instances: 1013). It is in no results/tables file.
+%   3.2 order of the two cleaning steps named (heart-rate filter first).
+%   3.3 Mamun / Maisoon sentence replaced with the verified facts (author
+%       read of both full texts, 9 Oct 2026: no duplicate removal in either).
+%   3.4 conflicting-vector explanation of the mid-high near-ties removed (it
+%       was an in-sample effect); out-of-fold paragraph added; global SHAP
+%       labelled as the final model.
+%   3.5 failure case re-grounded on row 325 (out of fold, BodyTemp +0.253,
+%       Age -0.001); "over-weighting a demographic feature" deleted.
+%   Also: five bold spans in prose removed (WRITING_RULES §3); the "rather
+%   than" contrast in the SHAP-naming sentence reworded so the paragraph
+%   holds one contrast.
+%   Then REVISION_BRIEF §2a (author decisions, Decision Log #66): 1013 cited
+%   to the repository page; counts replace "confidently and often wrongly";
+%   in-sample mechanism reworded as a property of the forest; \textsc{red};
+%   overfull box in 3.4 reworded away; "on all 1014 records"; ten /anti-ai
+%   rewordings ("inflate the scores", "the range reported by the papers
+%   below", one "exactly", "rarely reported", "Our contribution here",
+%   "removing duplicates", "because", "must handle", "stable and
+%   unremarkable" dropped, the retention reason, "like this one").
 \section{Data and the Model Vehicle}
 \label{sec:data}
 
 \subsection{Dataset}
 \label{sec:data-dataset}
 
-We use the UCI Maternal Health Risk dataset (repository id 863), released
-under CC BY 4.0. It contains 1014 records collected in rural Bangladesh,
-each with six features (age, systolic and diastolic blood pressure, blood
-sugar, body temperature and heart rate) and a three-level risk label: low,
-mid, high. It is public data and no other data is used anywhere in this
-work. No real patient record, de-identified or otherwise, appears in this
+We use the UCI Maternal Health Risk dataset~\citep{ahmed2020maternal}
+(repository id 863), released under CC BY 4.0. The distributed file contains
+1014 records collected in rural Bangladesh, while the repository page lists
+1013 instances~\citep{ahmed2020maternal}.
+% 1013: read off the UCI repository page and API for id 863 on 2026-10-09
+% ("Instances": 1013; num_instances 1013). External fact, cited per
+% WRITING_RULES §5; also recorded in STATE.md Decision Log #60.
+Each record has six features (age, systolic and
+diastolic blood pressure, blood sugar, body temperature and heart rate) and a
+three-level risk label: low, mid, high. It is public data and no other data
+is used anywhere in this work. No real patient record, de-identified or otherwise, appears in this
 paper or in the repository that accompanies it.
 
 The dataset supports \emph{generic maternal-health risk} and nothing
@@ -59,7 +89,7 @@ First, two records report a heart rate of 7 beats per minute. These are
 physiologically impossible and are dropped, leaving 1012 rows. Second, the
 remaining set contains a large number of exactly repeated feature-and-label
 vectors: 561 of the 1012 rows are exact duplicates of an earlier row. We
-drop them, leaving \textbf{451 distinct records}: 233 low, 106 mid and 112
+drop them, leaving 451 distinct records: 233 low, 106 mid and 112
 high, an imbalance of about 2.2:1 between the largest and smallest class.
 
 Both steps are fixed rules rather than fitted transformations, which is why
@@ -71,11 +101,12 @@ fitted inside each cross-validation training fold only, through an
 the duplicates under group-aware cross-validation and keep more rows. We
 rejected it on two grounds: it adds machinery a vehicle model does not need,
 and deduplication makes our number directly comparable to what a reader gets
-from a plain \texttt{drop\_duplicates}.
+from \texttt{drop\_duplicates} applied after the heart-rate filter, the order
+we use.
 
 Deduplication does not resolve every ambiguity in the data. Among the 451
-distinct records there remain \textbf{35 feature vectors that carry more than
-one risk label}: identical six-value readings recorded against different
+distinct records there remain 35 feature vectors that carry more than
+one risk label: identical six-value readings recorded against different
 levels of risk. No model, however specified, can separate rows it cannot
 distinguish. We retain these rows rather than adjudicating between them, and
 return to what they imply for the achievable ceiling in
@@ -84,7 +115,7 @@ Section~\ref{sec:limitations}.
 \subsection{A leakage-aware re-benchmark: what the duplicates were worth}
 \label{sec:data-leakage}
 
-The duplicate rows cost accuracy its meaning. A duplicated row can appear in
+The duplicate rows inflate the scores. A duplicated row can appear in
 a training fold and in the test fold of the same split, so retaining them
 lets a model be scored partly on records it has already memorised. We
 measured that effect directly. Scoring the identical model under the
@@ -111,13 +142,13 @@ Kept    & 1012 & $0.859 \pm 0.026$ & $0.854 \pm 0.026$ & $0.908 \pm 0.031$ \\
 Retaining the duplicates moves accuracy from 0.641 to 0.854 and macro-recall
 from 0.580 to 0.859. The inflated \emph{accuracy}, 0.854, is the like-for-like
 comparator for the published figures, which are accuracies, and it sits inside
-the band typically reported for this dataset; the published range extends
-higher still. Maisoon et al.\ report 83.74\% and Mamun et al.\
-99.51\%~\citep{maisoon2026stratification,mamun2025identification}. Neither
-describes duplicate handling, both report $n = 1014$, and preprocessing on
-this dataset is generally given only as normalisation and the removal of
-inconsistencies. Yesmin et al.\ report 88.67\% on the same $n = 1014$ and
-likewise describe no duplicate handling, though that figure is not a
+the range reported by the papers below; the published range extends
+higher still. Mamun et al.\ report 99.51\% accuracy on all 1014 records under
+10-fold cross-validation~\citep{mamun2025identification}. Maisoon et al.\
+remove two implausible outliers ($N = 1012$) and report 83.74\% accuracy at a
+tuned decision threshold of 0.67~\citep{maisoon2026stratification}. Neither removes duplicate
+rows~\citep{mamun2025identification,maisoon2026stratification}. Yesmin et
+al.\ report 88.67\% on all 1014 records and likewise describe no duplicate handling, though that figure is not a
 like-for-like comparison: they add a synthetic regional access score to the
 six clinical features~\citep{yesmin2026trust}.
 
@@ -130,17 +161,17 @@ situation~\citep{rosenblatt2024leakage}, and Bernett et al.\ give the
 practitioner's checklist~\citep{bernett2024guiding}. The contribution type is
 established too: re-analysing an inflated published result to recover the
 true number is what Eltawil et al.\ and Young et al.\
-do~\citep{eltawil2026comment,young2025leakage}. \textbf{We do not claim
-to be the first to notice these duplicates.} We searched for prior
+do~\citep{eltawil2026comment,young2025leakage}. We do not claim
+to be the first to notice these duplicates. We searched for prior
 documentation of them in this benchmark and found none, but absence of
-evidence is weak here: a \texttt{drop\_duplicates} result is exactly the kind
-of thing noticed in a notebook and never written up. What we claim is the
-measurement: the published band on this dataset is recoverable only when
+evidence is weak here: a \texttt{drop\_duplicates} result is the kind of
+check that is rarely reported. Our contribution here is the measurement: the published band on this dataset is recoverable only when
 identical rows are allowed to straddle the split, and after deduplication
 macro-recall on this vehicle is 0.580. It is reproducible in either direction
 from the committed table. We report deduplicated figures
 throughout and state the comparison here, up front, so that our lower
-headline number is legible as hygiene rather than as a weaker model.
+headline number reads as the result of removing duplicates and not as a
+weaker model.
 
 \subsection{The model is a vehicle}
 \label{sec:data-model}
@@ -149,7 +180,7 @@ We compared logistic regression, random forest and XGBoost, each with and
 without in-fold SMOTE, under five-fold stratified cross-validation.
 Table~\ref{tab:models} gives all six configurations, typeset from
 \texttt{results/tables/p1\_model\_metrics.csv}. The primary metric is
-\textbf{macro-recall}, with macro-F1, per-class recall, one-versus-rest
+macro-recall, with macro-F1, per-class recall, one-versus-rest
 ROC-AUC and the confusion matrix as support. Macro-recall is the right
 primary here because the costs are asymmetric: failing to flag a high-risk
 mother is the error that matters, and headline accuracy on an imbalanced
@@ -180,8 +211,8 @@ XGBoost             & SMOTE & $0.578 \pm 0.022$ & $0.627 \pm 0.024$ & $0.747$ & 
 \end{tabular}
 \end{table}
 
-The final model is a \textbf{random forest with no resampling}
-(\texttt{n\_estimators=300}, \texttt{random\_state=42}). It ties the
+The final model is a random forest with no resampling, set to
+\texttt{n\_estimators=300} and \texttt{random\_state=42}. It ties the
 SMOTE-resampled random forest on macro-recall at 0.580. We broke that tie
 deliberately rather than by argmax: the unresampled model has tighter
 variance across folds ($\pm 0.027$ versus $\pm 0.040$), the better high-risk
@@ -191,23 +222,35 @@ over attributions at all. The selection is a constant in the code, and the
 script still prints the argmax winner so the tie stays visible.
 
 We take 0.580 as the operating figure for this deduplicated dataset; the
-rendering question exists precisely because models on data like this are
+rendering question exists because models on data like this are
 uncertain. Table~\ref{tab:models} says where that uncertainty is concentrated.
 Mid-risk recall is $0.227 \pm 0.057$ for the selected model and reaches no
 higher than $0.302$ in any of the six configurations, against $0.790$ for low
 risk and $0.723$ for high. The mid class is the one the vehicle cannot
-resolve, which is what the 35 feature vectors carrying more than one risk
-label (Section~\ref{sec:data-dedup}) would predict: rows the model cannot
-distinguish it also cannot separate. Cases therefore land on the mid-high
-boundary as a structural property of this data rather than as an occasional
-accident, and a rendering that reaches a mother has to have an answer for
-them. The
-attributions themselves are stable and unremarkable: blood sugar is the
-leading global driver for every class, with systolic blood pressure second,
-and diastolic pressure and heart rate close to noise
-(\texttt{results/tables/shap\_global\_mean\_abs.csv}). We say ``blood sugar
-and systolic pressure'' rather than ``the blood-pressure features''
-throughout, because the data supports the first and not the second.
+resolve, and a rendering that reaches a mother must handle the cases it gets
+wrong.
+
+A forest scored on the records it was trained on sends identical feature
+vectors to the same leaves, so where those vectors carry two labels, its vote
+splits between them and the record looks like a near-tie. Out of fold, 68 of
+the 71 records on the 35 conflicting vectors (Section~\ref{sec:data-dedup})
+are scored with a margin of at least 0.15, and they produce 10 \textsc{red}
+bands, none for a true high-risk record
+(\texttt{results/tables/p1\_gate\_summary.csv}). For this reason every case in
+this paper is scored out of fold.
+% Derivations from results/tables/p1_oof_predictions.csv, rows with
+% conflict_vector == True (71): margin >= 0.15 -> 68; pred != true_label -> 66
+% (REVISION_BRIEF §2a wrote "66" for the margin count; the file gives 68).
+% The 10 RED bands and RED/true high = 0: p1_gate_summary.csv,
+% band_x_true_label_conflict_vector_True.
+
+The global attributions come from the final model, fitted to all 451
+records: blood sugar is the leading global driver for
+every class, with systolic blood pressure second, and diastolic pressure and
+heart rate close to noise
+(\texttt{results/tables/shap\_global\_mean\_abs.csv}). We write ``blood sugar
+and systolic pressure'' throughout because the data supports them as drivers;
+``the blood-pressure features'' would include diastolic pressure.
 
 \subsection{Maternal age}
 \label{sec:data-age}
@@ -215,11 +258,12 @@ throughout, because the data supports the first and not the second.
 The dataset contains very low maternal ages, reflecting adolescent pregnancy
 in the source population: 95 of the 451 distinct records are under 18 and the
 minimum is 10, both written to \texttt{p1\_cohort\_summary.csv} by the
-preparation step. We retain rather than filter these rows, because excluding
-a group the system would encounter is itself a harm. Our designated failure
-case shows what that costs: a 13-year-old whose recorded body temperature of
-101\,\textdegree F drives a true-low record to a predicted-high output, with
-blood sugar and systolic pressure both arguing against the flip. The model is
-over-weighting a demographic feature, which is why final judgment stays with
-a human and why the rendering rules of Section~\ref{sec:tiers} exist. All
-data here is public; no real patient or child record is exposed.
+preparation step. We retain rather than filter these rows, because a deployed
+system would see these patients, and dropping them would hide how the model
+treats them. The designated failure
+case (row 325, Section~\ref{sec:tiers-failure}) is a 17-year-old whose false
+high call, out of fold, is driven by her recorded body temperature of
+101\,\textdegree F (SHAP $+0.253$), with age contributing almost nothing
+($-0.001$). A false high call like this one is why final judgment
+stays with a human and why the rendering rules of Section~\ref{sec:tiers}
+exist. All data here is public; no real patient or child record is exposed.
