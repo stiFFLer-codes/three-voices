@@ -25,8 +25,9 @@ started (both untracked; the rules file sits in `.claude/agents/`).** #63 is
 the housekeeping: the author's four re-rate decisions, `refs.bib` fixes plus
 the dataset entry, `requirements-lock.txt`, and the `.gitkeep` by-product.
 The paper is revised one section per task, each committed only after author
-approval, starting with Section 4. **Section 4 is committed (#64).** Next is
-batch A: Sections 3 and 5, each awaiting approval before its commit.
+approval, starting with Section 4. **Sections 4, 3 and 5 are committed
+(#64-#66); batch A is closed.** The claim audit (REVISION_BRIEF §12,
+`CLAIM_AUDIT.md`, #67) runs before batches B and C.
 
 **P5 CLOSED 2026-09-03. Now in P6 — pre-submission pass.** Branch
 `revision/sncs-framing`, unmerged, carries a journal-alignment framing pass
@@ -2508,3 +2509,68 @@ Decision Log entries named.
     direction.
   - The sentence was replaced under REVISION_BRIEF §12 (#66), and the
     all-section claim audit is #67.
+
+- **2026-10-09 #66 — Batch A closed: the author's decisions on the Section 3
+  and 5 drafts (REVISION_BRIEF §2a and §12) and the Section 4 polish (§1b).**
+  - The author replaced `REVISION_BRIEF.md` and `WRITING_RULES.md` with new
+    versions (supplied as "... new.md", moved over the old files). Both are
+    still untracked.
+  - Three rule changes: bold is allowed for best values in a table and in
+    `\paragraph{}` heads; external facts are cited, not tabled; derived
+    counts are allowed with a `%` derivation; no thousands separators.
+  - Three commits:
+    - Section 3 with #65 (`549f485`).
+    - Section 5 (`5652ad4`).
+    - Section 4 polish with this entry.
+
+  **Section 3, §2a as applied.**
+  - 1013 is now "the repository page lists 1013 instances", cited to
+    `ahmed2020maternal`. The UCI page and API were re-read this session: 1013.
+  - The in-sample mechanism uses the brief's forest-and-leaves wording.
+  - "A false high call like this one". Bands appear as `	extsc{red}`.
+  - "On all 1014 records" (Yesmin).
+  - The 5.9 pt overfull box in 3.4 was reworded away ("set to
+    `n_estimators=300` and `random_state=42`").
+  - The ten /anti-ai rewordings are applied as worded.
+  - Kept: "two implausible outliers", the priority sentence, `\mathbf` in
+    Table 2, and comma-free numbers.
+  - **One number differs from the brief.** §2a reads "66 of those 71 records
+    are scored with a margin of at least 0.15". `p1_oof_predictions.csv`
+    gives 68 for that property; 66 is the count mispredicted. The text says
+    68, and a `%` comment records both derivations. The author may want "66
+    of them mispredicted" added.
+
+  **Section 5, §2a and §12 as applied.**
+  - The CHW sentence now uses the §12 wording (design-dependence, citing both
+    papers).
+  - "Both were built to find defects early" is replaced by the heuristic /
+    WCAG sentence.
+  - The matrix caption no longer repeats the paragraph after the table.
+  - "No model metric could have shown it, because metrics never read the
+    card".
+  - "The criteria are met by the three tiers together, and by no single one
+    of them."
+  - Kept as approved: the single-evaluator paragraph and the `\paragraph`
+    heads.
+
+  **Section 4, §1b as applied.**
+  - "The gate is one-sided." and "Computing the band once also matters."
+  - "Two different bands" in 4.2; "two identities" now appears only in §5.
+  - The card sentence (no generated text).
+  - "Can support" is varied ("there is no such magnitude to convey"), and
+    the imperative is now a statement.
+  - "It changed only what the mother was told."
+  - 4.5 reads "only 3 are"; the "far less often" sentence is deleted, and
+    "The 3 derated high-risk records are the cost of the rule".
+
+  **Checks (WRITING_RULES §10).**
+  - Every number traces to its file, or to a cited external source (1013).
+  - New citation sentences match their sources' abstracts: Okolo 2024 and
+    Solano-Kamaiko 2024 for "depends on its design"; the UCI page for 1013.
+  - §3 grep clean; at most one contrast per paragraph; old-values grep clean
+    except the new `102`.
+  - Scratch build: 0 errors, 0 undefined references, 0 bibtex warnings,
+    **0 overfull boxes**, 21 pages.
+  - Every /anti-ai item for Sections 3 and 5 was decided by the author and
+    applied, and the Section 4 report items are applied or kept as §1b says,
+    which satisfies CLAUDE.md rule 8 for these commits.

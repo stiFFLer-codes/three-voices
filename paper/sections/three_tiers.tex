@@ -53,6 +53,13 @@
 %     threshold sentence, and "outside the 0.15 margin, with margins from
 %     0.230 to 0.880" (min/max margin of the 11 true-high GREEN records with
 %     margin >= 0.15, p1_oof_predictions.csv).
+%   - Then REVISION_BRIEF §1b (polish from the /anti-ai report, Decision Log
+%     #66): "The gate is one-sided."; "Computing the band once also
+%     matters."; "two different bands" (the "two identities" phrase now only
+%     in Section 5); the card sentence; "can support" varied and the
+%     imperative made a statement; "It changed only what the mother was
+%     told."; 4.5 "only 3 are", the "far less often" sentence deleted, "The 3
+%     derated high-risk records are the cost of the rule".
 \section{Three Tiers from One Prediction}
 \label{sec:tiers}
 
@@ -92,8 +99,7 @@ The threshold of $0.15$ is a design constant. We did not tune it, and no
 experiment in this paper supports that value over $0.10$ or $0.20$; we return
 to what would be needed to justify it in Section~\ref{sec:limitations}.
 
-The gate is one-sided, and we state where it fires rather than leave a reader
-to infer it. The margin test guards the high boundary only: \textsc{green}
+The gate is one-sided. The margin test guards the high boundary only: \textsc{green}
 follows the argmax with no margin test at all, so a prediction that is
 low risk by a hair renders an unqualified all-clear to the mother. That is the
 opposite of the asymmetry Section~\ref{sec:data-model} argues for, where
@@ -104,10 +110,9 @@ implement the symmetric extension, derating an ungated near-tie
 \textsc{green} down to \textsc{amber} as the red-to-amber move already does;
 Section~\ref{sec:future} takes it up.
 
-Computing the band once matters as much as the threshold does. In the first
-version of the renderer the health worker's card banded on its own rule and
-the mother's lamp banded on this one, so a single prediction could carry two
-identities. Section~\ref{sec:eval} describes how that was caught.
+Computing the band once also matters. In the first version of the renderer
+the health worker's card banded on its own rule and the mother's lamp banded
+on this one, so a single prediction could receive two different bands. Section~\ref{sec:eval} describes how that was caught.
 
 \subsection{One prediction, three renderings}
 
@@ -163,8 +168,8 @@ call. The card reads \textsc{elevated --- needs follow-up}, lists raised blood
 sugar and older age, and asks the worker to arrange a check-up and share
 the readings. Every string is a fixed template constant filled from the
 attributions. No language model runs at inference, which is our stated
-alternative to LLM-mediated tiering~\citep{bello2025threelevel}: the card is
-regenerable, diffable, and has nothing to hallucinate.
+alternative to LLM-mediated tiering~\citep{bello2025threelevel}: the card can
+be regenerated and compared line by line, and it contains no generated text.
 
 \paragraph{Mother-to-be.} A three-lamp visual and one spoken Hindi sentence.
 No probability, no percentage, no condition named, and no text required to
@@ -179,11 +184,11 @@ Stripping magnitude departs from the risk-communication literature of
 Section~\ref{sec:rw-riskcomm}, which recommends conveying magnitude through an
 icon array or a visible denominator, and we take that departure on a stated
 condition. An icon array conveys a magnitude the model can support. At
-$0.382$ against $0.384$ it cannot support one, and drawing that split as 38
-chances in 100 would give the reader least able to discount it a precision the
-model does not have. Where the magnitude is trustworthy, show it; where the
-gate has fired, an ordinal band and one action is what the model can support.
-That is the uncertainty argument of Section~\ref{sec:rw-uncertainty} arriving
+$0.382$ against $0.384$ there is no such magnitude to convey, and drawing that
+split as 38 chances in 100 would give the reader least able to discount it a
+precision the model does not have. When the magnitude is trustworthy it should
+be shown; when the gate has fired, the model supports only an ordinal band and
+one action. That is the uncertainty argument of Section~\ref{sec:rw-uncertainty} arriving
 from the health-communication side, and it remains an argument rather than a
 result, since whether the band is understood as intended is untested here.
 
@@ -203,7 +208,7 @@ show amber instead.
 Amber on a true-low record is still a false referral. The gate made the error
 smaller, not correct, and it did nothing about the underlying misprediction,
 which the clinician tier carries unmodified here as it does on every case.
-What it changed is what the mother was told.
+It changed only what the mother was told.
 
 \subsection{The gate across all 451 records}
 \label{sec:tiers-gate}
@@ -245,11 +250,10 @@ True high-risk records & 78 & 20 & 14 & 112 \\
 
 Table~\ref{tab:gate} gives the counts. The gate derates 11 of the 114
 high-risk calls. Of the 103 calls it keeps as red, 78 are true high-risk
-records; of the 11 it derates, 3 are. A high-risk call inside the margin was
-right far less often than one outside it. Eleven calls are too few to estimate
-that difference precisely, and this is one dataset. Those 3 are the cost of
-the rule: they receive amber instead of red, and amber still routes them to a
-health worker.
+records; of the 11 it derates, only 3 are. Eleven calls are too few to
+estimate that difference precisely, and this is one dataset. The 3 derated
+high-risk records are the cost of the rule: they receive amber instead of red,
+and amber still routes them to a health worker.
 
 The number of red bands changes little with the threshold: 105, 103 and 102
 at margins of $0.10$, $0.15$ and $0.20$.
