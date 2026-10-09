@@ -406,7 +406,6 @@ def render_mother(case: str, band: str):
 
     audio_dir = config.RESULTS_DIR / "audio"
     audio_dir.mkdir(parents=True, exist_ok=True)
-    (audio_dir / ".gitkeep").touch()
     mp3 = audio_dir / f"tier_mother_{case}_hi.mp3"
     try:
         from gtts import gTTS

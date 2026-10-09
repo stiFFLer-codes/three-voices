@@ -120,7 +120,7 @@ Distribution across 48 cells: 29 Pass, 12 Partial, 1 Fail, 6 Deferred.
 *Nielsen*
 
 - **clinician — Pass.** Raw clinical units on the axis (BS = 9, BodyTemp = 98, SystolicBP = 120), not model-space values — the final model uses no scaler, so the waterfall reads in the clinician's own units.
-- **ASHA — Pass.** Phrasing matches field speech, and a deadband of 0.25 IQR around the clean-set median now gates the direction word: a reading inside it is named plainly ('blood sugar'), only a reading outside it is called 'raised' or 'low'. BS 7.7 against a 7.5 median no longer reads as a concern; BS 9.0 on boundary_mid and 15.0 on confident_high still do. BodyTemp's IQR is 0 on the clean set, so 101F on failure_mode is flagged as raised, which is the right behaviour. Age carries its own direction pair — boundary_mid reads 'older age' for a 42-year-old, not 'raised age', which is not something a health worker would say.
+- **ASHA — Pass.** Phrasing matches field speech, and a deadband of 0.25 IQR around the clean-set median now gates the direction word: a reading inside it is named plainly ('blood sugar'), only a reading outside it is called 'raised' or 'low'. The rule is src/render.py:188 (|value - median| <= deadband), with the 0.25 set at src/render.py:115 and the median and IQR taken from the clean set at src/render.py:455; BS 9.0 on boundary_mid and 15.0 on confident_high fall outside it and read as raised. BodyTemp's IQR is 0 on the clean set, so 101F on failure_mode is flagged as raised, which is the right behaviour. Age carries its own direction pair — boundary_mid reads 'older age' for a 42-year-old, not 'raised age', which is not something a health worker would say.
 - **mother — Pass.** A traffic light is a near-universal metaphor, and the sentence names the real institutions in her world — her ANM, the nearest health centre — and opens by telling her not to panic, which is how the news would be delivered in person.
 
 ### 4. Consistency and standards
@@ -133,7 +133,7 @@ Distribution across 48 cells: 29 Pass, 12 Partial, 1 Fail, 6 Deferred.
 ### 5. Error prevention
 *Nielsen*
 
-- **clinician — Pass.** The tier surfaces its own failure rather than hiding it: on failure_mode the waterfall shows BodyTemp +0.253 driving a high-risk call in a 17-year-old while heart rate (-0.042) and systolic pressure (-0.035) argue against it, and true vs predicted are both printed in the title. A reader can catch the spurious flag from the figure alone.
+- **clinician — Pass.** The tier surfaces its own failure rather than hiding it: on failure_mode the panel shows the near-tie (0.411 low against 0.441 high), the waterfall shows BodyTemp +0.253 driving a high-risk call in a 17-year-old while heart rate (-0.042) and systolic pressure (-0.035) argue against it, and true vs predicted are both printed in the title. A reader can catch the spurious flag from the figure alone.
 - **ASHA — Pass.** Strong on accountability — nothing is a diagnosis, the footer returns the referral decision to the human, the next step carries no medical timeframe — and the sign defect is closed: top_drivers() keeps only positive contributions to the predicted class and ranks by signed value. Verified on boundary_mid, where SystolicBP (-0.072, arguing AGAINST high risk) is no longer listed despite its magnitude; the card now shows BS (+0.227) and Age (+0.052), the two features actually driving the call.
 - **mother — Pass.** The uncertainty-aware down-ranking is a genuine control, not a cosmetic one: RED requires predicted-high AND a top-2 margin >= 0.15, so boundary_mid (0.002) and failure_mode (0.029) both light AMBER. failure_mode is a true-low case, so the rule demonstrably suppressed a false red alarm to a mother. This is the strongest single design decision in the three tiers.
 
@@ -165,7 +165,7 @@ This evaluation was first run against the original P3 artifacts. These defects w
 **C1. ASHA driver list is now sign-aware**
 
 - *Was:* top_drivers() ranked by |SHAP| with no sign filter, so a feature arguing AGAINST the prediction could be printed under 'What the model flagged for follow-up'. On failure_mode the card listed 'low blood sugar' whose contribution to the predicted class was -0.085 — it pushed away from high risk. The routine card was worse: confident_low listed the two features that were the reasons the model said LOW, under a heading announcing them as flags, above a next step telling the reader to arrange a check-up.
-- *Now:* Only positive contributions to the predicted class are listed, ranked by signed value. A predicted-low card lists nothing and says so ('No specific risk factors flagged.'), and its next step is to continue routine antenatal care. failure_mode now shows BodyTemp (+0.253) and BS (+0.044); confident_low shows no drivers. This was the highest-priority gap — the only one that could put a wrong cue in front of the person making the referral.
+- *Now:* Only positive contributions to the predicted class are listed, ranked by signed value. A predicted-low card lists nothing and says so ('No specific risk factors flagged.'), and its next step is to continue routine antenatal care. On boundary_mid (row 426) a ranking by absolute value would have listed systolic pressure (-0.072), which argues against the call; the card now shows BS (+0.227) and Age (+0.052) instead. confident_low shows no drivers. This was the highest-priority gap — the only one that could put a wrong cue in front of the person making the referral.
 
 **C2. One band across both tiers**
 
@@ -244,8 +244,8 @@ deaf-and-colour-blind intersection at the mother tier is visible precisely becau
 the tier declares that it leans on hearing.
 
 **The strongest result is the uncertainty-aware down-ranking.** RED requires both
-a high-risk prediction and a top-2 margin of at least 0.15, so the two knife-edge
-cases (margins 0.002 and 0.029) reach the mother as AMBER rather than as an alarm —
+a high-risk prediction and a top-2 margin of at least 0.15, so the two cases inside
+the 0.15 margin (margins 0.002 and 0.029) reach the mother as AMBER rather than as an alarm —
 and one of those two is a true-low case, so the rule visibly suppressed a false
 red. Model uncertainty is rendered as caution rather than discarded at the tier
 where the reader has the least ability to discount it. That is the transfer worth

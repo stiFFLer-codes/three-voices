@@ -20,6 +20,13 @@ ASHA panel files now show row 426. `paper/` is untouched, so the manuscript no
 longer matches its artifacts. #62 also lists the evaluation rationale updates
 for the author to approve, plus four judgment calls to re-check.
 
+**2026-10-09: revision under `REVISION_BRIEF.md` and `WRITING_RULES.md`
+started (both untracked; the rules file sits in `.claude/agents/`).** #63 is
+the housekeeping: the author's four re-rate decisions, `refs.bib` fixes plus
+the dataset entry, `requirements-lock.txt`, and the `.gitkeep` by-product.
+The paper is revised one section per task, each committed only after author
+approval, starting with Section 4.
+
 **P5 CLOSED 2026-09-03. Now in P6 — pre-submission pass.** Branch
 `revision/sncs-framing`, unmerged, carries a journal-alignment framing pass
 (#47, #48), an **arXiv moderation repositioning (#49)** — new title naming the
@@ -2307,3 +2314,87 @@ Decision Log entries named.
     (iii) C1 *Now* still names `failure_mode`, which no longer demonstrates
     the sign fix.
     (iv) SYNTHESIS still calls a 0.029 margin "knife-edge".
+
+- **2026-10-09 #63 — Housekeeping before the manuscript revision: author
+  decisions on #62's four flagged cells, `refs.bib`, a dependency lock file,
+  and the `.gitkeep` by-product.** No rating, threshold, template, Hindi
+  string, model or section text changed. The only file touched under
+  `paper/` is `refs.bib`.
+
+  **Author decisions on the four cells #62 flagged (rationale only, ratings
+  kept), as applied in `src/evaluate.py`:**
+  1. Nielsen 5 clinician, Pass kept. "on failure_mode the waterfall shows
+     BodyTemp +0.253 …" → "on failure_mode the panel shows the near-tie
+     (0.411 low against 0.441 high), the waterfall shows BodyTemp +0.253 …".
+     The panel was checked to print 0.411 and 0.441.
+  2. Nielsen 2 ASHA, Pass kept. "BS 7.7 against a 7.5 median no longer reads
+     as a concern; BS 9.0 on boundary_mid and 15.0 on confident_high still
+     do." → "The rule is src/render.py:188 (|value - median| <= deadband),
+     with the 0.25 set at src/render.py:115 and the median and IQR taken from
+     the clean set at src/render.py:455; BS 9.0 on boundary_mid and 15.0 on
+     confident_high fall outside it and read as raised." The line numbers are
+     those after this entry's `render.py` edit.
+  3. CORRECTED C1, *Now*. "failure_mode now shows BodyTemp (+0.253) and BS
+     (+0.044);" → "On boundary_mid (row 426) a ranking by absolute value would
+     have listed systolic pressure (-0.072), which argues against the call;
+     the card now shows BS (+0.227) and Age (+0.052) instead." C1 *Was* is
+     history and unchanged.
+  4. SYNTHESIS. "the two knife-edge cases (margins 0.002 and 0.029)" → "the
+     two cases inside the 0.15 margin (margins 0.002 and 0.029)". The other
+     "knife-edge" (Nielsen 1 ASHA, describing margin 0.002) was not in the
+     decision and is unchanged.
+
+  `src.evaluate` was run twice. Both runs gave byte-identical files and
+  stdout. Against the hash taken before the edit, only
+  `heuristic_matrix.csv` (2 cells: N2 ASHA, N5 clinician; 0 ratings) and
+  `heuristic_evaluation.md` changed. Counts are still 29 Pass / 12 Partial /
+  1 Fail / 6 Deferred, and the worst-case header contrast is still 5.14:1.
+
+  **`paper/refs.bib`.** The author's `refs_fixed.bib` (repo root, untracked;
+  an identical copy sits at `paper/refs_fixed.bib`) differs from `refs.bib`
+  in more than casing and author lists, so per the work order its casing and
+  author-list fixes were applied to the current file and nothing else.
+  - Applied, casing (braces protect capitals): kim2024stakeholder,
+    bello2025threelevel, szymanski2025disentangling, okolo2022makingai,
+    okolo2021cannot, okolo2024easy, solanokamaiko2024explorable,
+    srinidhi2021asha, maisoon2026stratification, rahman2023xai,
+    maheswari2024smote, hossen2024driven, eltawil2026comment,
+    young2025leakage, arya2019explanation, yesmin2026trust.
+  - Applied, author lists. bradley2025birth: the trailing empty author
+    becomes `{the Options Study Collaborative Group}`, which matches the
+    Crossref record fetched in session (19 authors, the last one this
+    group). w3c2025wcag21: `O Connor, Joshue` → `O'Connor, Joshue`. **The
+    W3C record fetched in session (w3.org/TR/WCAG21/) spells it "Joshue O
+    Connor"**, so this one departs from the primary record; for the author to
+    confirm.
+  - NOT applied, listed for the author. bradley2025birth journal:
+    `Obstetrics \&amp; Gynaecology` → `Obstetrics \& Gynaecology` (Crossref's
+    own field carries the `&amp;`; as it stands the reference list prints
+    "&amp;"). widyawati2025ensemble title: a double space before "in" →
+    single (no visible effect).
+  - Added `ahmed2020maternal`, as given in REVISION_BRIEF §11. 10.24432 is a
+    DataCite DOI (Crossref returns 404), so the gate is extended visibly, as
+    for the W3C entry. It was resolved in session against
+    api.datacite.org and doi.org: title "Maternal Health Risk", one creator
+    "Ahmed, Marzia", 2020, UCI Machine Learning Repository, type Dataset.
+    The provenance is in a `%` comment above the entry. Nothing cites it yet.
+    plainnat prints the title in sentence case ("Maternal health risk").
+  - Built in a scratch copy: 0 LaTeX errors, 0 undefined references, 0
+    bibtex warnings, 20 pages. Built again with `\nocite{*}`, so the uncited
+    new entry is processed: also 0 bibtex warnings.
+
+  **`requirements-lock.txt`** is `pip freeze` of `.venv` (Python 3.12.13):
+  35 packages. All 11 pins in `requirements.txt` appear in it unchanged.
+  Note for §8: `requirements.txt` marks `joblib` as transitive, pinned for
+  `model.joblib` I/O, so "eleven direct dependencies" (brief §6) counts one
+  pinned transitive.
+
+  **`.gitkeep`.** `results/audio/.gitkeep` was deleted, and the
+  `(audio_dir / ".gitkeep").touch()` line at old `src/render.py:409` was
+  removed. The four MP3s are tracked, so the directory needs no placeholder.
+  `render.py` compiles; `src.render` was not re-run, since it would rewrite
+  the non-reproducible MP3s and the change touches no output.
+
+  **Untracked, not committed:** `.claude/agents/paper-writer.md` was
+  rewritten for this paper. It reads WRITING_RULES.md and REVISION_BRIEF.md
+  before every task and follows them over anything else.
