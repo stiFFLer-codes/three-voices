@@ -4,9 +4,16 @@ Read this at the start of every session. Update it at the end (phase, status,
 next step) and **append** to the Decision Log — never edit or delete an
 existing entry; supersede it with a new dated one.
 
-_Last updated: 2026-10-09_
+_Last updated: 2026-10-10_
 
 ## Current phase
+
+**2026-10-10: the revision is complete; batch D is committed (#70).** The
+abstract, back matter, `main.tex` metadata and two small fixes (Sections 1
+and 8) are in, and the tracked `paper/main.pdf` and `paper/main.bbl` were
+rebuilt in place from the final sources (21 pp, clean log). **Whole-paper
+verification (REVISION_BRIEF §15) is next, in a new session that has written
+nothing.** See "Next step".
 
 **2026-10-09: out-of-fold gate analysis done (#59 pre-registered, #60
 results).** `python -m src.model` now also writes `p1_oof_predictions.csv` and
@@ -29,8 +36,7 @@ approval, starting with Section 4. **Sections 4, 3 and 5 are committed
 (#64-#66); batch A is closed.** The claim audit is done (#67), and its
 decisions are #68. **Batches B and C are committed (#69): Sections 1, 2, 6, 7
 and 8, plus the claim-audit fixes to Sections 3 and 5.** Batch D (abstract,
-back matter, `main.tex`) is next, in a fresh session; see "Next step" for the
-handoff.
+back matter, `main.tex`) followed in a fresh session and is committed (#70).
 
 **P5 CLOSED 2026-09-03. Now in P6 — pre-submission pass.** Branch
 `revision/sncs-framing`, unmerged, carries a journal-alignment framing pass
@@ -242,41 +248,64 @@ Since Decision Log #11 the SAME band also drives the ASHA card header —
 GREEN → "LOW — routine care", AMBER → "ELEVATED — needs follow-up",
 RED → "HIGH — needs follow-up".
 
-## Next step — handoff for a fresh session (written 2026-10-09)
+## Next step — handoff for a fresh session (written 2026-10-10)
 
-**Phase.** P6, pre-submission. The manuscript is mid-revision under
-`REVISION_BRIEF.md`, which re-grounds the paper on out-of-fold scoring.
-- Batch A (Sections 3, 4 and 5) is committed.
-- The claim audit is done (#67); its decisions are #68.
-- Batches B and C (Sections 1, 2, 6, 7, 8 and the claim-audit fixes to 3
-  and 5) are committed; the author's decisions on them are #69.
-- **Batch D (brief §14) is next and must run in a fresh session.**
-- **Whole-paper verification (brief §15) runs after batch D, in another new
-  session that has written nothing.** That session is report-only.
+**Phase.** P6, pre-submission. The manuscript revision under
+`REVISION_BRIEF.md` is complete.
+- Batches A to D are committed (#64-#70).
+- The tracked `paper/main.pdf` and `paper/main.bbl` were rebuilt in place from
+  the final sources (`e35b270`).
+- **Whole-paper verification (brief §15) is next. It must run in a NEW
+  session that has written nothing.** It is report-only: it edits nothing,
+  commits nothing, and writes `VERIFICATION.md` (untracked). Afterwards the
+  reviewer runs the arXiv moderation check on the final PDF.
 - Nothing has been pushed.
 
 **Branch and commits.** Branch `revision/sncs-framing`.
-- The last commit before this handoff is `8e4aa62` (Section 5). The handoff
-  itself is the next commit (#69); `git log -1` gives its hash.
-- The branch is 20 commits ahead of `origin/revision/sncs-framing`, which
-  sits at `ea4aa99`.
+- The last commit before this handoff is `e35b270` (the rebuild). The
+  handoff itself is the next commit (#70); `git log -1` gives its hash.
+- With the handoff, the branch is 27 commits ahead of
+  `origin/revision/sncs-framing`, which sits at `ea4aa99`.
 - `origin/main` is stale at `f41c4ab`.
 
 **Read first, in this order.**
 1. `CLAUDE.md`.
-2. This file: "Current phase", this section, and Decision Log #59-#69.
+2. This file: "Current phase", this section, and Decision Log #59-#70.
 3. `REVISION_BRIEF.md` (repo root, untracked). Read in full; then reread §0
-   (facts and old values), §13a (decisions on batches B and C), §14 (batch
-   D), §15 (verification) and the section briefs §9-§11.
-4. `WRITING_RULES.md` (repo root, untracked): the rules, and the §10
-   checklist.
-5. `CLAIM_AUDIT.md` (repo root, untracked): one row per citing sentence,
-   each with a verdict and a fix.
-6. `.claude/agents/paper-writer.md`: the subagent that drafts each section.
-   Its `model:` must stay the alias `sonnet`; a full model ID stops it
-   registering.
-7. `RECON.md` (untracked), findings A1 and C4-C5: the repo, Zenodo and
-   packaging facts behind open items 5 and 6.
+   (facts and old values) and §15 (verification).
+4. `WRITING_RULES.md` (repo root, untracked). §3 now allows the bold
+   `\textbf{Keywords:}` label (#70).
+5. `CLAIM_AUDIT.md` (repo root, untracked): one row per citing sentence as
+   of #67.
+6. `paper/main.pdf`, the object under verification.
+
+**Facts the §15 session needs.** These are records, not instructions to
+change anything.
+- **Citation sentences new or changed since #67**, to be audited from
+  scratch:
+  - everything #69 lists for Sections 1, 2, 3, 5, 6, 7 and 8;
+  - the back-matter data-availability sentence, which now cites
+    `ahmed2020maternal` (#70).
+  - The abstract cites nothing.
+- **Allowed exceptions to the WRITING_RULES §3 greps:**
+  - the card header "ELEVATED — needs follow-up" (verbatim artifact quote);
+  - the CRediT role names "Writing – original draft" and "Writing – review &
+    editing" (en dash; official names);
+  - `\textbf{Keywords:}`, `\mathbf` best values in Table 2, and
+    `\paragraph{}` heads, the CRediT names included;
+  - "novelty" only as Hendrickx's term;
+  - one contrast per paragraph where it carries design content.
+- **Old-values grep (brief §0):** the one expected typeset hit is `102`, the
+  RED count at margin 0.20, which is correct. No `%` comment in `paper/`
+  carries an old value since #70; the abstract's old comment block is gone.
+- **Abstract:** 200 words and 1221 characters. `ABSTRACT_ARXIV.txt` (repo
+  root, untracked) equals the `abstract.tex` body after whitespace
+  normalisation.
+- **Last build** (in place, `e35b270`):
+  - 21 pages, 0 errors, 0 undefined references or citations, 0 overfull
+    boxes, 2 underfull (pre-existing), 0 bibtex warnings.
+  - 37 bibitems.
+  - `pdfinfo` title and author match `main.tex`.
 
 **Committed in this revision** (on top of `c657617`, #57/#58):
 
@@ -300,50 +329,35 @@ RED → "HIGH — needs follow-up".
 | `45158a3` | #69 Section 1 |
 | `9345154` | #69 Section 3 claim-audit fixes |
 | `8e4aa62` | #69 Section 5 claim-audit fix |
-
-**What is still pre-revision.**
-- **Still on pre-revision text:** the abstract, the back matter, and the
-  `main.tex` metadata (batch D). The brief §0 old-values grep still finds
-  old values in `%` comments in the abstract; no edited section has any.
-- **`paper/main.pdf` and `paper/main.bbl` (tracked) are stale.** Every build
-  in this revision ran in a scratch copy; `paper/` was never rebuilt in
-  place. Batch D's last step rebuilds them (brief §14).
-- The last scratch build (after #69) is clean: 21 pages, 0 errors, 0
-  undefined references or citations, 0 overfull boxes, 2 underfull (both
-  pre-existing).
+| `5861cb7` | #69 decisions and batch D handoff |
+| `b615c1e` | #70 abstract |
+| `434cdc8` | #70 back matter |
+| `5031e56` | #70 `main.tex` metadata |
+| `529bfc2` | #70 Section 1 roadmap |
+| `bef9f0f` | #70 Section 8 sentence |
+| `e35b270` | #70 `paper/main.pdf` and `paper/main.bbl` rebuilt |
 
 **Known untracked files.** Leave them untracked:
 - `.claude/agents/` and three `.claude/commands/*.md` files.
-- `RECON.md`, `REVISION_BRIEF.md`, `WRITING_RULES.md`, `CLAIM_AUDIT.md`.
+- `RECON.md`, `REVISION_BRIEF.md`, `WRITING_RULES.md`, `CLAIM_AUDIT.md`,
+  `ABSTRACT_ARXIV.txt`.
 - `refs_fixed.bib` and `paper/refs_fixed.bib`, the author's file. Of its
   two non-casing differences, Bradley's `\&` is applied (#64) and the
   Widyawati double space is not.
 
 **Open items, in order.**
-1. **Batch D** (brief §14), **in a fresh session**:
-   - The abstract (brief §9 draft): at most 200 words and at most 1920
-     characters, no thousands separators. Also `ABSTRACT_ARXIV.txt`
-     (untracked), plain text.
-   - The back matter (brief §10): CRediT for Aditi Patil, the generative-AI
-     statement in the exact WRITING_RULES §8 wording, the dataset citation
-     in data availability. CRediT role names keep their en dash.
-   - `main.tex` `\hypersetup` (title and both authors, as §14 gives them).
-   - Last step: rebuild the tracked `paper/main.pdf` and `paper/main.bbl`,
-     five passes, one commit.
-   - Report and stop for approval, as in batches B and C.
-2. **Whole-paper verification** (brief §15), **in another new session that
-   has written nothing**. Report only; it edits nothing and writes
-   `VERIFICATION.md` (untracked). Afterwards the reviewer runs the arXiv
-   moderation check on the final PDF.
-3. **`/anti-ai` before every prose commit** (CLAUDE.md rule 8). The pattern
+1. **Whole-paper verification** (brief §15), **in a new session that has
+   written nothing**. Report only; it writes `VERIFICATION.md` (untracked).
+   Afterwards the reviewer runs the arXiv moderation check on the final PDF.
+2. **`/anti-ai` before every prose commit** (CLAUDE.md rule 8). The pattern
    that held: the audit runs report-only, the author decides each item, and
    the decisions are applied before the commit.
-4. **Cold run and read:**
+3. **Cold run and read:**
    - A cold run (recipe below).
    - **Both authors read and approve the final PDF** (brief §10). No
      end-to-end human read has happened yet (old Gate A), and Patil's read is
      outstanding.
-5. **Repo and Zenodo** (brief §16, RECON A1), fresh session. Nothing is
+4. **Repo and Zenodo** (brief §16, RECON A1), fresh session. Nothing is
    pushed or tagged without the author.
    - The concept DOI 10.5281/zenodo.22252076 resolves only to v1.0.0, which
      is tag `v1.0.0` = `b8853a5`, the P3 commit. That snapshot has no
@@ -354,13 +368,14 @@ RED → "HIGH — needs follow-up".
    - `origin/main` is stale.
    - Decide what is public before pushing: the tracked STATE.md holds the
      enrollment-number address and moderation notes (RECON).
-6. **Upload package** (brief §17, same session as item 5):
+5. **Upload package** (brief §17, same session as item 4):
    - Regenerate `paper/ARXIV_SUBMISSION.md` and `arxiv/`, scripted off
      `main.tex`'s `\input` lines (#57). Both are stale: the paper is now
      21 pp, with 4 tables and 37 bib entries.
    - Ship `main.bbl`.
    - Compile standalone.
    - Run a final firewall grep.
+   - The plain-text abstract for the form is `ABSTRACT_ARXIV.txt`.
    - Submit to arXiv, cs.HC.
 
 **Cold-run recipe** (from #55; re-run because `src/` moved in #60-#63):
@@ -379,10 +394,12 @@ out-of-fold path only (#69).
 
 **Do not reopen:** the calibration sentence (#24a); the `failure_mode`
 triptych cut (#33, #38); Clark et al. stays quarantined (WRITING_RULES §6);
-no p-value (brief §0); `RED_MARGIN = 0.15` as a design constant.
+no p-value (brief §0); `RED_MARGIN = 0.15` as a design constant; the abstract
+text (#70).
 
 **Working method that held.**
-- Build only in a scratch copy, never in `paper/`.
+- Build only in a scratch copy, never in `paper/`, except for the deliberate
+  in-place rebuild of the tracked `main.pdf` and `main.bbl` (#70).
 - Check scripts are not kept in the repo. Re-create them as needed: the
   banned-pattern and contrast grep, the old-values grep, number tracing
   against `results/tables/`, label-to-page from `main.aux`, and `pdftoppm`
@@ -2801,3 +2818,87 @@ Decision Log entries named.
       the §17 upload package.
 
     The cold-run note now says only out-of-fold scoring is single-threaded.
+- **2026-10-10 #70 — Batch D closed (REVISION_BRIEF §14): abstract, back
+  matter, `main.tex` metadata and two small fixes, committed one file per
+  commit; the tracked PDF and `.bbl` rebuilt in place.** The revision under
+  REVISION_BRIEF is complete. Drafted on 2026-10-09; the author's decisions
+  A-D and the commits are dated 2026-10-10.
+  - **Abstract.** The first draft was the §9 text verbatim (199 words, 1210
+    characters). The `/anti-ai` audit ran report-only (CLAUDE.md rule 8) and
+    found three problems in that text:
+    - "Every string is filled from templates over SHAP attributions" is
+      inaccurate. The mother's Hindi sentence and the card header are chosen
+      by band, which is why the Hindi transcripts stayed identical in #62.
+    - "Code, tables and renderings regenerate": the code is what runs, not
+      what is regenerated.
+    - "Scored out of fold …, the gate derates" is a dangling participle, and
+      it is the first mention of "the gate".
+  - **Decision A.** The author supplied the final abstract text, which fixes
+    all three and defines the band ("green, amber or red"). It is committed
+    verbatim: **200 words, 1221 characters**, ASCII, no thousands commas.
+    - Each of the 12 numbers is traced in the `%` block. Each was re-read
+      from `p1_gate_summary.csv`, `p1_cohort_summary.csv`,
+      `p1_duplicate_leakage.csv` and `src/render.py` (`RED_MARGIN`).
+    - "14" was re-derived from `p1_oof_predictions.csv`: true high and
+      predicted low = 14 = true high and GREEN.
+    - `ABSTRACT_ARXIV.txt` (untracked) equals the LaTeX body after whitespace
+      normalisation.
+  - **The abstract's old comment block was replaced.** It carried old values
+    (`0.487/0.499`) and the eight-item disclaimer checklist of #49/#57, which
+    WRITING_RULES §4 supersedes: boundaries go in Section 1.1 and Limitations
+    only, and the abstract gets at most two scope sentences. The new block
+    keeps the pointer to the labelled journal abstract (commit `6993541`).
+  - **Decision B.** `\textbf{Keywords:}` stays. WRITING_RULES §3 (untracked)
+    now allows that label in bold, so the §15 grep passes it.
+  - **Back matter (brief §10, §14; decisions C and D).**
+    - The AI statement's first two sentences are WRITING_RULES §8 verbatim,
+      checked by script. The closing no-language-model sentence is unchanged.
+    - CRediT: the two bold names and their `---` became `\paragraph{}`
+      run-in heads.
+    - Aditi Patil: "Hindi authoring and review, clinical domain input,
+      ASHA-tier design input, Writing – review & editing". Decision C uses
+      the official CRediT name ("review \& editing"), not the brief's "review
+      and editing". Sapariya's roles are unchanged.
+    - Decision D: data availability opens "We use the UCI Maternal Health
+      Risk dataset [ahmed2020maternal] (repository id 863), …", so "dataset"
+      is not repeated.
+    - The ethics statement is unchanged.
+  - **`main.tex`.** `\hypersetup{pdftitle=…, pdfauthor={Maitreya Sapariya,
+    Aditi Patil}}` as brief §14 gives it, placed after `hyperref` is loaded.
+    `pdfinfo` confirms both fields.
+  - **Two author-requested fixes.**
+    - `intro.tex` roadmap: "the two literatures it claims between and the
+      three it is answerable to" became "the two literatures that frame the
+      design and the three that set the standard it has to meet", matching
+      the Section 2 opener (#69 Decision 5).
+    - `reproducibility.tex`: "We state that as it is." is deleted.
+  - **WRITING_RULES §10 checks on all five files.**
+    - The §3 greps are clean. The only remaining hits are the Keywords label
+      (now allowed) and five contrast forms in committed lines of `intro.tex`
+      (L133, L182, L192) and `reproducibility.tex` (L56, L109) that this
+      batch did not touch, each one per paragraph.
+    - No old value appears in typeset text or comments of the changed files.
+    - The one new citation, `ahmed2020maternal`, matches its DataCite record
+      (#63) and the audited body sentence at data_and_vehicle:69.
+  - **Builds.**
+    - Scratch: 21 pp, 0 errors, 0 undefined, 0 overfull, 2 underfull
+      (pre-existing), 0 bibtex warnings, no "??".
+    - **In place**, in `paper/`: pdflatex, bibtex, then four more pdflatex
+      runs (five pdflatex passes). The log matches the scratch build, with
+      no rerun request. 37 bibitems.
+    - `main.bbl` is byte-identical to the scratch build's, and the PDF's text
+      is identical too.
+    - The `.aux`, `.log`, `.out` and `.blg` outputs are gitignored.
+  - **Commits:**
+    - `b615c1e` abstract;
+    - `434cdc8` back matter;
+    - `5031e56` `main.tex`;
+    - `529bfc2` Section 1;
+    - `bef9f0f` Section 8;
+    - `e35b270` the rebuilt `main.pdf` and `main.bbl`.
+
+    This entry and the handoff are the next commit.
+  - **Handoff.** "Next step" is rewritten. Whole-paper verification (brief
+    §15) is next, in a new session that has written nothing. After it come
+    the moderation check, the cold run and both authors' read, §16 repo and
+    Zenodo, and the §17 upload package.
