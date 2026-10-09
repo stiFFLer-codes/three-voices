@@ -15,17 +15,17 @@ consume it without re-running SHAP:
   results/figures/shap_global_high.png      global beeswarm, high-risk class
   results/figures/shap_case_<tag>.png       local waterfall per case
 
-Four cases, each chosen by a stated CRITERION (not a hardcoded index — the
-criterion is what reproduces; the row it resolves to will move if the data
-or model changes). See ``select_cases`` for the full definitions.
+Global SHAP is the FINAL model fitted on all 451 rows. The four cases are
+scored OUT OF FOLD (Decision Log #61): probabilities and local SHAP come from
+the fold model that held the row out (``src.model.out_of_fold``), and the
+criteria below pick the cases from those scores. Each criterion is what
+reproduces; the rows it resolves to are recorded in STATE.md (#62) and move
+if the data or model changes. See ``select_cases`` for the full definitions.
   * confident_low   — highest P(low risk)
   * confident_high  — highest P(high risk)
   * boundary_mid    — true-mid, smallest top-2 margin, #1 SHAP driver is
                       BS or SystolicBP. The paper's central teaching case.
-                      Resolves to row 66 on the current clean set.
   * failure_mode    — true-low but predicted-high, smallest top-2 margin.
-                      The "confidently wrong" case for the Limitations
-                      section, not the main figures. Resolves to row 382.
 
 Run:
     python -m src.explain
@@ -45,7 +45,13 @@ import shap
 
 from src import config
 from src.data import load_dataset
-from src.model import CLASS_NAMES, FEATURES, prepare_modeling_frame, _model_factories
+from src.model import (
+    CLASS_NAMES,
+    FEATURES,
+    _model_factories,
+    out_of_fold,
+    prepare_modeling_frame,
+)
 
 # The deliberate P1 pick (documented above). RF/none => no scaler, no SMOTE,
 # so SHAP runs directly on the six raw clinical features. That is exactly what
@@ -74,27 +80,18 @@ def select_cases(
         for the predicted class is BS or SystolicBP. This isolates a case
         where the ground truth is the hard middle class, the model is
         genuinely on the fence, AND the reason is a core clinical driver
-        rather than an outlier feature (e.g. a lone BodyTemp spike). On the
-        current clean set this resolves to row 66 — true mid, sitting on the
-        mid<->high boundary (0.487 / 0.499), BS-led. The CRITERION is what
-        is reproducible; the index moves if the data or model changes.
+        rather than an outlier feature (e.g. a lone BodyTemp spike). The
+        CRITERION is what is reproducible; the index moves if the data or
+        model changes.
 
-    failure_mode  (Limitations section, not the main figures)
+    failure_mode
         Among rows whose true label is low risk but whose predicted label is
         high risk, the one with the smallest top-2 margin — the narrowest
         call on which the model flipped a genuinely low-risk mother all the
-        way to high risk. On the current clean set this resolves to row 382
-        (true low, predicted high at 0.451 / 0.453; a BodyTemp 101F reading
-        in a 13-year-old drives the flip).
+        way to high risk.
 
-        On that age: the dataset contains very low maternal ages, reflecting
-        adolescent pregnancy in the source population (rural Bangladesh). We
-        retain rather than filter those rows — excluding a group the system
-        would encounter is itself a harm — and this case shows the model
-        over-weighting a demographic feature, which is precisely why final
-        judgment stays with a human. All data is public (UCI Maternal Health
-        Risk); no real patient or child record is exposed. Decision Log #20
-        carries the wording the manuscript uses.
+    ``proba``, ``pred`` and ``values`` are whatever scoring the caller
+    passes; since #61 run() passes out-of-fold scores.
     """
     p_sorted = np.sort(proba, axis=1)
     margin = p_sorted[:, -1] - p_sorted[:, -2]
@@ -123,13 +120,14 @@ def run() -> None:
     X_raw, y_raw = load_dataset()
     X, y, _ = prepare_modeling_frame(X_raw, y_raw)
 
+    # Global SHAP only: the final model fitted on all 451 rows. The cases are
+    # NOT scored with it — see the out-of-fold block below (Decision Log #61).
     model = fit_final_model(X, y)
-    proba = model.predict_proba(X)
-    pred = proba.argmax(axis=1)
 
     print("Phase 2 — SHAP engine")
     print("=" * 60)
-    print(f"final model: {FINAL_MODEL_NAME} / none   (n={len(X)})")
+    print(f"global SHAP: final model {FINAL_MODEL_NAME} / none, fitted on all {len(X)} rows")
+    print("cases: scored out of fold, by the fold model that held each row out")
 
     # ----- SHAP values (Explanation shape: n_samples x n_features x n_classes)
     explainer = shap.TreeExplainer(model)
@@ -157,12 +155,29 @@ def run() -> None:
     plt.savefig(fig_global, dpi=150, bbox_inches="tight")
     plt.close()
 
-    # ----- LOCAL: three representative cases --------------------------------
+    # ----- LOCAL: four cases, scored OUT OF FOLD (Decision Log #61) ---------
+    # Probabilities and SHAP come from the fold model that held each row out,
+    # through the same helper src.model uses for p1_oof_predictions.csv.
+    oof = out_of_fold(X, y)
+    proba, values = oof["proba"], oof["values"]
+    pred = proba.argmax(axis=1)
     cases = select_cases(proba, pred, y, values)
+
+    # Fail loudly if a case is not scored exactly as p1_oof_predictions.csv
+    # scores the same row (round_trip: compare the floats the CSV holds).
+    committed = pd.read_csv(config.TABLES_DIR / "p1_oof_predictions.csv",
+                            float_precision="round_trip").set_index("row_index")
+    for tag, i in cases.items():
+        assert (committed.loc[i, ["p_low", "p_mid", "p_high"]].to_numpy(float)
+                == proba[i]).all(), (
+            f"{tag} (row {i}) does not match p1_oof_predictions.csv — rerun "
+            "python -m src.model, or find what diverged (Decision Log #61)")
+
     summary_rows = []
     contrib_rows = []
     for tag, i in cases.items():
         c = int(pred[i])
+        fold = int(oof["fold"][i])
         summary_rows.append(
             {
                 "case": tag,
@@ -172,6 +187,8 @@ def run() -> None:
                 "p_low": float(proba[i, 0]),
                 "p_mid": float(proba[i, 1]),
                 "p_high": float(proba[i, 2]),
+                "scoring": "out_of_fold",
+                "fold": fold,
             }
         )
         for f_idx, feat in enumerate(FEATURES):
@@ -182,12 +199,17 @@ def run() -> None:
                     "feature_value": float(X.iloc[i, f_idx]),
                     "shap_pred_class": float(values[i, f_idx, c]),
                     "pred_class": CLASS_NAMES[c],
+                    "scoring": "out_of_fold",
+                    "fold": fold,
                 }
             )
 
-        # local waterfall for the predicted class
+        # local waterfall for the predicted class, from the same fold model
         plt.figure()
-        shap.plots.waterfall(expl[i, :, c], show=False)
+        shap.plots.waterfall(shap.Explanation(
+            values=values[i, :, c], base_values=oof["base"][i, c],
+            data=X.iloc[i].to_numpy(), feature_names=FEATURES,
+        ), show=False)
         plt.title(f"{tag} — pred {CLASS_NAMES[c]}")
         fig_case = config.FIGURES_DIR / f"shap_case_{tag}.png"
         plt.savefig(fig_case, dpi=150, bbox_inches="tight")

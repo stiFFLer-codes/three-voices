@@ -162,6 +162,11 @@ def _model_factories() -> dict:
     return factories
 
 
+def _splitter() -> StratifiedKFold:
+    """The one CV splitter: evaluate(), out_of_fold() and src.explain share it."""
+    return StratifiedKFold(n_splits=N_SPLITS, shuffle=True, random_state=SEED)
+
+
 def _build_pipeline(spec: dict, use_smote: bool) -> ImbPipeline:
     steps = []
     if spec["needs_scaling"]:
@@ -177,7 +182,7 @@ def _build_pipeline(spec: dict, use_smote: bool) -> ImbPipeline:
 # ---------------------------------------------------------------------------
 def evaluate(spec: dict, X: pd.DataFrame, y: pd.Series, use_smote: bool):
     """Stratified k-fold. Returns (metrics dict of mean/std, summed CM)."""
-    skf = StratifiedKFold(n_splits=N_SPLITS, shuffle=True, random_state=SEED)
+    skf = _splitter()
     rows = {"macro_recall": [], "macro_f1": [], "accuracy": [], "roc_auc_ovr": []}
     per_class_recall = []
     cm_total = np.zeros((3, 3), dtype=int)
@@ -354,13 +359,47 @@ def duplicate_leakage_check() -> pd.DataFrame:
     return table
 
 
+def out_of_fold(X: pd.DataFrame, y: pd.Series) -> dict[str, np.ndarray]:
+    """Score every row with the FINAL_MODEL fold model that held it out.
+
+    Returns ``proba`` (n, classes), ``values`` = that fold model's SHAP toward
+    each class (n, features, classes), ``base`` = its SHAP base values
+    (n, classes), and ``fold`` (n,). The one helper behind both
+    ``oof_gate_analysis`` and src.explain's cases, so a row is scored the same
+    way in both (Decision Log #61).
+    """
+    import shap
+
+    spec = _model_factories()[FINAL_MODEL[0]]
+    n = len(X)
+    out = {
+        "proba": np.zeros((n, len(CLASSES))),
+        "values": np.zeros((n, len(FEATURES), len(CLASSES))),
+        "base": np.zeros((n, len(CLASSES))),
+        "fold": np.zeros(n, dtype=int),
+    }
+    for k, (tr, te) in enumerate(_splitter().split(X, y)):
+        pipe = _build_pipeline(spec, FINAL_MODEL[1])
+        pipe.fit(X.iloc[tr], y.iloc[tr])
+        # Predict sequentially: with n_jobs=-1 the forest sums per-tree
+        # probabilities in thread-finish order, so the last bit varies run to
+        # run. Same trees either way; this only fixes the summation order.
+        pipe.set_params(clf__n_jobs=1)
+        out["proba"][te] = pipe.predict_proba(X.iloc[te])
+        expl = shap.TreeExplainer(pipe.named_steps["clf"])(X.iloc[te])
+        out["values"][te] = expl.values
+        out["base"][te] = expl.base_values
+        out["fold"][te] = k
+    return out
+
+
 def oof_gate_analysis(X: pd.DataFrame, y: pd.Series, expected_cm: np.ndarray) -> None:
     """Out-of-fold probabilities for FINAL_MODEL, and what the gate does with them.
 
-    Pre-registered in STATE.md Decision Log #59. The case probabilities in
-    src.explain are in-sample (fit on all 451 rows, predicted on those same
-    rows); here each record is scored by the fold model that never saw it.
-    Reporting only: no threshold, rule, model or case row changes because of it.
+    Pre-registered in STATE.md Decision Log #59: each record is scored by the
+    fold model that never saw it (``out_of_fold``), the same scoring src.explain
+    uses for the illustrative cases since #61. Reporting only: no threshold,
+    rule or model changes because of it.
 
     Same pipeline and splitter as ``evaluate()``, so the pooled confusion matrix
     must equal ``expected_cm``; that is asserted before anything is written.
@@ -370,26 +409,12 @@ def oof_gate_analysis(X: pd.DataFrame, y: pd.Series, expected_cm: np.ndarray) ->
     """
     from unittest.mock import patch
 
-    import shap
-
     from src import render
     from src.explain import select_cases
 
     config.set_seeds()
-    spec = _model_factories()[FINAL_MODEL[0]]
-    skf = StratifiedKFold(n_splits=N_SPLITS, shuffle=True, random_state=SEED)
-    proba = np.zeros((len(X), len(CLASSES)))
-    values = np.zeros((len(X), len(FEATURES), len(CLASSES)))
-    for tr, te in skf.split(X, y):
-        pipe = _build_pipeline(spec, FINAL_MODEL[1])
-        pipe.fit(X.iloc[tr], y.iloc[tr])
-        # Predict sequentially: with n_jobs=-1 the forest sums per-tree
-        # probabilities in thread-finish order, so the last bit varies run to
-        # run. Same trees either way; this only fixes the summation order.
-        pipe.set_params(clf__n_jobs=1)
-        proba[te] = pipe.predict_proba(X.iloc[te])
-        # SHAP from the fold model that produced the probability (#59(c)).
-        values[te] = shap.TreeExplainer(pipe.named_steps["clf"])(X.iloc[te]).values
+    oof = out_of_fold(X, y)
+    proba, values = oof["proba"], oof["values"]
 
     pred = proba.argmax(axis=1)
     assert (confusion_matrix(y, pred, labels=CLASSES) == expected_cm).all(), \

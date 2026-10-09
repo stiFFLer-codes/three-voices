@@ -14,6 +14,12 @@ results).** `python -m src.model` now also writes `p1_oof_predictions.csv` and
 out-of-fold numbers are in #60. No paper prose or figure has been changed in
 response, and that is an open author decision ahead of Gate A.
 
+**2026-10-09: the four cases are now scored out of fold (#61 pre-registered,
+#62 results).** The rows are 48 / 99 / 426 / 325. Figure 1's clinician and
+ASHA panel files now show row 426. `paper/` is untouched, so the manuscript no
+longer matches its artifacts. #62 also lists the evaluation rationale updates
+for the author to approve, plus four judgment calls to re-check.
+
 **P5 CLOSED 2026-09-03. Now in P6 — pre-submission pass.** Branch
 `revision/sncs-framing`, unmerged, carries a journal-alignment framing pass
 (#47, #48), an **arXiv moderation repositioning (#49)** — new title naming the
@@ -174,6 +180,9 @@ sits at the top of page 6 with its reference below it on the same page.
   mean|SHAP| 0.156), SystolicBP #2 (0.087). DiastolicBP is near-noise
   (~0.035, tied with HeartRate); BodyTemp mid-pack. Paper language: "BS and
   systolic BP", not "the BP features".
+- **Superseded by #62 (2026-10-09):** the cases are now scored out of fold,
+  and the rows are 48 / 99 / 426 / 325. The rows listed below are the
+  previous in-sample picks, kept for the record.
 - **Four cases** (`src/explain.py::select_cases` — criteria reproduce, row
   indices will move if data/model change):
   - `confident_low` — highest P(low). Row 196.
@@ -2164,3 +2173,137 @@ Decision Log entries named.
   that Figure 1 reads will depict row 426. Nothing under `paper/` is edited or
   rebuilt, so `paper/main.pdf` still embeds the previous rendering, and the
   gitignored `arxiv/` staging copies are untouched. Results go in #62.
+
+- **2026-10-09 #62 — RESULTS of #61: the four cases are now scored out of
+  fold.** Everything #61 pre-registered held. No threshold, template, Hindi
+  string or rating changed, `src/render.py` was not edited, and nothing under
+  `paper/` was touched.
+
+  **Code.**
+  - `src/model.py` has one `_splitter()`, used by `evaluate()` and by the new
+    `out_of_fold()` helper. `oof_gate_analysis()` and `src/explain.py` both
+    call `out_of_fold()`.
+  - `src/explain.py` builds no splitter.
+  - The in-sample `predict_proba` (old `explain.py:127`) is gone; prediction
+    runs with `n_jobs=1` after fitting.
+  - Global SHAP is still the final model fitted on all 451 rows, labelled as
+    such in code and on stdout.
+  - Re-running `src.model` after the refactor returned all five `p1_*.csv`
+    byte-identical.
+
+  **Cases, as pre-registered.** `confident_low` 48, `confident_high` 99,
+  `boundary_mid` 426, `failure_mode` 325. The exact-match assertion against
+  `p1_oof_predictions.csv` passed. Readings are Age / SysBP / DiaBP / BS /
+  Temp / HR. Out-of-fold probabilities are low / mid / high. SHAP is toward
+  the predicted class, in the same feature order.
+  - **48** (true low, fold 4): readings 15 / 76 / 49 / 7.5 / 98 / 77.
+    1.000 / 0.000 / 0.000, predicted low, margin 1.000, GREEN. SHAP +0.063
+    / +0.103 / +0.101 / +0.130 / +0.049 / +0.039.
+  - **99** (true high, fold 3): readings 48 / 140 / 90 / 15.0 / 98 / 90.
+    0.000 / 0.003 / 0.997, predicted high, margin 0.993, RED. SHAP +0.049 /
+    +0.293 / +0.002 / +0.353 / −0.004 / +0.052.
+  - **426** (true mid, fold 1): readings 42 / 120 / 90 / 9.0 / 98 / 70.
+    0.233 / 0.382 / 0.384, predicted high, margin 0.0018, AMBER. SHAP
+    +0.052 / −0.072 / +0.007 / +0.227 / −0.026 / −0.050.
+  - **325** (true low, fold 4): readings 17 / 90 / 60 / 7.9 / 101 / 76.
+    0.411 / 0.148 / 0.441, predicted high, margin 0.029, AMBER. SHAP −0.001
+    / −0.035 / −0.027 / +0.044 / +0.253 / −0.042.
+
+  **Hash proof.**
+  - `shap_global_mean_abs.csv` is `bda077634ff9…07a594a` before #61, after
+    run 1 and after run 2.
+  - `shap_global_high.png` is `8928300df68c…13522db1c60` at all three points.
+
+  **Determinism.** `results/audio/` was emptied first (the four MP3s were
+  deleted by explicit path). Then `src.explain`, `src.render --case all` and
+  `src.evaluate` were run twice.
+  - All 36 non-MP3 files under `results/` came back byte-identical across the
+    two runs.
+  - The MP3s differ between runs, as #10/#18 document. Their lengths equal the
+    committed ones: 112320 / 83520 / 56256 / 112320.
+
+  **What changed against `06716f7`.** 20 tracked files:
+  - The 4 MP3s.
+  - `shap_case_*.png` ×4.
+  - `tier_clinician_*.png` ×4.
+  - `tier_asha_{boundary_mid,failure_mode}.png` and `.txt`.
+  - `shap_case_summary.csv` and `shap_case_contributions.csv`, which gained
+    `scoring` and `fold`.
+  - `heuristic_matrix.csv` and `heuristic_evaluation.md`.
+
+  **What came back byte-identical.**
+  - Both global SHAP files.
+  - All 5 `p1_*.csv`.
+  - `tier_asha_{confident_low,confident_high}`, PNG and TXT.
+  - All 4 `tier_mother_*.png` and all 4 Hindi transcripts. Each case kept its
+    band, so the spoken lines and the provenance blocks are the same.
+
+  `results/audio/.gitkeep` appears as an untracked by-product of
+  `render.py:409`. It is left untracked.
+
+  **Figure 1's panels.**
+  - `tier_clinician_boundary_mid.png` and `tier_asha_boundary_mid.png` now
+    show row 426.
+  - `tier_mother_boundary_mid.png` is unchanged.
+  - `paper/main.pdf` and every row-66 / row-382 number in the paper's prose
+    still describe the previous, in-sample rendering. That is a fact recorded
+    here, not a proposal.
+
+  **ASHA cards.**
+  - `boundary_mid`: ELEVATED — needs follow-up. It lists raised blood sugar
+    and older age.
+  - `failure_mode`: ELEVATED — needs follow-up. It lists raised body
+    temperature and raised blood sugar.
+
+  **`src/evaluate.py`, under the author's conditions.**
+  - **No rating changed**, and the counts are still 29 Pass / 12 Partial /
+    1 Fail / 6 Deferred.
+  - The worst-case header contrast is still 5.14:1. It is computed from the
+    palette and did not move.
+  - 9 matrix cells changed rationale only, plus three non-matrix sentences.
+  - **Every change, before → after:**
+    1. 1.4.1 clinician: "BS +0.204, DiastolicBP -0.024 on boundary_mid" →
+       "BS +0.227, SystolicBP -0.072 on boundary_mid".
+    2. 3.1.5 clinician: "base E[f(x)] = 0.250" → "base E[f(x)] = 0.247".
+    3. Nielsen 1 clinician: "sees 0.487 vs 0.499" → "sees 0.382 vs 0.384".
+    4. Nielsen 1 ASHA: "confident_high (margin 1.000) … boundary_mid (margin
+       0.012)" → "confident_high (margin 0.993) … boundary_mid (margin 0.002)".
+    5. Nielsen 2 clinician: "BS = 9, BodyTemp = 102, SystolicBP = 85" →
+       "BS = 9, BodyTemp = 98, SystolicBP = 120".
+    6. Nielsen 2 ASHA: "so 102F is flagged as raised" → "so 101F on
+       failure_mode is flagged as raised", and "failure_mode reads 'young
+       age' for a 13-year-old, not 'low age'" → "boundary_mid reads 'older
+       age' for a 42-year-old, not 'raised age'".
+    7. Nielsen 5 clinician: "BodyTemp +0.216 driving a high-risk call in a
+       13-year-old while blood sugar argues against it" → "BodyTemp +0.253
+       driving a high-risk call in a 17-year-old while heart rate (-0.042) and
+       systolic pressure (-0.035) argue against it".
+    8. Nielsen 5 ASHA: "Verified on failure_mode, where BS (-0.085, arguing
+       AGAINST high risk) is no longer listed …; the card now shows BodyTemp
+       (+0.216) and Age (+0.056)" → "Verified on boundary_mid, where
+       SystolicBP (-0.072, arguing AGAINST high risk) is no longer listed …;
+       the card now shows BS (+0.227) and Age (+0.052)". This case is the one
+       where a sign-blind |SHAP| ranking would print SystolicBP. On row 325
+       both rankings agree.
+    9. Nielsen 5 mother: "boundary_mid (0.012) and failure_mode (0.002)" →
+       "boundary_mid (0.002) and failure_mode (0.029)".
+    10. CORRECTED C1, *Now*: "failure_mode now shows BodyTemp (+0.216) and
+        Age (+0.056)" → "failure_mode now shows BodyTemp (+0.253) and BS
+        (+0.044)".
+    11. GAPS 3: "base E[f(x)] = 0.250" → "base E[f(x)] = 0.247".
+    12. SYNTHESIS: "(margins 0.012 and 0.002)" → "(margins 0.002 and 0.029)".
+  - **Kept as written, as history:** C1 *Was* (the −0.085 card), C3 *Was*,
+    C4 *Was* (BS 7.7 on the old `confident_low`), and SYNTHESIS's first-pass
+    paragraph.
+  - **Cells whose rating no longer rests on a true fact: none found** after
+    the updates.
+  - **For the author to re-check, as judgment calls, not fact errors:**
+    (i) Nielsen 5 clinician (Pass). The old cue for catching the spurious
+    flag was blood sugar arguing against the call. On row 325 blood sugar
+    argues for it (+0.044), and the opposing features are small.
+    (ii) Nielsen 2 ASHA, "BS 7.7 against a 7.5 median no longer reads as a
+    concern". This is now renderer behaviour asserted by `render._selfcheck`,
+    not something any current card shows.
+    (iii) C1 *Now* still names `failure_mode`, which no longer demonstrates
+    the sign fix.
+    (iv) SYNTHESIS still calls a 0.029 margin "knife-edge".

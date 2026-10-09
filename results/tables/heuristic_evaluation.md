@@ -56,7 +56,7 @@ Distribution across 48 cells: 29 Pass, 12 Partial, 1 Fail, 6 Deferred.
 ### 1.4.1 Use of colour (colour not the only cue)
 *Perceivable*
 
-- **clinician — Pass.** Bar direction plus a signed numeric label carries every SHAP sign without hue (BS +0.204, DiastolicBP -0.024 on boundary_mid); probability bars are labelled with class name and value, so the green/amber/red fill is redundant.
+- **clinician — Pass.** Bar direction plus a signed numeric label carries every SHAP sign without hue (BS +0.227, SystolicBP -0.072 on boundary_mid); probability bars are labelled with class name and value, so the green/amber/red fill is redundant.
 - **ASHA — Pass.** The header text states the level itself — 'LOW — routine care', 'ELEVATED — needs follow-up', 'HIGH — needs follow-up' — one distinct string per band, asserted distinct by a self-check in render.py. Hue restates it and nothing more; render the card in greyscale and no information is lost.
 - **mother — Partial.** Hue is the primary cue. Two redundancies verified: lamp POSITION is fixed (red top / amber middle / green bottom) and lit-vs-unlit differs by 3.97:1 in luminance, so which lamp is lit survives colour-vision deficiency; the spoken Hindi line is a second non-colour channel. Residual gap: a viewer who is both colour-blind and deaf has position only, and position assumes the traffic-light convention.
 
@@ -91,7 +91,7 @@ Distribution across 48 cells: 29 Pass, 12 Partial, 1 Fail, 6 Deferred.
 ### 3.1.5 Reading level / plain language
 *Understandable*
 
-- **clinician — Partial.** Deliberately technical — 'SHAP waterfall', 'base E[f(x)] = 0.250' — which is correct for a trained reader but fails the letter of 3.1.5, since the tier carries no simpler supplement of its own. The supplement exists: it is the other two tiers. That is the architecture's point.
+- **clinician — Partial.** Deliberately technical — 'SHAP waterfall', 'base E[f(x)] = 0.247' — which is correct for a trained reader but fails the letter of 3.1.5, since the tier carries no simpler supplement of its own. The supplement exists: it is the other two tiers. That is the architecture's point.
 - **ASHA — Partial.** Short sentences and field vocabulary via the fixed PLAIN_NAMES map ('raised blood sugar', not a clinical term). Above plain register: the header word 'ELEVATED' and the phrase 'medical officer', both of which a lower-literacy reader may stumble on.
 - **mother — Pass.** One spoken Hindi sentence, no number, no percentage, no condition named, ending in an action ('please get checked at your ANM or the nearest health centre soon'). Requires no literacy of any kind — the only tier of the three that does not.
 
@@ -112,15 +112,15 @@ Distribution across 48 cells: 29 Pass, 12 Partial, 1 Fail, 6 Deferred.
 ### 1. Visibility of system status
 *Nielsen*
 
-- **clinician — Pass.** Shows true class, predicted class, all three probabilities to three decimals, the base value and f(x). On boundary_mid the reader sees 0.487 vs 0.499 and knows immediately that the call is a coin flip.
-- **ASHA — Pass.** Since banding was unified, the card inherits the mother tier's uncertainty rule and states the result of it in words: confident_high (margin 1.000) heads 'HIGH — needs follow-up' while boundary_mid (margin 0.012) heads 'ELEVATED — needs follow-up', so the person making the referral can tell a confident call from a knife-edge one. The margin itself is still not printed — deliberately, since the card is the tier that must not turn into a probability read-out.
+- **clinician — Pass.** Shows true class, predicted class, all three probabilities to three decimals, the base value and f(x). On boundary_mid the reader sees 0.382 vs 0.384 and knows immediately that the call is a coin flip.
+- **ASHA — Pass.** Since banding was unified, the card inherits the mother tier's uncertainty rule and states the result of it in words: confident_high (margin 0.993) heads 'HIGH — needs follow-up' while boundary_mid (margin 0.002) heads 'ELEVATED — needs follow-up', so the person making the referral can tell a confident call from a knife-edge one. The margin itself is still not printed — deliberately, since the card is the tier that must not turn into a probability read-out.
 - **mother — Pass.** Status is exactly one lamp, and model uncertainty is what chooses it (see error prevention). By design the tier reports an action, not a state — which is the right 'status' for it.
 
 ### 2. Match between system and the real world
 *Nielsen*
 
-- **clinician — Pass.** Raw clinical units on the axis (BS = 9, BodyTemp = 102, SystolicBP = 85), not model-space values — the final model uses no scaler, so the waterfall reads in the clinician's own units.
-- **ASHA — Pass.** Phrasing matches field speech, and a deadband of 0.25 IQR around the clean-set median now gates the direction word: a reading inside it is named plainly ('blood sugar'), only a reading outside it is called 'raised' or 'low'. BS 7.7 against a 7.5 median no longer reads as a concern; BS 9.0 on boundary_mid and 15.0 on confident_high still do. BodyTemp's IQR is 0 on the clean set, so 102F is flagged as raised, which is the right behaviour. Age carries its own direction pair — failure_mode reads 'young age' for a 13-year-old, not 'low age', which is not something a health worker would say.
+- **clinician — Pass.** Raw clinical units on the axis (BS = 9, BodyTemp = 98, SystolicBP = 120), not model-space values — the final model uses no scaler, so the waterfall reads in the clinician's own units.
+- **ASHA — Pass.** Phrasing matches field speech, and a deadband of 0.25 IQR around the clean-set median now gates the direction word: a reading inside it is named plainly ('blood sugar'), only a reading outside it is called 'raised' or 'low'. BS 7.7 against a 7.5 median no longer reads as a concern; BS 9.0 on boundary_mid and 15.0 on confident_high still do. BodyTemp's IQR is 0 on the clean set, so 101F on failure_mode is flagged as raised, which is the right behaviour. Age carries its own direction pair — boundary_mid reads 'older age' for a 42-year-old, not 'raised age', which is not something a health worker would say.
 - **mother — Pass.** A traffic light is a near-universal metaphor, and the sentence names the real institutions in her world — her ANM, the nearest health centre — and opens by telling her not to panic, which is how the news would be delivered in person.
 
 ### 4. Consistency and standards
@@ -133,9 +133,9 @@ Distribution across 48 cells: 29 Pass, 12 Partial, 1 Fail, 6 Deferred.
 ### 5. Error prevention
 *Nielsen*
 
-- **clinician — Pass.** The tier surfaces its own failure rather than hiding it: on failure_mode the waterfall shows BodyTemp +0.216 driving a high-risk call in a 13-year-old while blood sugar argues against it, and true vs predicted are both printed in the title. A reader can catch the spurious flag from the figure alone.
-- **ASHA — Pass.** Strong on accountability — nothing is a diagnosis, the footer returns the referral decision to the human, the next step carries no medical timeframe — and the sign defect is closed: top_drivers() keeps only positive contributions to the predicted class and ranks by signed value. Verified on failure_mode, where BS (-0.085, arguing AGAINST high risk) is no longer listed despite its magnitude; the card now shows BodyTemp (+0.216) and Age (+0.056), the two features actually driving the call.
-- **mother — Pass.** The uncertainty-aware down-ranking is a genuine control, not a cosmetic one: RED requires predicted-high AND a top-2 margin >= 0.15, so boundary_mid (0.012) and failure_mode (0.002) both light AMBER. failure_mode is a true-low case, so the rule demonstrably suppressed a false red alarm to a mother. This is the strongest single design decision in the three tiers.
+- **clinician — Pass.** The tier surfaces its own failure rather than hiding it: on failure_mode the waterfall shows BodyTemp +0.253 driving a high-risk call in a 17-year-old while heart rate (-0.042) and systolic pressure (-0.035) argue against it, and true vs predicted are both printed in the title. A reader can catch the spurious flag from the figure alone.
+- **ASHA — Pass.** Strong on accountability — nothing is a diagnosis, the footer returns the referral decision to the human, the next step carries no medical timeframe — and the sign defect is closed: top_drivers() keeps only positive contributions to the predicted class and ranks by signed value. Verified on boundary_mid, where SystolicBP (-0.072, arguing AGAINST high risk) is no longer listed despite its magnitude; the card now shows BS (+0.227) and Age (+0.052), the two features actually driving the call.
+- **mother — Pass.** The uncertainty-aware down-ranking is a genuine control, not a cosmetic one: RED requires predicted-high AND a top-2 margin >= 0.15, so boundary_mid (0.002) and failure_mode (0.029) both light AMBER. failure_mode is a true-low case, so the rule demonstrably suppressed a false red alarm to a mother. This is the strongest single design decision in the three tiers.
 
 ### 6. Recognition rather than recall
 *Nielsen*
@@ -165,7 +165,7 @@ This evaluation was first run against the original P3 artifacts. These defects w
 **C1. ASHA driver list is now sign-aware**
 
 - *Was:* top_drivers() ranked by |SHAP| with no sign filter, so a feature arguing AGAINST the prediction could be printed under 'What the model flagged for follow-up'. On failure_mode the card listed 'low blood sugar' whose contribution to the predicted class was -0.085 — it pushed away from high risk. The routine card was worse: confident_low listed the two features that were the reasons the model said LOW, under a heading announcing them as flags, above a next step telling the reader to arrange a check-up.
-- *Now:* Only positive contributions to the predicted class are listed, ranked by signed value. A predicted-low card lists nothing and says so ('No specific risk factors flagged.'), and its next step is to continue routine antenatal care. failure_mode now shows BodyTemp (+0.216) and Age (+0.056); confident_low shows no drivers. This was the highest-priority gap — the only one that could put a wrong cue in front of the person making the referral.
+- *Now:* Only positive contributions to the predicted class are listed, ranked by signed value. A predicted-low card lists nothing and says so ('No specific risk factors flagged.'), and its next step is to continue routine antenatal care. failure_mode now shows BodyTemp (+0.253) and BS (+0.044); confident_low shows no drivers. This was the highest-priority gap — the only one that could put a wrong cue in front of the person making the referral.
 
 **C2. One band across both tiers**
 
@@ -203,7 +203,7 @@ What remains after those fixes. These are properties of the design rather than b
 
 **3. The clinician tier assumes chart and English literacy**
 
-- *Evidence:* 'SHAP waterfall', 'base E[f(x)] = 0.250' and an English title are correct for the stated reader and unreadable to anyone else; the tier carries no simpler supplement of its own.
+- *Evidence:* 'SHAP waterfall', 'base E[f(x)] = 0.247' and an English title are correct for the stated reader and unreadable to anyone else; the tier carries no simpler supplement of its own.
 - *Fix:* None within the tier — the supplement is the other two tiers, which is the architecture's point. Recorded so the scope is explicit rather than implied.
 
 **4. Everything is an image of text**
@@ -245,7 +245,7 @@ the tier declares that it leans on hearing.
 
 **The strongest result is the uncertainty-aware down-ranking.** RED requires both
 a high-risk prediction and a top-2 margin of at least 0.15, so the two knife-edge
-cases (margins 0.012 and 0.002) reach the mother as AMBER rather than as an alarm —
+cases (margins 0.002 and 0.029) reach the mother as AMBER rather than as an alarm —
 and one of those two is a true-low case, so the rule visibly suppressed a false
 red. Model uncertainty is rendered as caution rather than discarded at the tier
 where the reader has the least ability to discount it. That is the transfer worth

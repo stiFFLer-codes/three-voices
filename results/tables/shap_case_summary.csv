@@ -1,5 +1,5 @@
-case,row_index,true,predicted,p_low,p_mid,p_high
-confident_low,196,low risk,low risk,1.0,0.0,0.0
-confident_high,16,high risk,high risk,0.0,0.0,1.0
-boundary_mid,66,mid risk,high risk,0.013333333333333334,0.48716666666666697,0.4994999999999997
-failure_mode,382,low risk,high risk,0.4507420634920636,0.09666666666666666,0.45259126984126974
+case,row_index,true,predicted,p_low,p_mid,p_high,scoring,fold
+confident_low,48,low risk,low risk,1.0,0.0,0.0,out_of_fold,4
+confident_high,99,high risk,high risk,0.0,0.0033333333333333335,0.9966666666666667,out_of_fold,3
+boundary_mid,426,mid risk,high risk,0.23333333333333334,0.3824444444444444,0.38422222222222224,out_of_fold,1
+failure_mode,325,low risk,high risk,0.41111111111111115,0.14833333333333334,0.44055555555555553,out_of_fold,4
