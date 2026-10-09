@@ -23,13 +23,48 @@
 %       tier; 2.4 keeps the literature, the tension and one pointer line.
 %   (e) 2.2's abstention sentence no longer duplicates intro.tex; it points to
 %       Section 4 for the grading.
+%
+% 2026-10-09 revision (REVISION_BRIEF §7, §12, §12a). The three bold
+% disclaimers are gone; the positioning stays as plain sentences.
+%   - 2.1: bold "claim no novelty" sentence + "Both predate us" replaced by
+%     "The audience-specific split and tiering as an architecture both predate
+%     this work." Imrie sentence cut back to what the abstract reports (audit
+%     row 7). Szymanski sentence replaced (row 11, §12a short form).
+%   - 2.2: bold "We claim none of that mechanism." deleted.
+%   - 2.3: Okolo 2022 sentence now gives the counts 16 / 3 / 1 (row 16). The
+%     simplification claim is replaced by the Okolo 2024 and Solano-Kamaiko
+%     findings as reported (row 20).
+%   - 2.5: bold "no machine learning contribution" sentence replaced; saturated
+%     construction sentence narrowed to what the six papers report (row 24);
+%     "the same two-row outlier removal" -> "a two-row outlier removal" (note
+%     N2); Maisoon / Widyawati attributions matched to their abstracts (row
+%     26); Yesmin validation sentence matched to the abstract (note N3).
+% 2026-10-09 (REVISION_BRIEF §13a, decisions 5 and 6). Claim announcements
+% removed (WRITING_RULES §4: boundaries live in §1.1 and Limitations only):
+%   - opener: "Two literatures frame the design ... the standard it has to
+%     meet"; 2.1: "and that divergence is one of our stated contributions"
+%     cut; 2.2: "That intersection, and only that intersection, is what we
+%     claim." deleted; 2.5 Yesmin close: "Their study does not ask ...".
+%   - 2.3: "That is the gap this paper sits in." deleted (this paper has no
+%     users either). The L143-145 close ends "which is why a user study is
+%     the next step. We propose a rendering rule and evaluate the artifact
+%     that implements it." The false "every paper named in this subsection
+%     has users" (the Okolo 2022 review is not) and "not a claim to know
+%     better" are gone.
+%   - Yesmin participants: "healthcare professionals", as the abstract says.
+%   - 2.5: "This paper adds nothing to that modelling work" now lives only in
+%     §1.1; "as a vehicle" appears once (kept in the replacement sentence,
+%     removed from the paragraph opener).
+%   - 2.2 contrasts: ", rather than a shortfall in coverage" dropped (Kompa
+%     clause narrowed, still within the audited claim); "does not receive the
+%     uncertainty rendered more gently, she receives" -> "The mother receives
+%     a different assertion, while ...".
 \section{Related Work}
 \label{sec:related}
 
-Two literatures set the boundary of what we claim: stakeholder-tailored
-explanation and selective prediction, and our contribution is the pairing of
-the two rather than either mechanism. Three more set the standard we are
-answerable to: explainable AI for community health workers, risk
+Two literatures frame the design: stakeholder-tailored explanation and
+selective prediction. Three more set the standard it has to meet: explainable
+AI for community health workers, risk
 communication without numeracy, and the published work on this dataset. The
 five subsections below take them in that order.
 
@@ -39,19 +74,18 @@ five subsections below take them in that order.
 Two of our three tiers reproduce a split this literature settled before us.
 Arya et al.\ made the point in a title, \emph{One Explanation Does Not Fit
 All}, and built the toolkit and taxonomy to go with
-it~\citep{arya2019explanation}. Imrie et al.\ show that stakeholders in
-healthcare impose genuinely divergent interpretability requirements, not
-differing degrees of one requirement~\citep{imrie2023multiple}. Kim et al.\
+it~\citep{arya2019explanation}. Imrie et al.\ examine the objectives and
+requirements of different stakeholders in healthcare and argue that they call
+for different types of interpretability~\citep{imrie2023multiple}. Kim et al.\
 build and compare stakeholder-tailored explanation interfaces directly,
 including that same clinician-versus-patient
 split~\citep{kim2024stakeholder}. Bello et al.\ propose a
 \emph{three-level} pipeline from technical explanation to natural language,
-which is our structural twin~\citep{bello2025threelevel}. \textbf{We
-therefore claim no novelty for the idea that explanations should be
-audience-specific, nor for tiering as an architecture.} Both predate us.
+which is our structural twin~\citep{bello2025threelevel}. The
+audience-specific split and tiering as an architecture both predate this work.
 
-Where we diverge from Bello et al.\ is the mediator, and that divergence is
-one of our stated contributions. Theirs is a large language model. Ours is a
+Where we diverge from Bello et al.\ is the mediator. Theirs is a large
+language model. Ours is a
 fixed set of templates over SHAP attributions, so every string a health worker
 or a mother receives is determined by the case and can be regenerated and
 audited. Nothing is generated at inference time and there is nothing to
@@ -66,11 +100,10 @@ and what varies across the tiers is what each reader lacks, in reading
 modality, literacy and decision authority; each tier is designed against that
 deficit. In this deployment role and deficit track each other closely, since
 the ASHA is a specific, minimally-schooled cadre and the mother may not read
-at all. Szymanski et al.\ report that role and expertise co-vary in practice
-while remaining analytically separable~\citep{szymanski2025disentangling},
-which supports role as a serviceable proxy here without rescuing it as a
-general axis. Where the two come apart, a deployment would have to select on
-the deficit.
+at all. Szymanski et al.\ propose treating role and expertise as separate
+dimensions, because the field has often conflated
+them~\citep{szymanski2025disentangling}. Where role and the reader's deficit
+come apart, a deployment would have to select on the deficit.
 
 \subsection{Uncertainty communication, abstention, and selective prediction}
 \label{sec:rw-uncertainty}
@@ -82,34 +115,30 @@ their taxonomy names the case we implement, rejection under \emph{ambiguity},
 where two classes are close, as distinct from rejection under
 novelty~\citep{hendrickx2024reject}. Mozannar and Sontag give the
 learning-to-defer version, where the model is trained to route a case to a
-human expert rather than answer it~\citep{mozannar2020consistent}. \textbf{We
-claim none of that mechanism.} From Kompa et al.\ we take the clinical
-framing that licenses derating a signal instead of issuing it: in medical
-machine learning, abstaining on high-uncertainty cases is a safety property
-rather than a shortfall in coverage~\citep{kompa2021second}.
+human expert rather than answer it~\citep{mozannar2020consistent}. From Kompa
+et al.\ we take the clinical framing that licenses derating a signal instead
+of issuing it: in medical machine learning, abstaining on high-uncertainty
+cases is a safety property~\citep{kompa2021second}.
 
 What we add sits one step downstream, and Bhatt et al.\ are the closest prior
 work to it~\citep{bhatt2021uncertainty}. They treat uncertainty as itself a
 form of transparency and consider explicitly how it should be
 \emph{communicated to different stakeholders}. The difference is narrow: they
 make the \emph{display} of uncertainty audience-aware, whereas we make the
-\emph{suppression} of an assertion audience-aware. The mother does not receive
-the uncertainty rendered more gently, she receives a different assertion,
-while the clinician receives the split probabilities unmodified.
-Section~\ref{sec:tiers} gives the rule that grades those assertions. We find
-no prior work that makes the abstention \emph{rendering} a function of what
-each stakeholder can interrogate. That intersection, and only that
-intersection, is what we claim.
+\emph{suppression} of an assertion audience-aware. The mother receives a
+different assertion, while the clinician receives the split probabilities
+unmodified. Section~\ref{sec:tiers} gives the rule that grades those
+assertions. We find no prior work that makes the abstention \emph{rendering} a
+function of what each stakeholder can interrogate.
 
 \subsection{Explainable AI for community health workers in the Global South}
 \label{sec:rw-chw}
 
 Our second tier renders to a community health worker, and this is the
 literature that sets the standard it has to meet. Okolo et al.'s systematic
-review of explainable AI in the Global South records how little of this work
-reaches the people it describes: across the corpus they surveyed, deployment
-with actual users is close to absent~\citep{okolo2022makingai}. That is the
-gap this paper sits in.
+review of explainable AI in the Global South found 16 papers, of which 3
+involved people and 1 attempted deployment with target
+users~\citep{okolo2022makingai}.
 
 Three studies set our context. Okolo et al.\ interviewed community health
 workers in rural India about AI-enabled mobile health tools and about
@@ -120,17 +149,16 @@ document ASHA Kirana, a deployment in which ASHAs collect data that feeds an
 algorithm and returns a report for a doctor~\citep{srinidhi2021asha}, which is
 our data flow, minus the tiering and the uncertainty gate.
 
-Two findings in that context bound what our card can be said to do. This
-literature does not report that simplification suffices: Okolo et al.\ and
-Solano-Kamaiko et al.\ both find community health workers struggling to
-interpret AI explanations even when those explanations have been
-simplified~\citep{okolo2024easy,solanokamaiko2024explorable}. The
-comprehensibility of our ASHA card is therefore an open empirical question,
-and that finding is why a user study is the necessary next step rather than an
-optional one. And every paper named in this subsection has users; this paper
-has none. We propose a rendering rule and evaluate the artifact that
-implements it; that is not a claim to know better than they do what a
-community health worker needs.
+Two findings in that context bound what our card can be said to do. Okolo
+et al.\ found that community health workers struggled to understand the AI
+explanations they were shown, while still wanting explanations in their
+tools~\citep{okolo2024easy}. Solano-Kamaiko et al.\ found that explorable
+explanations, which pair visual heuristics with written text and invite active
+exploration, helped health workers build a more nuanced understanding of AI
+and contest its decisions~\citep{solanokamaiko2024explorable}. Comprehension
+therefore depends on design and has to be tested. Our card has not been
+tested, which is why a user study is the next step. We propose a rendering
+rule and evaluate the artifact that implements it.
 
 \subsection{Communicating risk without numeracy}
 \label{sec:rw-riskcomm}
@@ -159,38 +187,39 @@ Section~\ref{sec:tiers} beside the tier it governs.
 \subsection{Machine learning on the UCI Maternal Health Risk dataset}
 \label{sec:rw-dataset}
 
-We build on the tree-ensemble and SHAP pipeline this dataset has standardised
-and use it as a vehicle, which puts what is ours downstream of it, in the
-rendering. Supervised classification with SHAP attributions here is saturated:
-Mamun et al.~\citep{mamun2025identification}, Maisoon et
+We build on the tree-ensemble and SHAP pipeline this dataset has standardised,
+which puts what is ours downstream of it, in the rendering. Supervised classification with post-hoc attribution here is
+saturated: Mamun et al.~\citep{mamun2025identification}, Maisoon et
 al.~\citep{maisoon2026stratification}, Widyawati et
 al.~\citep{widyawati2025ensemble}, Rahman et al.~\citep{rahman2023xai},
 Maheswari et al.~\citep{maheswari2024smote} and Hossen et
-al.~\citep{hossen2024driven} all report the same broad construction: tree
-ensembles, resampling for class imbalance, cross-validation, and SHAP for
-post-hoc attribution. \textbf{There is no machine learning contribution
-available here and we do not claim one.}
+al.~\citep{hossen2024driven} all fit tree ensembles to this dataset and
+explain them post hoc, most with SHAP, and three resample for class imbalance
+with SMOTE. We use the same pipeline as a vehicle.
 
 Maisoon et al.\ are our closest methodological neighbour, so we separate the
 two explicitly~\citep{maisoon2026stratification}. They use the same dataset with
-the same two-row outlier removal, tree ensembles with SMOTE, stratified
+a two-row outlier removal, tree ensembles with SMOTE, stratified
 five-fold cross-validation, SHAP, and the same low-resource framing.
 Everything upstream of the explanation is substantially their pipeline. What
 is ours lies downstream: deduplicating before splitting and reporting what
 that costs (Section~\ref{sec:data}), gating the rendering on the model's own
-uncertainty, and rendering the gated output three ways. Their attributions
-and Widyawati et al.'s independently rank blood sugar and systolic blood
-pressure at the top~\citep{maisoon2026stratification,widyawati2025ensemble},
-as ours do, which corroborates the attributions rather than adding a finding
-of ours.
+uncertainty, and rendering the gated output three ways. Widyawati
+et al.\ rank blood sugar and systolic blood pressure at the top, as ours do,
+and Maisoon et al.\ name blood sugar and blood pressure among the primary
+determinants~\citep{widyawati2025ensemble,maisoon2026stratification}, which
+corroborates the attributions rather than adding a finding of ours.
 
 Yesmin et al.\ are the closest contemporaneous
-neighbour~\citep{yesmin2026trust}. They pair ante-hoc fuzzy rules with
-post-hoc SHAP on this dataset and validate the result with fourteen clinicians
-in Bangladesh, 71.4\% of whom preferred the hybrid explanation. Their question
-is which explanation format a clinician trusts; ours is whether an assertion
-should be issued at all, and nothing in their pipeline withholds one when
-the model is uncertain. Their validation also sits on the one tier our gate
-leaves untouched. What a health worker or a mother makes of a derated signal
-is not a question their study asks, and it is not one this paper answers
-either.
+neighbour~\citep{yesmin2026trust}.
+% Source (yesmin2026trust, arXiv abstract): "A validation study with 14
+% healthcare professionals in Bangladesh revealed strong preference for hybrid
+% explanations (71.4% across three clinical cases)"
+They pair ante-hoc fuzzy rules with post-hoc SHAP on this dataset and
+validate the result with 14 healthcare professionals in Bangladesh, who showed
+a strong preference for the hybrid explanation (71.4\% across three clinical
+cases). Their question is which explanation format healthcare professionals
+trust; ours is whether an assertion should be issued at all, and nothing in
+their pipeline withholds one when the model is uncertain. Their validation
+also sits on the one tier our gate leaves untouched. Their study does not ask
+what a health worker or a mother makes of a derated signal.
