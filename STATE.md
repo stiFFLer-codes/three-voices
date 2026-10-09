@@ -1941,3 +1941,68 @@ Decision Log entries named.
   **Gate A — the author's end-to-end read of the 20 pp PDF — remains OPEN and
   still blocks the tag.** Nothing in this audit substitutes for it. Nothing in
   #57 or #58 has been committed, tagged or uploaded.
+
+- **2026-10-09 #59 — PRE-REGISTRATION: out-of-fold probabilities for all 451
+  records, and what the gate does with them. Written and committed BEFORE
+  anything below is computed.** (#57 and #58 were committed first, as
+  `c657617`, so this entry sits on a clean baseline.)
+
+  **Why.** Every case probability the paper quotes is in-sample:
+  `src/explain.py:126-127` fits the forest on all 451 rows and then predicts
+  those same rows. Rows 66 and 382 each share their six-feature vector with a
+  row carrying a different label (66/156 mid/high, 382/403 low/high), so their
+  near-ties are what a forest does with a label conflict it was trained on.
+  Nothing in the repository says how the vehicle scores records it was NOT
+  fitted on. This entry fixes, in advance, what will be measured.
+
+  **What will be computed**, inside the existing `python -m src.model`, after
+  every existing output is written and without touching `evaluate()`:
+  (a) **Out-of-fold class probabilities for all 451 deduplicated records** from
+  `FINAL_MODEL` (random forest, no resampling, `n_estimators=300`,
+  `random_state=42`), each pipeline built by `_build_pipeline` exactly as
+  `evaluate()` builds it, over the identical splitter
+  `StratifiedKFold(n_splits=5, shuffle=True, random_state=42)`. A plain fold
+  loop, equivalent to `cross_val_predict(method="predict_proba")`, because (c)
+  needs the fold models themselves. Row indexing is `prepare_modeling_frame`'s
+  reset index, the one `explain.py` and the paper's row numbers use. `pred` is
+  the argmax; `margin` is top-one minus top-two, as at `explain.py:100`.
+  **Consistency check, also fixed in advance:** the pooled out-of-fold
+  confusion matrix must equal the summed confusion matrix `evaluate()` reports
+  for RF/none (high row `[14, 17, 81]`, per "Model" above). If it does not,
+  stop and report rather than proceed.
+  (b) **Bands from the existing `render.band_for` and `RED_MARGIN = 0.15`,
+  imported, not reimplemented.** The import is local to the new function,
+  because `src/render.py:46` imports `src.model`.
+  (c) **`explain.select_cases` itself, imported and called on the out-of-fold
+  probabilities**, to see which rows its four criteria pick. For
+  `boundary_mid`'s driver condition (#1 |SHAP| for the predicted class is BS or
+  SystolicBP) the SHAP values come from the **fold model that produced each
+  row's out-of-fold probability**: `shap.TreeExplainer` on that fold's forest,
+  over its held-out rows. Author decision, 2026-10-09.
+  (d) **Sensitivity of band counts at margins 0.10 / 0.15 / 0.20, reported
+  only.** `band_for` is reused with `render.RED_MARGIN` patched for the call
+  (`unittest.mock.patch.object`) and restored afterwards.
+
+  **Outputs, two new files only.** `results/tables/p1_oof_predictions.csv`:
+  one row per record with `row_index, true_label, p_low, p_mid, p_high, pred,
+  margin, band, conflict_vector, twin_rows` (`twin_rows` = the other indices
+  sharing the six-feature vector, `;`-separated, empty if none).
+  `results/tables/p1_gate_summary.csv`: band x true label; predicted-high
+  total, RED, and derated-to-AMBER by true label; true-high records reaching
+  RED / AMBER / GREEN; predicted-low with margin < 0.15 by true label; band x
+  true label split by `conflict_vector`; band counts at 0.10 / 0.15 / 0.20; and
+  a `case_selection` section holding (c)'s four picks (author decision,
+  2026-10-09).
+
+  **What does NOT change as a result, whatever the numbers show.** No
+  threshold, no model, no band rule, no selection criterion. `RED_MARGIN` stays
+  0.15, `FINAL_MODEL` stays RF/none, and the four case rows that `explain.py`,
+  `render.py` and the paper use stay as they are. Nothing under `paper/` or
+  `results/figures/` is touched, and `src.explain`, `src.render` and
+  `src.evaluate` are not run. The seven existing CSVs in `results/tables/` must
+  come back byte-identical (SHA-256 taken before this entry was written), and
+  the two new CSVs must be byte-identical across two runs of `src.model`.
+  Read-only side checks in the same pass: the cached raw CSV's row count
+  against UCI's listed 1,013 instances, and rows 66 / 156 / 382 / 403 in-sample
+  next to out-of-fold. **Results go in a separate entry, #60**, so that this
+  text stays as committed (author decision, 2026-10-09).
