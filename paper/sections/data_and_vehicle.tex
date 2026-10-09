@@ -47,6 +47,19 @@
 %   below", one "exactly", "rarely reported", "Our contribution here",
 %   "removing duplicates", "because", "must handle", "stable and
 %   unremarkable" dropped, the retention reason, "like this one").
+%
+% 2026-10-09 claim-audit fixes (REVISION_BRIEF §12a, CLAIM_AUDIT row 35):
+%   3.3 Eltawil / Young sentence: Eltawil et al. re-analyse an inflated
+%       result; Young et al. is a scoping review comparing accuracy by
+%       leakage risk, so it is no longer described as a re-analysis.
+%   3.4 conflicting-vector sentence: author's wording, 68 of the 71 outside
+%       the 0.15 margin, 66 mispredicted, 10 RED, none for true high ("68 of
+%       the 71" is tied to the 35 vectors by the existing antecedent).
+% 2026-10-09 (REVISION_BRIEF §13a, decision 2 and /anti-ai): the 3.4
+%   sentence split in two as the author wrote it (the table pointer kept);
+%   Young et al. named as a scoping review (the refs.bib title says so);
+%   "exactly our situation" -> "our situation". The literal "exactly
+%   repeated" stays.
 \section{Data and the Model Vehicle}
 \label{sec:data}
 
@@ -156,12 +169,13 @@ Leakage is well
 documented: Kapoor and Narayanan set out its taxonomy and its role in the
 reproducibility crisis~\citep{kapoor2023leakage}, Rosenblatt et al.\ show
 that leakage through repeated subjects inflates performance and that the
-effect is worst on small datasets, which is exactly our
+effect is worst on small datasets, which is our
 situation~\citep{rosenblatt2024leakage}, and Bernett et al.\ give the
 practitioner's checklist~\citep{bernett2024guiding}. The contribution type is
-established too: re-analysing an inflated published result to recover the
-true number is what Eltawil et al.\ and Young et al.\
-do~\citep{eltawil2026comment,young2025leakage}. We do not claim
+established too: Eltawil et al.\ re-analyse an inflated published result and
+recover a realistic figure, and Young et al.'s scoping review finds that
+studies at high risk of leakage report higher accuracy than those with
+subject-wise splits~\citep{eltawil2026comment,young2025leakage}. We do not claim
 to be the first to notice these duplicates. We searched for prior
 documentation of them in this benchmark and found none, but absence of
 evidence is weak here: a \texttt{drop\_duplicates} result is the kind of
@@ -232,17 +246,22 @@ wrong.
 
 A forest scored on the records it was trained on sends identical feature
 vectors to the same leaves, so where those vectors carry two labels, its vote
-splits between them and the record looks like a near-tie. Out of fold, 68 of
-the 71 records on the 35 conflicting vectors (Section~\ref{sec:data-dedup})
-are scored with a margin of at least 0.15, and they produce 10 \textsc{red}
-bands, none for a true high-risk record
-(\texttt{results/tables/p1\_gate\_summary.csv}). For this reason every case in
-this paper is scored out of fold.
+splits between them and the record looks like a near-tie. Out of fold, each
+such record is usually scored by a fold model that saw its twin with the other
+label. Of the 71 records on the 35 conflicting vectors
+(Section~\ref{sec:data-dedup}), 68 are scored outside the 0.15 margin and 66
+are mispredicted; they produce 10 \textsc{red} bands, none for a true
+high-risk record (\texttt{results/tables/p1\_gate\_summary.csv}). For this
+reason every case in this paper is scored out of fold.
 % Derivations from results/tables/p1_oof_predictions.csv, rows with
-% conflict_vector == True (71): margin >= 0.15 -> 68; pred != true_label -> 66
-% (REVISION_BRIEF §2a wrote "66" for the margin count; the file gives 68).
-% The 10 RED bands and RED/true high = 0: p1_gate_summary.csv,
+% conflict_vector == True: 71; of those, margin >= 0.15 -> 68; pred !=
+% true_label -> 66.
+% 10 RED bands and 0 RED for a true high-risk record: p1_gate_summary.csv,
 % band_x_true_label_conflict_vector_True.
+% "usually": 57 of the 71 are scored by a fold model whose training folds
+% contain a twin row (twin_rows) with a different true_label. Folds from
+% src.model._splitter() over prepare_modeling_frame(load_dataset()), .split()
+% only; re-derived read-only 2026-10-09 (57).
 
 The global attributions come from the final model, fitted to all 451
 records: blood sugar is the leading global driver for
