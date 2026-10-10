@@ -4,9 +4,16 @@ Read this at the start of every session. Update it at the end (phase, status,
 next step) and **append** to the Decision Log — never edit or delete an
 existing entry; supersede it with a new dated one.
 
-_Last updated: 2026-10-10_
+_Last updated: 2026-10-11_
 
 ## Current phase
+
+**2026-10-11: batch F is committed (#72).** The §19 re-verification at
+`d62c376` reported O1 and N1-N4. REVISION_BRIEF §21 fixed them, together with
+the A6 remainder and rows 36 and 38, in one commit per file. The tracked
+`paper/main.pdf` is rebuilt (`2a3d0b6`; 21 pp, clean log). **Next, the
+verifier session re-checks batch F only (the §19 procedure on
+`d62c376..HEAD`); then come the §20 text-freeze reads.** See "Next step".
 
 **2026-10-10: batch E is committed (#71).** The §15 verifier session wrote
 `VERIFICATION.md` against `66872d4`. Every paper-text, bibliography and table
@@ -255,57 +262,72 @@ Since Decision Log #11 the SAME band also drives the ASHA card header —
 GREEN → "LOW — routine care", AMBER → "ELEVATED — needs follow-up",
 RED → "HIGH — needs follow-up".
 
-## Next step — handoff (rewritten 2026-10-10, after batch E)
+## Next step — handoff (rewritten 2026-10-11, after batch F)
 
 **Phase.** P6, pre-submission.
-- Batches A to E are committed (#64-#71). Batch E applied the §15
-  `VERIFICATION.md` findings under REVISION_BRIEF §18.
-- The tracked `paper/main.pdf` and `paper/main.bbl` were rebuilt in place from
-  the batch E sources (`8dacb47`).
-- **§19 re-verification is next, by the SAME verifier session that wrote
-  `VERIFICATION.md` at `66872d4`.** It still writes nothing tracked. For each
-  finding (F1-F4, A1-A11, the row notes) it states fixed, not fixed or
-  deferred at the new HEAD, with evidence. It re-runs checks 1-6 on every
-  page whose text changed, reads the diff `66872d4..HEAD` for new problems,
-  and appends a dated section to `VERIFICATION.md`. A1 and A9 are expected to
-  stay open until §16.
-- After §19 the reviewer runs the arXiv moderation check, and then comes the
-  §20 text freeze (both authors read the final PDF).
+- Batches A to F are committed (#64-#72).
+  - Batch E applied the §15 findings under REVISION_BRIEF §18.
+  - The §19 re-verification at `d62c376` passed batch E and reported O1 and
+    N1-N4.
+  - Batch F fixed those under REVISION_BRIEF §21, together with the A6
+    remainder and rows 36 and 38.
+- The tracked `paper/main.pdf` was rebuilt in place from the batch F sources
+  (`2a3d0b6`). `paper/main.bbl` was rebuilt as well and came out
+  byte-identical.
+- **Next, the verifier session re-checks batch F only:** the §19 procedure,
+  limited to `d62c376..HEAD`.
+  - It writes nothing tracked, and it appends a dated section to
+    `VERIFICATION.md`.
+  - A1 and A9 stay open until §16.
+- After that come the reviewer's arXiv moderation check and the §20 text
+  freeze, in which both authors read the final PDF end to end.
 - Nothing has been pushed.
 
 **Branch and commits.** Branch `revision/sncs-framing`.
-- The last commit before this handoff is `778100c` (#71). The handoff itself
+- The last commit before this handoff is `d9f3a60` (#72). The handoff itself
   is the next commit; `git log -1` gives its hash.
-- With the handoff, the branch is 40 commits ahead of
+- With the handoff, the branch is 55 commits ahead of
   `origin/revision/sncs-framing`, which sits at `ea4aa99`.
 - `origin/main` is stale at `f41c4ab`.
 
-**Read first (§19 verifier), in this order.**
-1. `VERIFICATION.md` (repo root, untracked): the session's own §15 report.
-2. `REVISION_BRIEF.md` §18 and §19.
-3. Decision Log #71 in this file: every batch E change, the propagation
-   sites beyond the brief, and the two departures from the brief's A4
-   wording.
-4. `git diff 66872d4..HEAD -- paper/`, and the rebuilt `paper/main.pdf`.
+**Read first (batch F re-check), in this order.**
+1. `VERIFICATION.md` §19.3 and §19.4 (N1-N4 and O1).
+2. `REVISION_BRIEF.md` §21, and `WRITING_RULES.md` §7 and §8.
+3. Decision Log #72 in this file. It has every batch F change, the O1 hit
+   list before and after, the evaluator proof, and the departures from the
+   brief.
+4. `git diff d62c376..HEAD`, and the rebuilt `paper/main.pdf`.
 
-**Facts the §19 session needs.** These are records, not instructions to
-change anything.
-- **Changes the brief did not name, made under the §18 propagation rule
-  (#71):**
-  - A2 at three more sites: §2.1 Bello paragraph, the back-matter AI
-    statement's closing sentence, and the §3.4 "driver list" clause.
-  - A4: "Read by row, the criteria are covered." is also replaced.
-  - Row 25: the §2.5 opener's "tree-ensemble" becomes "ensemble".
-- **The A4 sentence departs from the brief's form** ("Read by row, 14 of the
-  16 … the other 2 …"); the counts are as the brief's form requires (#71).
-- **Citation sentences new or changed in batch E:** the §3.2 7 bpm sentence
-  (`ahmed2020maternal`); §2.3 "Studies with community health workers in
-  India set our context"; §2.5 "all fit ensemble classifiers". The citing
-  clauses of every other changed sentence are unchanged.
-- **Left for the author (#71, /anti-ai, report-only):** the §1.1 triple "at
-  inference"; the §2.3 repeated phrase; **[CHECK]** §8 "every cohort count
-  this paper quotes" (71 is in `p1_oof_predictions.csv`, not
-  `p1_cohort_summary.csv`).
+**Facts the re-check needs.** These are records, not instructions to change
+anything.
+- **O1:** the files that ship (src, results, README, the paper) now have 0
+  hits. `STATE.md` keeps four, which are exempt: it moves to `notes/` in §16,
+  and two of them are Decision Log entries. `python -m src.evaluate` ran
+  twice, and the runs are byte-identical. One rationale changed. All 48
+  ratings and the counts 29/12/1/6 are unchanged.
+- **Departures from the brief (#72):**
+  - **AI statement.** The N1 wording is a clause inside the existing frame,
+    not a standalone sentence, so that "All text" cannot be read as the
+    manuscript's own text: "…: in the rendering pipeline of Section 4, all
+    text comes from fixed templates, with no language model at inference,
+    which is one of the contributions claimed here." This is an author
+    decision.
+  - **N3.** The sentence gives counts per tier (clinician 5, ASHA 3, mother
+    4) where the brief's example said "on different criteria", because the
+    partial criteria overlap across tiers.
+  - **N2.** The §1.1 run-in head loses "at inference", so that the brief's
+    N1 sentence holds the one remaining instance.
+  - **N4.** "The" before "metrics" is dropped in §8, which removes the
+    underfull box.
+- **Left for the author (#72, /anti-ai):**
+  - "no language model" appears in both the §1.1 head and its first sentence;
+  - the one fail is stated both before and after Table 4;
+  - the AI statement's closing sentence runs to about 45 words.
+- **[CHECK] outside the paper:**
+  - `README.md:50` has the over-broad template claim; it is for the §16
+    README rewrite.
+  - `paper/ARXIV_SUBMISSION.md:102` holds an old abstract; §16 moves it and
+    §17 regenerates it.
 - **Allowed exceptions to the WRITING_RULES §3 greps:**
   - the card header "ELEVATED — needs follow-up" (verbatim artifact quote);
   - the CRediT role names "Writing – original draft" and "Writing – review &
@@ -318,17 +340,17 @@ change anything.
   RED count at margin 0.20, which is correct. The `%` history comments at
   the top of `three_tiers.tex` still carry old values (#71, correcting #70).
   §16 step 1b removes them.
-- **Abstract:** unchanged by batch E. 200 words and 1221 characters.
-  `ABSTRACT_ARXIV.txt` (repo root, untracked) equals the `abstract.tex` body
-  after whitespace normalisation.
-- **Last build** (in place, `8dacb47`):
+- **Abstract:** batch F changed it (N1). It is 200 words and 1229 characters.
+  `ABSTRACT_ARXIV.txt` (repo root, untracked) was regenerated and equals the
+  `abstract.tex` body after whitespace normalisation.
+- **Last build** (in place, `2a3d0b6`):
   - 21 pages, 0 errors, 0 undefined references or citations, 0 overfull
     boxes, 0 bibtex warnings.
-  - 3 underfull boxes: 2 pre-existing, and 1 new at `reproducibility.tex`
-    lines 43–51 (the A6 item, badness 1881).
+  - 2 underfull boxes, both from before batch E (`lines 142--142`, and
+    `reproducibility.tex` `58--62`).
   - 37 bibitems.
   - `pdfinfo` title and author match `main.tex`.
-  - The `.bbl` and PDF text are identical to a scratch build.
+  - A cold build from `git archive HEAD` gives the same `.bbl` and PDF text.
 
 **Committed in this revision** (on top of `c657617`, #57/#58):
 
@@ -372,6 +394,21 @@ change anything.
 | `2f078ca` | #71 `refs.bib` |
 | `8dacb47` | #71 `paper/main.pdf` and `paper/main.bbl` rebuilt |
 | `778100c` | #71 Decision Log entry |
+| `d62c376` | #71 handoff (§19 ran at this HEAD) |
+| `071f1ca` | #72 `src/render.py` provenance comment |
+| `7c0d189` | #72 `src/evaluate.py` rationale |
+| `bc90079` | #72 `heuristic_matrix.csv` and `heuristic_evaluation.md` regenerated |
+| `d702b75` | #72 README |
+| `1eb0c55` | #72 abstract |
+| `9255178` | #72 Section 1 |
+| `6a04cb2` | #72 Section 2 |
+| `8463251` | #72 Section 3 |
+| `c70ba3f` | #72 Section 5 |
+| `b2cca9d` | #72 Section 7 |
+| `ada3de9` | #72 Section 8 |
+| `dd420c9` | #72 back matter |
+| `2a3d0b6` | #72 `paper/main.pdf` rebuilt (`main.bbl` byte-identical) |
+| `d9f3a60` | #72 Decision Log entry |
 
 **Known untracked files.** Leave them untracked:
 - `.claude/agents/` and three `.claude/commands/*.md` files.
@@ -382,12 +419,16 @@ change anything.
   Widyawati double space is not.
 
 **Open items, in order.**
-1. **§19 re-verification** by the existing verifier session (see above).
-   Report only; it appends to `VERIFICATION.md`. Afterwards the reviewer
-   runs the arXiv moderation check on the final PDF.
-2. **Author decisions on the three #71 /anti-ai items**, including the §8
-   [CHECK]. Any change goes through a small batch with the same checks
-   (brief §20).
+1. **Batch F re-check** by the verifier session: the §19 procedure, limited
+   to `d62c376..HEAD`. It is report only and appends to `VERIFICATION.md`.
+   Afterwards the reviewer runs the arXiv moderation check on the final PDF.
+2. **Author decisions:**
+   - the AI statement's closing sentence (#72): keep the clause form, or use
+     WRITING_RULES §8's standalone sentence;
+   - the three #72 /anti-ai items.
+
+   Batch F resolved the three #71 items (N2 and the A6 remainder). Any
+   change goes through a small batch with the same checks (brief §20).
 3. **`/anti-ai` before every prose commit** (CLAUDE.md rule 8). The pattern
    that held: the audit runs report-only, the author decides each item, and
    the decisions are applied before the commit.
@@ -437,7 +478,7 @@ out-of-fold path only (#69).
 **Do not reopen:** the calibration sentence (#24a); the `failure_mode`
 triptych cut (#33, #38); Clark et al. stays quarantined (WRITING_RULES §6);
 no p-value (brief §0); `RED_MARGIN = 0.15` as a design constant; the abstract
-text (#70).
+text (#70, with the N1 sentence from #72).
 
 **Working method that held.**
 - Build only in a scratch copy, never in `paper/`, except for the deliberate
