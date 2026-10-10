@@ -44,8 +44,8 @@ Each tier substitutes what its reader actually lacks.
   English, and localisation is string substitution deferred to deployment.
 - **Mother-to-be** — one spoken Hindi sentence and a three-lamp visual, which
   deliver an action and stop there. No probability, no percentage, nothing that
-  must be read. The Hindi strings were written and clinically reviewed by a
-  native-speaking MBBS collaborator.
+  must be read. The Hindi strings were written and reviewed by the second
+  author, a final-year MBBS student and native Hindi speaker.
 
 The plain-language messages are deterministic templates over SHAP outputs. No
 language model generates health text at inference.
