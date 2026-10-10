@@ -2902,3 +2902,110 @@ Decision Log entries named.
     §15) is next, in a new session that has written nothing. After it come
     the moderation check, the cold run and both authors' read, §16 repo and
     Zenodo, and the §17 upload package.
+- **2026-10-10 #71 — Batch E (REVISION_BRIEF §18): the VERIFICATION.md fixes,
+  committed one file per commit, and the tracked PDF and `.bbl` rebuilt.**
+  The §15 verifier session (HEAD `66872d4`) wrote `VERIFICATION.md`
+  (untracked) and stays open; it re-checks this batch under §19. Fix IDs
+  follow VERIFICATION.md.
+  - **Correction to #70 (A8).** #70 and its handoff say "No `%` comment in
+    `paper/` carries an old value since #70". That is false. The history
+    comments at the top of `three_tiers.tex` (old lines 23–24, 33, 39, 42)
+    still carry `row 382`, `0.451/0.097/0.453`, `row 66` and the
+    13-year-old. None of it is typeset. §16 step 1b removes it from the
+    public sources.
+  - **A2 (template claim).** The band selects the card header, the next step
+    and the mother's spoken sentence (`src/render.py:323-326`, `:391`
+    `MOTHER_HI[band]`). The attributions fill only the driver list
+    (`top_drivers`).
+    - §4.3 gets the brief's full statement.
+    - §1.1 and §7 get the brief's short form. §7 keeps its tail ", so any
+      rendering here can be regenerated and checked line by line".
+    - **The propagation grep found three more sites, all fixed:**
+      - §2.1 "templates over SHAP attributions" now reads "templates,
+        selected by the band and filled from the SHAP attributions".
+      - The back-matter AI statement's closing sentence gets the same
+        clause. Its no-language-model content is unchanged.
+      - §3.4: "makes the ASHA and mother tiers expressible as templates over
+        attributions" is false for the mother tier. It now reads "makes the
+        ASHA tier's driver list expressible as a template over
+        attributions".
+  - **A3.** `\label{sec:tiers-render}` added to §4.3. §6.1 now reads "the
+    icon-array paragraph of Section 4.3 makes it".
+  - **A4.** From `heuristic_matrix.csv` (48 rows, 16 criteria):
+    - 14 criteria are rated Pass in at least one tier, and 6 in all three
+      (1.4.3, 3.2.4, Nielsen 1, 2, 4, 5).
+    - 2 are Deferred in all three tiers (2.1/2.4 and 4.1.2).
+    - 14 + 2 = 16, so the counts fit the sentence form.
+    - Typeset: "Read by row, 14 of the 16 criteria are rated pass in at
+      least one tier and 6 in all three; the other 2 (rows 2.1/2.4 and
+      4.1.2) are deferred in every tier." The derivation is in a `%`
+      comment.
+    - **Two departures from the brief.** First, "Read by row, the criteria
+      are covered." states the same false claim, so propagation replaces it
+      as well. Second, "Read by row, 14 of the 16 … the other 2" replaces
+      "Of the 16 criteria, 14 … 2 (…)", which /anti-ai flagged for its
+      stacked punctuation and clause-initial numeral.
+  - **A5.** "Out of fold," in §1.1 ("Out of fold, the gate derates …"), §4.3
+    and §7 ("Out of fold, the model calls this true-low record …"), as the
+    brief words them. No other sentence-initial "Scored out of fold"
+    remains.
+  - **A6, A7, A11** use the brief's wording. **F1:** `\citep{ahmed2020maternal}`
+    on the 7 bpm sentence, plus a `%` comment: 2 rows of the cached raw file
+    have HeartRate 7.0, the next lowest is 60.0, and `src/model.py:65`
+    `MIN_PLAUSIBLE_HR = 20`, applied at `:96-97`. **F2, F3, F4:** `%`
+    derivations (98 = 78 + 20; 233 / 106 = 2.198; 38.2 and 38.4 round to 38).
+  - **Row 25.** "fit tree ensembles" becomes "fit ensemble classifiers", and
+    the §2.5 opener's "tree-ensemble and SHAP pipeline" becomes "ensemble
+    and SHAP pipeline". "Tree ensembles" stays only in the Maisoon-only
+    sentence, which its abstract supports (RF, XGBoost).
+  - **A10.**
+    - (a) Table 3 headers are plain.
+    - (b) `{D}esigning` in kim2024stakeholder; the title matches Crossref.
+    - (c) The Crossref `article-number` fields, fetched this session from
+      api.crossref.org/works/<doi>, are quoted in `%` comments: Kompa "4",
+      Mamun "e70491", Rosenblatt "1829". None of the three has a `page`
+      field. Each is added as `pages`, the field the file's other Crossref
+      entries use; plainnat prints it as `4(1):4`.
+  - **/anti-ai** ran report-only on every changed sentence. One item is
+    applied, the A4 wording above. Three items concern brief-prescribed
+    wording and are left for the author:
+    - §1.1: "at inference" now appears in the run-in head, the brief's
+      sentence and the committed next sentence.
+    - §2.3: "community health workers in India" is repeated in consecutive
+      sentences.
+    - **[CHECK]** §8: "which carries every cohort count this paper quotes"
+      is too broad. The 71 records on conflicting vectors come from
+      `p1_oof_predictions.csv`, not `p1_cohort_summary.csv`.
+  - **Checks (WRITING_RULES §10) on all ten files.**
+    - Every number in a changed line traces to its file:
+      - `p1_gate_summary.csv` `predicted_high` (11, 114, 3, 78, 103);
+      - `shap_case_summary.csv` and `p1_oof_predictions.csv` rows 426 and
+        325 (0.233/0.382/0.384, margins 0.0018 and 0.0294);
+      - `heuristic_matrix.csv` (16, 14, 6, 2);
+      - Crossref for the article numbers.
+    - The new citation clauses fit their sources: the dataset for 7 bpm, and
+      the six abstracts (VERIFICATION row 25) for "ensemble classifiers".
+    - §3 greps: no new hit. Eight `\textbf` are gone from Table 3. The
+      remaining hits are the allowed "novelty" and the card-header dash.
+    - Old values in typeset text: only the correct `102`. No thousands
+      separators. 37 cited keys = 37 entries.
+  - **Builds.**
+    - Scratch: 21 pp, 0 errors, 0 undefined references or citations, 0
+      overfull, 0 bibtex warnings.
+    - There are 3 underfull boxes: the 2 pre-existing ones and one new one,
+      `reproducibility.tex` lines 43–51 (the A6 item, badness 1881). It is
+      cosmetic, and the wording is the brief's.
+    - In place: pdflatex, bibtex, then four more pdflatex runs. The `.bbl`
+      and the PDF text are byte-identical to the scratch build, and
+      `pdfinfo` title and author match `main.tex`.
+  - **Still open.** A1 (archive) and A9 (cold run) wait for §16. The row
+    notes 36 (Eltawil/Young lead-in) and 38 (Nielsen 1994 not read) have no
+    brief item and are unchanged.
+  - **Commits:**
+    - `b0f09f5` Section 1, `85be244` Section 2, `e32fa8c` Section 3,
+      `214ed1e` Section 4, `6ab507f` Section 5;
+    - `85da2be` Section 6, `319a8f6` Section 7, `0ef2309` Section 8,
+      `12e1582` back matter, `2f078ca` `refs.bib`;
+    - `8dacb47` the rebuilt `main.pdf` and `main.bbl`.
+
+    This entry is the next commit, and the handoff follows in its own commit.
