@@ -115,10 +115,11 @@ the health worker's card banded on its own rule and the mother's lamp banded
 on this one, so a single prediction could receive two different bands. Section~\ref{sec:eval} describes how that was caught.
 
 \subsection{One prediction, three renderings}
+\label{sec:tiers-render}
 
 Figure~\ref{fig:tiers} shows the same prediction rendered three ways. The
 case is row 426 of the deduplicated set, a true mid-risk record the model
-calls high risk. Scored out of fold, its class probabilities are
+calls high risk. Out of fold, its class probabilities are
 $0.233 / 0.382 / 0.384$ across low, mid and high, and the top-two margin is
 $0.002$. Blood sugar ($+0.227$) and age ($+0.052$) push toward high risk.
 Systolic pressure ($-0.072$), heart rate ($-0.050$) and body temperature
@@ -166,8 +167,9 @@ prediction misleads the person making the referral. On this case a ranking by
 absolute value would have listed systolic pressure, which argues against the
 call. The card reads \textsc{elevated --- needs follow-up}, lists raised blood
 sugar and older age, and asks the worker to arrange a check-up and share
-the readings. Every string is a fixed template constant filled from the
-attributions. No language model runs at inference, which is our stated
+the readings. Every string is a fixed template. The band selects the card
+header, the next step and the mother's spoken sentence, and the SHAP
+attributions fill the card's driver list. No language model runs at inference, which is our stated
 alternative to LLM-mediated tiering~\citep{bello2025threelevel}: the card can
 be regenerated and compared line by line, and it contains no generated text.
 
@@ -191,6 +193,9 @@ be shown; when the gate has fired, the model supports only an ordinal band and
 one action. That is the uncertainty argument of Section~\ref{sec:rw-uncertainty} arriving
 from the health-communication side, and it remains an argument rather than a
 result, since whether the band is understood as intended is untested here.
+% "38 chances in 100": shap_case_summary.csv, case boundary_mid, p_mid
+% 0.38244 and p_high 0.38422; times 100 gives 38.2 and 38.4, both 38 when
+% rounded to a whole number.
 
 \subsection{Derating a false alarm}
 \label{sec:tiers-failure}
@@ -233,7 +238,7 @@ records, by the band they receive.}
 \label{tab:gate}
 \begin{tabular}{lrrrr}
 \toprule
- & \textbf{True low} & \textbf{True mid} & \textbf{True high} & \textbf{Total} \\
+ & True low & True mid & True high & Total \\
 \midrule
 Predicted high   & 11 & 22 & 81 & 114 \\
 Kept \textsc{red}      & 8  & 17 & 78 & 103 \\
@@ -241,7 +246,7 @@ Derated to \textsc{amber} & 3  & 5  & 3  & 11  \\
 \addlinespace
 Predicted low, inside margin (no gate) & 14 & 5 & 3 & 22 \\
 \midrule
- & \textbf{Red} & \textbf{Amber} & \textbf{Green} & \textbf{Total} \\
+ & Red & Amber & Green & Total \\
 \midrule
 True high-risk records & 78 & 20 & 14 & 112 \\
 \bottomrule
@@ -263,3 +268,5 @@ sit inside the margin, among the 22 low-risk near-ties of
 Section~\ref{sec:tiers-band}. The other 11 are outside the $0.15$ margin, with
 margins from $0.230$ to $0.880$. Overall, 98 of the 112 true high-risk records receive a band
 that routes them to follow-up.
+% 98 = 78 + 20: p1_gate_summary.csv, section true_high_reaches, RED 78 plus
+% AMBER 20 (equivalently 112 - GREEN 14).
