@@ -86,7 +86,8 @@ audience-specific split and tiering as an architecture both predate this work.
 
 Where we diverge from Bello et al.\ is the mediator. Theirs is a large
 language model. Ours is a
-fixed set of templates over SHAP attributions, so every string a health worker
+fixed set of templates, selected by the band and filled from the SHAP
+attributions, so every string a health worker
 or a mother receives is determined by the case and can be regenerated and
 audited. Nothing is generated at inference time and there is nothing to
 hallucinate. We give up fluency and coverage for a rendering an auditor can
@@ -140,7 +141,8 @@ review of explainable AI in the Global South found 16 papers, of which 3
 involved people and 1 attempted deployment with target
 users~\citep{okolo2022makingai}.
 
-Three studies set our context. Okolo et al.\ interviewed community health
+Studies with community health workers in India set our context. Okolo et al.\
+interviewed community health
 workers in rural India about AI-enabled mobile health tools and about
 explanations specifically~\citep{okolo2021cannot,okolo2024easy}.
 Solano-Kamaiko et al.\ built and studied an explorable explanation interface
@@ -187,13 +189,13 @@ Section~\ref{sec:tiers} beside the tier it governs.
 \subsection{Machine learning on the UCI Maternal Health Risk dataset}
 \label{sec:rw-dataset}
 
-We build on the tree-ensemble and SHAP pipeline this dataset has standardised,
+We build on the ensemble and SHAP pipeline this dataset has standardised,
 which puts what is ours downstream of it, in the rendering. Supervised classification with post-hoc attribution here is
 saturated: Mamun et al.~\citep{mamun2025identification}, Maisoon et
 al.~\citep{maisoon2026stratification}, Widyawati et
 al.~\citep{widyawati2025ensemble}, Rahman et al.~\citep{rahman2023xai},
 Maheswari et al.~\citep{maheswari2024smote} and Hossen et
-al.~\citep{hossen2024driven} all fit tree ensembles to this dataset and
+al.~\citep{hossen2024driven} all fit ensemble classifiers to this dataset and
 explain them post hoc, most with SHAP, and three resample for class imbalance
 with SMOTE. We use the same pipeline as a vehicle.
 
