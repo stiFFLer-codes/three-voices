@@ -153,7 +153,7 @@ Sayash Kapoor and Arvind Narayanan.
 
 \bibitem[Kim et~al.(2024)Kim, Kim, Kim, Song, and Kim]{kim2024stakeholder}
 Minjung Kim, Saebyeol Kim, Jinwoo Kim, Tae-Jin Song, and Yuyoung Kim.
-\newblock Do stakeholder needs differ? - designing stakeholder-tailored
+\newblock Do stakeholder needs differ? - {D}esigning stakeholder-tailored
   explainable artificial intelligence ({XAI}) interfaces.
 \newblock \emph{International Journal of Human-Computer Studies}, 181:\penalty0
   103160, January 2024.
@@ -173,7 +173,8 @@ Andrew Kirkpatrick, Joshue O~Connor, Alastair Campbell, and Michael Cooper.
 Benjamin Kompa, Jasper Snoek, and Andrew~L. Beam.
 \newblock Second opinion needed: communicating uncertainty in medical machine
   learning.
-\newblock \emph{npj Digital Medicine}, 4\penalty0 (1), January 2021.
+\newblock \emph{npj Digital Medicine}, 4\penalty0 (1):\penalty0 4, January
+  2021.
 \newblock ISSN 2398-6352.
 \newblock \doi{10.1038/s41746-020-00367-3}.
 \newblock URL \url{http://dx.doi.org/10.1038/s41746-020-00367-3}.
@@ -203,7 +204,8 @@ Mohammad Mamun, Safiul~Haque Chowdhury, Md.~Omar Faruq, Mir~Mohammad Azad,
   Bishakha~Rani Biswas, Mohammed~Ibrahim Hussain, and Muhammad~Minoar Hossain.
 \newblock Identification of maternal health risk from optimal features using
   explainable machine learning.
-\newblock \emph{Engineering Reports}, 7\penalty0 (11), November 2025.
+\newblock \emph{Engineering Reports}, 7\penalty0 (11):\penalty0 e70491,
+  November 2025.
 \newblock ISSN 2577-8196.
 \newblock \doi{10.1002/eng2.70491}.
 \newblock URL \url{http://dx.doi.org/10.1002/eng2.70491}.
@@ -299,7 +301,8 @@ Matthew Rosenblatt, Link Tejavibulya, Rongtao Jiang, Stephanie Noble, and
   Dustin Scheinost.
 \newblock Data leakage inflates prediction performance in connectome-based
   machine learning models.
-\newblock \emph{Nature Communications}, 15\penalty0 (1), February 2024.
+\newblock \emph{Nature Communications}, 15\penalty0 (1):\penalty0 1829,
+  February 2024.
 \newblock ISSN 2041-1723.
 \newblock \doi{10.1038/s41467-024-46150-w}.
 \newblock URL \url{http://dx.doi.org/10.1038/s41467-024-46150-w}.
