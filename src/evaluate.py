@@ -161,8 +161,8 @@ ASSESSMENT: list[tuple[str, str, dict[str, tuple[str, str]]]] = [
         "mother": ("Pass",
             "Hindi text with a matching Hindi TTS voice (lang='hi'), and no language-of-parts problem "
             "left in it: the one Latin-script token, the acronym 'ANM', is now written phonetically in "
-            "Devanagari (ए-एन-एम) so the Hindi engine voices it rather than guessing. Strings authored "
-            "and clinically reviewed by a native-speaking MBBS collaborator, not machine-translated."),
+            "Devanagari (ए-एन-एम) so the Hindi engine voices it rather than guessing. Strings written "
+            "and reviewed by a native-speaking final-year MBBS student, not machine-translated."),
     }),
     ("Understandable", "3.1.5 Reading level / plain language", {
         "clinician": ("Partial",
