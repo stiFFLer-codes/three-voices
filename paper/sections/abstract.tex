@@ -29,8 +29,9 @@ sentence for the mother. One band (green, amber or red) is computed from the
 model's class probabilities. When a high-risk call falls within a fixed
 top-two margin of 0.15, red is withheld from the health worker and the mother
 and replaced by amber, which still asks for follow-up; the clinician sees the
-probabilities unchanged. All text comes from templates filled from the band
-and the SHAP attributions, with no language model at inference. On out-of-fold
+probabilities unchanged. All text comes from fixed templates; SHAP
+attributions supply the card's drivers, and no language model runs at
+inference. On out-of-fold
 scores from the UCI Maternal Health Risk dataset, the gate derates 11 of 114
 high-risk calls; 3 of those 11 are truly high-risk, against 78 of the 103 it
 keeps. It does not address the 14 high-risk records the model labels low. We
