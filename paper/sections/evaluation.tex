@@ -163,12 +163,17 @@ Criterion & Clinician & ASHA & Mother \\
 \end{tabular}
 \end{table}
 
-Read by column, each tier fails where a single universal rendering would have
-to compromise: the clinician view needs chart and English literacy, the
-mother's view needs hearing, and neither gap closes inside its own tier
-without destroying what that tier is for. Read by row, 14 of the 16 criteria
-are rated pass in at least one tier and 6 in all three; the other 2 (rows
-2.1/2.4 and 4.1.2) are deferred in every tier.
+Read by column, each tier has criteria rated partial (clinician 5, ASHA 3,
+mother 4), and the one fail is in the clinician column. Two of those gaps sit
+where a single universal rendering would have to compromise: the clinician
+view needs chart and English literacy, the mother's view needs hearing, and
+neither gap closes inside its own tier without destroying what that tier is
+for. Read by row, 14 of the 16 criteria are rated pass in at least one tier
+and 6 in all three; the remaining 2 of the 16 (rows 2.1/2.4 and 4.1.2) are
+deferred in every tier.
+% Derivation (by column): heuristic_matrix.csv, rating == Partial per tier:
+% clinician 5, ASHA 3, mother 4 (sum 12, the 12 partial above). The one Fail
+% is tier clinician, criterion "1.4.5 Images of text".
 % Derivation: results/tables/heuristic_matrix.csv, 48 rows (criterion x tier
 % -> rating), 16 distinct criteria. Rating Pass in at least one tier: 14.
 % Pass in all three tiers: 6 (1.4.3, 3.2.4, Nielsen 1, 2, 4, 5). Deferred in
