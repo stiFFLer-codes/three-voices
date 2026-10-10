@@ -132,13 +132,14 @@ an empirical one, a measurement on the benchmark underneath both.
 The decision to withhold is taken once, from the model's output, then rendered
 as a different assertion for each reader rather than as the same assertion
 softened. The gate is a rule over class probabilities, stated with its grading
-in Section~\ref{sec:tiers} and reproducible from the committed tables. Scored
-out of fold, it derates 11 of the 114 high-risk calls, 3 of those 11 truly
+in Section~\ref{sec:tiers} and reproducible from the committed tables. Out of
+fold, the gate derates 11 of the 114 high-risk calls, 3 of those 11 truly
 high-risk, against 78 of the 103 it keeps (Section~\ref{sec:tiers-gate}).
 
 \paragraph{An artifact: an auditable rendering pipeline with no language
-model at inference.} Every string a health worker or a mother receives is a
-fixed template filled from the case's attributions. Nothing is generated at
+model at inference.} All text comes from fixed templates, selected by the band
+and filled from the SHAP attributions, with no language model at inference.
+Nothing is generated at
 inference, so the rendering can be regenerated, diffed and checked line by
 line by someone who does not trust us, and there is nothing in it to
 hallucinate. We pay for that in fluency and coverage, as
