@@ -26,15 +26,15 @@ We built a rendering pipeline that takes one maternal-health risk prediction
 and issues three different assertions from it, one per reader, withholding the
 highest-severity signal from the two channels that cannot interrogate the
 model whenever the top-two class probabilities fall inside a fixed margin.
-Every string in it is a template filled from the case's SHAP attributions and
-no language model runs at inference, so any rendering here can be regenerated
-and checked line by line. We also re-benchmarked the dataset underneath it:
+All text comes from fixed templates, selected by the band and filled from the
+SHAP attributions, with no language model at inference, so any rendering here
+can be regenerated and checked line by line. We also re-benchmarked the dataset underneath it:
 561 of the 1012 usable rows are exact duplicates, retaining them across the
 split moves macro-recall from $0.580$ to $0.859$, and $0.580$ is the figure
 this vehicle earns once they are dropped.
 
-Row 325 is the case that shows what the rule is for. Scored out of fold, the
-model calls a true-low record high risk on a top-two margin of $0.029$, and the
+Row 325 is the case that shows what the rule is for. Out of fold, the model
+calls this true-low record high risk on a top-two margin of $0.029$, and the
 mother receives amber where the argmax alone would have sent red. That is still
 a false referral. The gate made the error smaller, not correct. Across all 451
 records, the gate derates 11 of the 114 high-risk calls. Three of those 11 are
