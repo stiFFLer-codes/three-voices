@@ -8,6 +8,13 @@ _Last updated: 2026-10-10_
 
 ## Current phase
 
+**2026-10-10: batch E is committed (#71).** The §15 verifier session wrote
+`VERIFICATION.md` against `66872d4`. Every paper-text, bibliography and table
+fix of REVISION_BRIEF §18 is now in, one commit per file, and the tracked
+`paper/main.pdf` and `paper/main.bbl` are rebuilt (`8dacb47`; 21 pp, clean
+log). **§19 re-verification by that same verifier session is next.** It
+writes nothing tracked. See "Next step".
+
 **2026-10-10: the revision is complete; batch D is committed (#70).** The
 abstract, back matter, `main.tex` metadata and two small fixes (Sections 1
 and 8) are in, and the tracked `paper/main.pdf` and `paper/main.bbl` were
@@ -248,45 +255,57 @@ Since Decision Log #11 the SAME band also drives the ASHA card header —
 GREEN → "LOW — routine care", AMBER → "ELEVATED — needs follow-up",
 RED → "HIGH — needs follow-up".
 
-## Next step — handoff for a fresh session (written 2026-10-10)
+## Next step — handoff (rewritten 2026-10-10, after batch E)
 
-**Phase.** P6, pre-submission. The manuscript revision under
-`REVISION_BRIEF.md` is complete.
-- Batches A to D are committed (#64-#70).
+**Phase.** P6, pre-submission.
+- Batches A to E are committed (#64-#71). Batch E applied the §15
+  `VERIFICATION.md` findings under REVISION_BRIEF §18.
 - The tracked `paper/main.pdf` and `paper/main.bbl` were rebuilt in place from
-  the final sources (`e35b270`).
-- **Whole-paper verification (brief §15) is next. It must run in a NEW
-  session that has written nothing.** It is report-only: it edits nothing,
-  commits nothing, and writes `VERIFICATION.md` (untracked). Afterwards the
-  reviewer runs the arXiv moderation check on the final PDF.
+  the batch E sources (`8dacb47`).
+- **§19 re-verification is next, by the SAME verifier session that wrote
+  `VERIFICATION.md` at `66872d4`.** It still writes nothing tracked. For each
+  finding (F1-F4, A1-A11, the row notes) it states fixed, not fixed or
+  deferred at the new HEAD, with evidence. It re-runs checks 1-6 on every
+  page whose text changed, reads the diff `66872d4..HEAD` for new problems,
+  and appends a dated section to `VERIFICATION.md`. A1 and A9 are expected to
+  stay open until §16.
+- After §19 the reviewer runs the arXiv moderation check, and then comes the
+  §20 text freeze (both authors read the final PDF).
 - Nothing has been pushed.
 
 **Branch and commits.** Branch `revision/sncs-framing`.
-- The last commit before this handoff is `e35b270` (the rebuild). The
-  handoff itself is the next commit (#70); `git log -1` gives its hash.
-- With the handoff, the branch is 27 commits ahead of
+- The last commit before this handoff is `778100c` (#71). The handoff itself
+  is the next commit; `git log -1` gives its hash.
+- With the handoff, the branch is 40 commits ahead of
   `origin/revision/sncs-framing`, which sits at `ea4aa99`.
 - `origin/main` is stale at `f41c4ab`.
 
-**Read first, in this order.**
-1. `CLAUDE.md`.
-2. This file: "Current phase", this section, and Decision Log #59-#70.
-3. `REVISION_BRIEF.md` (repo root, untracked). Read in full; then reread §0
-   (facts and old values) and §15 (verification).
-4. `WRITING_RULES.md` (repo root, untracked). §3 now allows the bold
-   `\textbf{Keywords:}` label (#70).
-5. `CLAIM_AUDIT.md` (repo root, untracked): one row per citing sentence as
-   of #67.
-6. `paper/main.pdf`, the object under verification.
+**Read first (§19 verifier), in this order.**
+1. `VERIFICATION.md` (repo root, untracked): the session's own §15 report.
+2. `REVISION_BRIEF.md` §18 and §19.
+3. Decision Log #71 in this file: every batch E change, the propagation
+   sites beyond the brief, and the two departures from the brief's A4
+   wording.
+4. `git diff 66872d4..HEAD -- paper/`, and the rebuilt `paper/main.pdf`.
 
-**Facts the §15 session needs.** These are records, not instructions to
+**Facts the §19 session needs.** These are records, not instructions to
 change anything.
-- **Citation sentences new or changed since #67**, to be audited from
-  scratch:
-  - everything #69 lists for Sections 1, 2, 3, 5, 6, 7 and 8;
-  - the back-matter data-availability sentence, which now cites
-    `ahmed2020maternal` (#70).
-  - The abstract cites nothing.
+- **Changes the brief did not name, made under the §18 propagation rule
+  (#71):**
+  - A2 at three more sites: §2.1 Bello paragraph, the back-matter AI
+    statement's closing sentence, and the §3.4 "driver list" clause.
+  - A4: "Read by row, the criteria are covered." is also replaced.
+  - Row 25: the §2.5 opener's "tree-ensemble" becomes "ensemble".
+- **The A4 sentence departs from the brief's form** ("Read by row, 14 of the
+  16 … the other 2 …"); the counts are as the brief's form requires (#71).
+- **Citation sentences new or changed in batch E:** the §3.2 7 bpm sentence
+  (`ahmed2020maternal`); §2.3 "Studies with community health workers in
+  India set our context"; §2.5 "all fit ensemble classifiers". The citing
+  clauses of every other changed sentence are unchanged.
+- **Left for the author (#71, /anti-ai, report-only):** the §1.1 triple "at
+  inference"; the §2.3 repeated phrase; **[CHECK]** §8 "every cohort count
+  this paper quotes" (71 is in `p1_oof_predictions.csv`, not
+  `p1_cohort_summary.csv`).
 - **Allowed exceptions to the WRITING_RULES §3 greps:**
   - the card header "ELEVATED — needs follow-up" (verbatim artifact quote);
   - the CRediT role names "Writing – original draft" and "Writing – review &
@@ -296,16 +315,20 @@ change anything.
   - "novelty" only as Hendrickx's term;
   - one contrast per paragraph where it carries design content.
 - **Old-values grep (brief §0):** the one expected typeset hit is `102`, the
-  RED count at margin 0.20, which is correct. No `%` comment in `paper/`
-  carries an old value since #70; the abstract's old comment block is gone.
-- **Abstract:** 200 words and 1221 characters. `ABSTRACT_ARXIV.txt` (repo
-  root, untracked) equals the `abstract.tex` body after whitespace
-  normalisation.
-- **Last build** (in place, `e35b270`):
+  RED count at margin 0.20, which is correct. The `%` history comments at
+  the top of `three_tiers.tex` still carry old values (#71, correcting #70).
+  §16 step 1b removes them.
+- **Abstract:** unchanged by batch E. 200 words and 1221 characters.
+  `ABSTRACT_ARXIV.txt` (repo root, untracked) equals the `abstract.tex` body
+  after whitespace normalisation.
+- **Last build** (in place, `8dacb47`):
   - 21 pages, 0 errors, 0 undefined references or citations, 0 overfull
-    boxes, 2 underfull (pre-existing), 0 bibtex warnings.
+    boxes, 0 bibtex warnings.
+  - 3 underfull boxes: 2 pre-existing, and 1 new at `reproducibility.tex`
+    lines 43–51 (the A6 item, badness 1881).
   - 37 bibitems.
   - `pdfinfo` title and author match `main.tex`.
+  - The `.bbl` and PDF text are identical to a scratch build.
 
 **Committed in this revision** (on top of `c657617`, #57/#58):
 
@@ -336,28 +359,45 @@ change anything.
 | `529bfc2` | #70 Section 1 roadmap |
 | `bef9f0f` | #70 Section 8 sentence |
 | `e35b270` | #70 `paper/main.pdf` and `paper/main.bbl` rebuilt |
+| `66872d4` | #70 decisions and the §15 handoff |
+| `b0f09f5` | #71 Section 1 |
+| `85be244` | #71 Section 2 |
+| `e32fa8c` | #71 Section 3 |
+| `214ed1e` | #71 Section 4 |
+| `6ab507f` | #71 Section 5 |
+| `85da2be` | #71 Section 6 |
+| `319a8f6` | #71 Section 7 |
+| `0ef2309` | #71 Section 8 |
+| `12e1582` | #71 back matter |
+| `2f078ca` | #71 `refs.bib` |
+| `8dacb47` | #71 `paper/main.pdf` and `paper/main.bbl` rebuilt |
+| `778100c` | #71 Decision Log entry |
 
 **Known untracked files.** Leave them untracked:
 - `.claude/agents/` and three `.claude/commands/*.md` files.
 - `RECON.md`, `REVISION_BRIEF.md`, `WRITING_RULES.md`, `CLAIM_AUDIT.md`,
-  `ABSTRACT_ARXIV.txt`.
+  `ABSTRACT_ARXIV.txt`, `VERIFICATION.md`.
 - `refs_fixed.bib` and `paper/refs_fixed.bib`, the author's file. Of its
   two non-casing differences, Bradley's `\&` is applied (#64) and the
   Widyawati double space is not.
 
 **Open items, in order.**
-1. **Whole-paper verification** (brief §15), **in a new session that has
-   written nothing**. Report only; it writes `VERIFICATION.md` (untracked).
-   Afterwards the reviewer runs the arXiv moderation check on the final PDF.
-2. **`/anti-ai` before every prose commit** (CLAUDE.md rule 8). The pattern
+1. **§19 re-verification** by the existing verifier session (see above).
+   Report only; it appends to `VERIFICATION.md`. Afterwards the reviewer
+   runs the arXiv moderation check on the final PDF.
+2. **Author decisions on the three #71 /anti-ai items**, including the §8
+   [CHECK]. Any change goes through a small batch with the same checks
+   (brief §20).
+3. **`/anti-ai` before every prose commit** (CLAUDE.md rule 8). The pattern
    that held: the audit runs report-only, the author decides each item, and
    the decisions are applied before the commit.
-3. **Cold run and read:**
-   - A cold run (recipe below).
+4. **Text freeze** (brief §20):
    - **Both authors read and approve the final PDF** (brief §10). No
      end-to-end human read has happened yet (old Gate A), and Patil's read is
      outstanding.
-4. **Repo and Zenodo** (brief §16, RECON A1), fresh session. Nothing is
+   - The cold run is now §16 step 0, which closes A9.
+5. **Repo and Zenodo** (brief §16, RECON A1), fresh session, cold run first
+   (step 0). Nothing is
    pushed or tagged without the author.
    - The concept DOI 10.5281/zenodo.22252076 resolves only to v1.0.0, which
      is tag `v1.0.0` = `b8853a5`, the P3 commit. That snapshot has no
@@ -368,7 +408,7 @@ change anything.
    - `origin/main` is stale.
    - Decide what is public before pushing: the tracked STATE.md holds the
      enrollment-number address and moderation notes (RECON).
-5. **Upload package** (brief §17, same session as item 4):
+6. **Upload package** (brief §17, same session as item 5):
    - Regenerate `paper/ARXIV_SUBMISSION.md` and `arxiv/`, scripted off
      `main.tex`'s `\input` lines (#57). Both are stale: the paper is now
      21 pp, with 4 tables and 37 bib entries.
@@ -378,7 +418,9 @@ change anything.
    - The plain-text abstract for the form is `ABSTRACT_ARXIV.txt`.
    - Submit to arXiv, cs.HC.
 
-**Cold-run recipe** (from #55; re-run because `src/` moved in #60-#63):
+**Cold-run recipe** (from #55; re-run because `src/` moved in #60-#63).
+Brief §16 step 0 now governs: install from `requirements-lock.txt`, compare
+SHA-256 of every file under `results/`, and re-derive the 57 of 71.
 1. Fresh clone, and a fresh venv on Python 3.12 from `requirements.txt`.
    Compare it with `requirements-lock.txt`.
 2. Delete `results/audio/*.mp3` first.
