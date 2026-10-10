@@ -86,7 +86,7 @@ Distribution across 48 cells: 29 Pass, 12 Partial, 1 Fail, 6 Deferred.
 
 - **clinician — Pass.** Single language throughout (English), consistent across all four cases, matching the tier's stated reader.
 - **ASHA — Partial.** English only, as a scoped exposition choice rather than a claim about deployment. This tier's contribution is cognitive-load reduction — less detail, one action — and its localisation is fixed-string substitution: every user-facing string is a constant (PLAIN_NAMES, ASHA_NEXT_STEP, ASHA_FOOTER) with no generation at inference, so there is nothing to translate that a translator could not translate once. Language is central in the mother tier, where a non-reading user forces a modality substitution; here it is incidental. Rated Partial because a Hindi-first ASHA still cannot read this card today.
-- **mother — Pass.** Hindi text with a matching Hindi TTS voice (lang='hi'), and no language-of-parts problem left in it: the one Latin-script token, the acronym 'ANM', is now written phonetically in Devanagari (ए-एन-एम) so the Hindi engine voices it rather than guessing. Strings authored and clinically reviewed by a native-speaking MBBS collaborator, not machine-translated.
+- **mother — Pass.** Hindi text with a matching Hindi TTS voice (lang='hi'), and no language-of-parts problem left in it: the one Latin-script token, the acronym 'ANM', is now written phonetically in Devanagari (ए-एन-एम) so the Hindi engine voices it rather than guessing. Strings written and reviewed by a native-speaking final-year MBBS student, not machine-translated.
 
 ### 3.1.5 Reading level / plain language
 *Understandable*
