@@ -3051,3 +3051,139 @@ Decision Log entries named.
     - `8dacb47` the rebuilt `main.pdf` and `main.bbl`.
 
     This entry is the next commit, and the handoff follows in its own commit.
+- **2026-10-11 #72 — Batch F (REVISION_BRIEF §21): the §19 findings O1 and
+  N1-N4, the A6 remainder and rows 36 and 38, one commit per file, and the
+  tracked PDF rebuilt.** The §19 re-verification ran at `d62c376` and appended
+  to `VERIFICATION.md`. The verifier re-checks this batch only (`d62c376..HEAD`),
+  and then come the §20 text-freeze reads.
+  - **O1 (Hindi-string provenance, outside the paper).** `git grep -i` on every
+    tracked file for "physician", "clinically reviewed", "clinical review" and
+    "MBBS collaborator".
+    - Before: `README.md:47-48`; `src/render.py:81-82` (comment);
+      `src/evaluate.py:164-165` (the 3.1.1/3.1.2 mother rationale);
+      `results/tables/heuristic_matrix.csv:19` and
+      `results/tables/heuristic_evaluation.md:89` (the same rationale,
+      generated); `STATE.md:571, 575, 999-1000`.
+    - After: `STATE.md` only. It is exempt: it moves to `notes/` in §16, and
+      lines 571 and 575 are Decision Log entries (append-only).
+    - README and the render.py comment now read "written and reviewed by the
+      second author, a final-year MBBS student and native Hindi speaker". The
+      evaluate.py rationale uses the brief's short form, "written and reviewed
+      by a native-speaking final-year MBBS student".
+    - No rendered TXT or PNG carried the phrase, and the render.py change is a
+      comment, so the renderer was not re-run.
+    - `python -m src.evaluate` ran twice (`.venv`, Python 3.12.13). The two runs
+      are byte-identical: `heuristic_matrix.csv` SHA-256 `241b9132…`,
+      `heuristic_evaluation.md` `ca02bf1f…`. Against HEAD, one CSV cell
+      differs (the row-19 rationale) and one `.md` line. The word diff is
+      authored → written, clinically → final-year, collaborator → student.
+      All 48 ratings are identical, and the counts stay 29/12/1/6.
+  - **N1 (template claim).**
+    - Abstract: the brief's sentence, "All text comes from fixed templates;
+      SHAP attributions supply the card's drivers, and no language model runs
+      at inference."
+    - §1.1 and §7: the brief's short form, "All text comes from fixed
+      templates, with no language model at inference." §7 keeps its tail.
+    - §4.3 keeps its precise version.
+    - **Departure, the AI statement.** WRITING_RULES §8, as the author updated
+      it, gives the closing sentence as "All text comes from fixed templates,
+      with no language model at inference." Placed alone after two sentences
+      on how the manuscript was drafted, "All text" would read as the
+      manuscript's own text. So the closing sentence keeps its frame and
+      carries the wording as a clause: "This is a statement about how the
+      paper was written and not about the system it describes: in the
+      rendering pipeline of Section 4, all text comes from fixed templates,
+      with no language model at inference, which is one of the contributions
+      claimed here." The author decides: keep this, or use the literal
+      sentence.
+    - The WRITING_RULES §8 note had already been updated by the author. It is
+      untracked and was not edited.
+    - Propagation (typeset text, comments stripped): "template", "filled",
+      "selected by the band", "all text", "every string", "drivers",
+      "language model". §2.1's "fixed set of templates, selected by the band
+      and filled from the SHAP attributions, so every string a health worker
+      or a mother receives …" is scoped to the two tiers it names, where it is
+      accurate, so it is confirmed and unchanged. §3.4 ("the ASHA tier's
+      driver list … a template over attributions") and §6 ("every string is a
+      fixed template constant", about localisation) are consistent.
+  - **N2.** §1.1 keeps one "at inference", the one in the N1 sentence. The
+    run-in head becomes "An artifact: an auditable rendering pipeline with no
+    language model.", and "Nothing is generated at inference, so" becomes
+    "Nothing is generated, so". §2.3 now reads "Okolo et al.\ interviewed
+    health workers in rural India".
+  - **N3 (§5.2).** From `heuristic_matrix.csv`: Partial per tier is clinician
+    5, ASHA 3, mother 4 (12 in all), and the one Fail is clinician, 1.4.5.
+    - Typeset: "Read by column, each tier has criteria rated partial
+      (clinician 5, ASHA 3, mother 4), and the one fail is in the clinician
+      column. Two of those gaps sit where a single universal rendering would
+      have to compromise: …" The rest of that sentence is unchanged.
+    - The brief's example "Partial ratings on different criteria" is not
+      used, because the criteria overlap: 1.1.1 and Nielsen 6 and 10 are
+      partial for both clinician and mother, and 3.1.5 for clinician and ASHA.
+    - "the other 2" becomes "the remaining 2 of the 16". The `%` derivation
+      is added.
+  - **A6 remainder and N4.** The clause now reads "which carries the
+    deduplication and cohort counts" (`p1_cohort_summary.csv`
+    `dropped_exact_duplicates` and the cohort rows). With that wording alone,
+    the underfull box (lines 43–51, badness 1881) stayed. Five variants were
+    built in a scratch copy, and dropping "the" before "metrics" removes the
+    box without adding one. The 2 underfull boxes left both predate batch E.
+  - **Row 36.** The lead-in is now "Measuring what leakage costs has
+    precedent:". The Eltawil and Young clauses are unchanged.
+  - **Row 38 (record only).** The author accepts the §5 Nielsen 1994 sentence
+    as it is: it names the paper only as the source of the revised
+    heuristics, which is its documented content. The full text of
+    `nielsen1994enhancing` could not be retrieved, and neither could its
+    abstract (the 2026-10-09 comment in `evaluation.tex`).
+  - **/anti-ai** (use case 3.1, audit) ran on every changed sentence. One item
+    is applied, to the writer's own wording: "all three tiers have partial
+    ratings" became "each tier has criteria rated partial", since a lowercase
+    "partial ratings" reads as incomplete ratings. Left for the author:
+    - The §1.1 run-in head and its first sentence both say "no language
+      model", on adjacent lines. This follows from N1 and N2 together.
+    - §5.2 states the one fail twice, before Table 4 and after it (N3
+      prescribes the second).
+    - The AI statement's closing sentence runs to about 45 words.
+  - **[CHECK] outside the paper, not changed:**
+    - `README.md:50`, "The plain-language messages are deterministic templates
+      over SHAP outputs.", has N1's over-breadth: the mother's message is
+      selected by the band. It is for the §16 README rewrite.
+    - `paper/ARXIV_SUBMISSION.md:102` holds an old abstract ("Every string is
+      a deterministic template filled from the case's SHAP attributions"). It
+      moves to `notes/` in §16, and §17 regenerates it.
+  - **Abstract.** 200 words and 1229 characters (1230 bytes with the trailing
+    newline). `ABSTRACT_ARXIV.txt` (untracked) was regenerated by an
+    extraction that first reproduced the HEAD file byte for byte. It is
+    ASCII, with one trailing newline.
+  - **Checks (WRITING_RULES §10) on every changed file.**
+    - Numbers: 5, 3, 4, 12 and 1.4.5 come from `heuristic_matrix.csv`, as do
+      the counts 29/12/1/6.
+    - Citations: no citing clause changed in substance. §2.3 narrows "community
+      health workers" to "health workers" under the same two citations, and
+      the row-36 lead-in leaves both citations and their clauses as they were.
+    - §3 grep: no new hit in any changed file.
+    - Propagation: as above, for N1, N2 ("at inference" now appears once in
+      the §1.1 paragraph), N3 ("fails" and "the other 2" are gone, and the
+      §5.2 "single failure" sentence is consistent), A6 ("cohort count" now
+      appears only in the new clause), row 36 ("contribution type" has 0
+      hits) and O1 (the paper has only the §4.3 canonical sentence).
+  - **Build.**
+    - Scratch: 21 pp, 0 errors, 0 undefined references or citations, 0
+      overfull, 0 bibtex warnings, 2 underfull (both pre-existing), 37
+      bibitems. `pdfinfo` title and author match `main.tex`.
+    - In place: five passes. A cold build from `git archive HEAD` gives the
+      same `.bbl` and PDF text.
+    - `main.bbl` came out byte-identical to the committed file, because
+      `refs.bib` did not change. Only `main.pdf` is in the rebuild commit.
+    - A word-level diff of the PDF text against the previous PDF shows
+      exactly the batch F sentences, plus page reflow: the §6 heading moves
+      to the next page, and the page count stays 21.
+  - **Commits:**
+    - `071f1ca` render.py, `7c0d189` evaluate.py, `bc90079` the regenerated
+      matrix and evaluation tables, `d702b75` README;
+    - `1eb0c55` abstract, `9255178` Section 1, `6a04cb2` Section 2, `8463251`
+      Section 3, `c70ba3f` Section 5, `b2cca9d` Section 7, `ada3de9`
+      Section 8, `dd420c9` back matter;
+    - `2a3d0b6` the rebuilt `main.pdf`.
+
+    This entry is the next commit, and the handoff follows in its own commit.
