@@ -98,12 +98,20 @@ fit to this public dataset.
 Two preprocessing steps are applied, both before any train/test split, and
 both chosen so that neither learns a statistic from the data.
 
-First, two records report a heart rate of 7 beats per minute. These are
+First, two records report a heart rate of 7 beats per
+minute~\citep{ahmed2020maternal}. These are
 physiologically impossible and are dropped, leaving 1012 rows. Second, the
 remaining set contains a large number of exactly repeated feature-and-label
 vectors: 561 of the 1012 rows are exact duplicates of an earlier row. We
 drop them, leaving 451 distinct records: 233 low, 106 mid and 112
 high, an imbalance of about 2.2:1 between the largest and smallest class.
+% 7 bpm: an external fact about the dataset, cited. Two rows in the cached raw
+% file (data/raw/maternal_health_risk.csv, 1014 rows) have HeartRate 7.0, and
+% the next lowest value is 60.0. The code drops HeartRate < 20:
+% src/model.py:65 (MIN_PLAUSIBLE_HR = 20) and :96-97. The count of 2 is
+% p1_cohort_summary.csv dropped_impossible_heartrate.
+% 2.2:1 = 233 / 106 = 2.198: p1_cohort_summary.csv,
+% class_distribution_clean.low risk and class_distribution_clean.mid risk.
 
 Both steps are fixed rules rather than fitted transformations, which is why
 performing them before the split introduces no leakage: nothing about the
@@ -231,8 +239,8 @@ SMOTE-resampled random forest on macro-recall at 0.580. We broke that tie
 deliberately rather than by argmax: the unresampled model has tighter
 variance across folds ($\pm 0.027$ versus $\pm 0.040$), the better high-risk
 recall (0.723), and no dependence on a synthetic-oversampling step. It also lets SHAP run on the six raw clinical features in their own
-units, which is what makes the ASHA and mother tiers expressible as templates
-over attributions at all. The selection is a constant in the code, and the
+units, which is what makes the ASHA tier's driver list expressible as a
+template over attributions at all. The selection is a constant in the code, and the
 script still prints the argmax winner so the tie stays visible.
 
 We take 0.580 as the operating figure for this deduplicated dataset; the
