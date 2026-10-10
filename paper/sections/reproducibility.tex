@@ -42,12 +42,12 @@ commands.
     later run reads the cache, so the rest of the pipeline needs no network.
   \item[\texttt{python -m src.model}] Runs five-fold stratified
     cross-validation over three classifiers with and without SMOTE, fitting
-    scaling and resampling inside each training fold. Writes five CSVs:
-    \texttt{p1\_model\_metrics.csv}, \texttt{p1\_duplicate\_leakage.csv},
-    \texttt{p1\_cohort\_summary.csv}, which carries every cohort count this
-    paper quotes. \texttt{p1\_oof\_predictions.csv} scores every record with
-    the fold model that held it out, and \texttt{p1\_gate\_summary.csv} holds
-    the gate counts. Saves the selected model.
+    scaling and resampling inside each training fold. Writes five CSVs: the
+    metrics, leakage and cohort tables (\texttt{p1\_model\_metrics.csv},
+    \texttt{p1\_duplicate\_leakage.csv}, \texttt{p1\_cohort\_summary.csv},
+    which carries every cohort count this paper quotes), the out-of-fold
+    score of every record (\texttt{p1\_oof\_predictions.csv}) and the gate
+    counts (\texttt{p1\_gate\_summary.csv}). Saves the selected model.
   \item[\texttt{python -m src.explain}] Computes global mean absolute SHAP
     per feature per class from the final model fitted to all 451 records, and
     local SHAP for the four criterion-selected cases from the fold model that
@@ -105,8 +105,8 @@ evaluation matrix are archived at
 resolves to the latest release; development history is at
 \url{https://github.com/stiFFLer-codes/three-voices}. The paper cites the
 committed tables directly, so any number in it can be checked against the
-file that produced it. The two-row leakage comparison in
-Table~\ref{tab:leakage} is one of those files rather than a separate
+file that produced it. The leakage comparison with and without duplicates
+(Table~\ref{tab:leakage}) is one of those files rather than a separate
 analysis: \texttt{p1\_duplicate\_leakage.csv} is written by the same command
 that writes the main metrics table, from the same cross-validation, so the
 comparison re-runs whenever the model does.
