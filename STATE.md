@@ -3318,3 +3318,9 @@ Decision Log entries named.
     - `f68c1d6` the rebuilt `main.pdf`.
 
     This entry is the next commit, and the handoff follows in its own commit.
+- **2026-10-11 #74 — Correction to #73 (float pages).** #73 says "Figure 1
+  moves to p8". That is wrong: I misread a `pdftotext` page marker. From
+  `paper/main.aux` at `f68c1d6`, Figure 1 is on p9 (it was on p10 at
+  `03a3808`), Table 4 is on p12 (it was on p13), and §6 starts on p13. The
+  rest of #73 stands; its `\clearpage` statement is `main.tex:219`, before
+  the reference list.
