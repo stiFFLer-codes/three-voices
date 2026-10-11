@@ -3228,3 +3228,93 @@ Decision Log entries named.
     - `2a3d0b6` the rebuilt `main.pdf`.
 
     This entry is the next commit, and the handoff follows in its own commit.
+- **2026-10-11 #73 — Batch G (REVISION_BRIEF §22): the last prose touch, one
+  commit per file, and the tracked PDF rebuilt.** After this, prose changes
+  only through §20. As §22 says, batch G gets no verifier round, because the
+  reviewer reads the full PDF during the moderation audit.
+  - **B1 (§1.1).** "Nothing is generated, so the rendering can be
+    regenerated, diffed and checked line by line by someone who does not
+    trust us, and there is nothing in it to hallucinate." now reads "No text
+    is generated, so every string can be regenerated and checked line by
+    line." The sentence is scoped to text, because the audio is not
+    byte-stable (§8.2).
+    - **Propagation.** §7's "so any rendering here can be regenerated and
+      checked line by line" makes the same claim and covers the audio. It now
+      reads "so every string can be regenerated and checked line by line".
+      This change is outside the brief's named sites and was made under the
+      propagation rule.
+    - Confirmed consistent, unchanged:
+      - §2.1 ("every string a health worker or a mother receives … can be
+        regenerated and audited"; "a rendering an auditor can check line by
+        line");
+      - §4.3 ("the card can be regenerated and compared line by line");
+      - §1 roadmap ("the commands that regenerate every artifact here");
+      - the abstract ("Five commands regenerate every table and rendering");
+      - §8.1, which scopes byte-for-byte to PNG, CSV and text, with the
+        audio exception in §8.2.
+
+      None of these says a regenerated artifact is byte-identical except §8,
+      which states the exception.
+  - **B2.**
+    - **§1.1.** The run-in head loses "with no language model" and becomes
+      "An artifact: an auditable rendering pipeline.". The first sentence
+      keeps the N1 wording (#72), so "no language model" and "at inference"
+      each appear once in the paragraph.
+    - **§5.2.** The one fail is stated once: "The single failure is the
+      clinician tier shipping as an image of text." stays, in the paragraph
+      before Table 4. ", and the one fail is in the clinician column" is cut
+      from the by-column sentence after it. The `%` derivation still holds:
+      1 Fail, clinician, 1.4.5.
+    - **AI statement.** The sentence is split after "checked by the
+      authors": "… and the final wording were determined and checked by the
+      authors. The authors approved the final wording and take full
+      responsibility for the content."
+      - The three opening sentences match WRITING_RULES §8 word for word
+        (checked by script after whitespace normalisation). The author had
+        already updated §8 to mirror the split. It is untracked and was not
+        edited.
+      - The closing sentence keeps the #72 clause form. The author decision
+        recorded in #72 (keep it, or use §8's standalone "All text comes from
+        fixed templates, with no language model at inference.") is still
+        open.
+  - **B3 (Table 4 placement), one attempt: `[tb]` in place of `[t]`.** It
+    made no difference: all 21 pages render byte-identical to the `[t]`
+    build at 30 dpi grayscale. So `[t]` stays and the source is unchanged.
+    The blank quarter page is closed anyway: B1 and B2 shortened §1.1 and
+    §5.2, and Table 4 now fits at the top of p12, beside its first
+    reference.
+    - Lowest ink row per page as a percentage of page height, previous PDF →
+      new PDF:
+      - p2 80 → 86, p9 76 → 83, p12 77 → 83, p15 79 → 87;
+      - p17 42 → 19, the last back-matter page before the reference list's
+        `\clearpage`;
+      - every other page within 1–3 points.
+    - Floats: Figure 1 moves to p8, Table 4 to p12, and §6 now starts on
+      p13 under the end of §5.
+  - **/anti-ai** (use case 3.1, audit) ran on every changed sentence. Nothing
+    was applied. Three items concern prescribed wording and are noted:
+    - in §1.1, "All text comes from …" is followed by "No text is generated …";
+    - "Two of those gaps" has no earlier noun "gaps" (wording from #72);
+    - "the final wording" appears in both of the two AI-statement sentences
+      (WRITING_RULES §8, exact).
+  - **Checks (WRITING_RULES §10).** No number changed. No citation sentence
+    changed. The §3 grep found no new hit in the four files. Propagation is
+    as above. "language model" appears once in §1.1, and "fail" in §5 only
+    in the first-pass "four Fail ratings", the "1 fail" count, the "single
+    failure" sentence and the Table 4 legend.
+  - **Build.** In place, five passes:
+    - 21 pp, 0 errors, 0 undefined references or citations, 0 overfull, 0
+      bibtex warnings, 2 underfull (both from before batch E), 37 bibitems;
+      `pdfinfo` title and author match `main.tex`.
+    - A cold build from `git archive HEAD` gives the same `.bbl` and PDF
+      text.
+    - `main.bbl` came out byte-identical to the committed file, so only
+      `main.pdf` is in the rebuild commit.
+    - A word-level diff of the PDF text against the previous PDF shows the
+      batch G sentences and float and page-number reflow, and nothing else.
+  - **Commits:**
+    - `520fdd9` Section 1, `9877096` Section 5, `e579928` Section 7,
+      `f1b281b` back matter;
+    - `f68c1d6` the rebuilt `main.pdf`.
+
+    This entry is the next commit, and the handoff follows in its own commit.
