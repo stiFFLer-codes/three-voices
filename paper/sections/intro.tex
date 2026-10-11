@@ -136,11 +136,9 @@ in Section~\ref{sec:tiers} and reproducible from the committed tables. Out of
 fold, the gate derates 11 of the 114 high-risk calls, 3 of those 11 truly
 high-risk, against 78 of the 103 it keeps (Section~\ref{sec:tiers-gate}).
 
-\paragraph{An artifact: an auditable rendering pipeline with no language
-model.} All text comes from fixed templates, with no language model at
-inference. Nothing is generated, so the rendering can be regenerated, diffed and checked line by
-line by someone who does not trust us, and there is nothing in it to
-hallucinate. We pay for that in fluency and coverage, as
+\paragraph{An artifact: an auditable rendering pipeline.} All text comes from
+fixed templates, with no language model at inference. No text is generated, so
+every string can be regenerated and checked line by line. We pay for that in fluency and coverage, as
 Section~\ref{sec:rw-stakeholder} sets out.
 
 \paragraph{A measurement: leakage-aware re-benchmarking of a saturated public
