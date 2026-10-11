@@ -8,6 +8,13 @@ _Last updated: 2026-10-11_
 
 ## Current phase
 
+**2026-10-11: batch G is committed (#73; #74 corrects one page number).**
+The batch F re-check found B1-B3. REVISION_BRIEF §22 fixed B1 and B2, and B3
+closed with them; the `[tb]` attempt changed nothing. The tracked
+`paper/main.pdf` is rebuilt (`f68c1d6`; 21 pp, clean log). This was the last
+prose touch. **Next: the reviewer's moderation audit, then both authors'
+freeze read (§20), then §16.** See "Next step".
+
 **2026-10-11: batch F is committed (#72).** The §19 re-verification at
 `d62c376` reported O1 and N1-N4. REVISION_BRIEF §21 fixed them, together with
 the A6 remainder and rows 36 and 38, in one commit per file. The tracked
@@ -262,72 +269,78 @@ Since Decision Log #11 the SAME band also drives the ASHA card header —
 GREEN → "LOW — routine care", AMBER → "ELEVATED — needs follow-up",
 RED → "HIGH — needs follow-up".
 
-## Next step — handoff (rewritten 2026-10-11, after batch F)
+## Next step — handoff (rewritten 2026-10-11, after batch G)
 
-**Phase.** P6, pre-submission.
-- Batches A to F are committed (#64-#72).
-  - Batch E applied the §15 findings under REVISION_BRIEF §18.
-  - The §19 re-verification at `d62c376` passed batch E and reported O1 and
-    N1-N4.
-  - Batch F fixed those under REVISION_BRIEF §21, together with the A6
-    remainder and rows 36 and 38.
-- The tracked `paper/main.pdf` was rebuilt in place from the batch F sources
-  (`2a3d0b6`). `paper/main.bbl` was rebuilt as well and came out
+**Phase.** P6, pre-submission. The prose is final except for fixes made
+under §20.
+- Batches A to G are committed (#64-#73; #74 corrects a page number in #73).
+  - The batch F re-check (`VERIFICATION.md`, at `03a3808`) passed batch F. It
+    reported B1-B3 in the paper and O2-O3 in `README.md`.
+  - Batch G (REVISION_BRIEF §22, #73) fixed B1 and B2.
+  - B3 (the blank quarter page) closed as a side effect of B1 and B2. The
+    one `[tb]` attempt changed nothing, so it was not kept.
+  - As §22 says, batch G gets no verifier round.
+- The tracked `paper/main.pdf` was rebuilt in place from the batch G sources
+  (`f68c1d6`). `paper/main.bbl` was rebuilt as well and came out
   byte-identical.
-- **Next, the verifier session re-checks batch F only:** the §19 procedure,
-  limited to `d62c376..HEAD`.
-  - It writes nothing tracked, and it appends a dated section to
-    `VERIFICATION.md`.
-  - A1 and A9 stay open until §16.
-- After that come the reviewer's arXiv moderation check and the §20 text
-  freeze, in which both authors read the final PDF end to end.
+- **Next, in order:**
+  1. **The reviewer's arXiv moderation audit** of the full PDF. It is report
+     only, and it also serves as the read of batch G. The tools on disk are
+     `.claude/commands/arxiv-audit.md` and the `arxiv-moderator` agent.
+  2. **Both authors' freeze read (§20).** Both authors read the final PDF end
+     to end. Fixes only, each through a small batch with the same checks.
+     Then the text is frozen.
+  3. **§16** (repo and Zenodo, with the cold run first as step 0), then §17
+     (the upload package).
 - Nothing has been pushed.
 
 **Branch and commits.** Branch `revision/sncs-framing`.
-- The last commit before this handoff is `d9f3a60` (#72). The handoff itself
+- The last commit before this handoff is `0784244` (#74). The handoff itself
   is the next commit; `git log -1` gives its hash.
-- With the handoff, the branch is 55 commits ahead of
+- With the handoff, the branch is 63 commits ahead of
   `origin/revision/sncs-framing`, which sits at `ea4aa99`.
 - `origin/main` is stale at `f41c4ab`.
 
-**Read first (batch F re-check), in this order.**
-1. `VERIFICATION.md` §19.3 and §19.4 (N1-N4 and O1).
-2. `REVISION_BRIEF.md` §21, and `WRITING_RULES.md` §7 and §8.
-3. Decision Log #72 in this file. It has every batch F change, the O1 hit
-   list before and after, the evaluator proof, and the departures from the
-   brief.
-4. `git diff d62c376..HEAD`, and the rebuilt `paper/main.pdf`.
+**Read first (moderation audit and freeze read), in this order.**
+1. `paper/main.pdf` at HEAD (21 pp).
+2. `VERIFICATION.md`: the §15 run, §19, and the batch F re-check. Together
+   they show what has been verified and what has not: A1 (archive), A9 (cold
+   run), and the Nielsen 1994 text, which has not been read.
+3. Decision Log #71-#74, which cover the last three batches.
 
-**Facts the re-check needs.** These are records, not instructions to change
-anything.
-- **O1:** the files that ship (src, results, README, the paper) now have 0
-  hits. `STATE.md` keeps four, which are exempt: it moves to `notes/` in §16,
-  and two of them are Decision Log entries. `python -m src.evaluate` ran
-  twice, and the runs are byte-identical. One rationale changed. All 48
-  ratings and the counts 29/12/1/6 are unchanged.
-- **Departures from the brief (#72):**
-  - **AI statement.** The N1 wording is a clause inside the existing frame,
-    not a standalone sentence, so that "All text" cannot be read as the
-    manuscript's own text: "…: in the rendering pipeline of Section 4, all
-    text comes from fixed templates, with no language model at inference,
-    which is one of the contributions claimed here." This is an author
-    decision.
-  - **N3.** The sentence gives counts per tier (clinician 5, ASHA 3, mother
-    4) where the brief's example said "on different criteria", because the
-    partial criteria overlap across tiers.
-  - **N2.** The §1.1 run-in head loses "at inference", so that the brief's
-    N1 sentence holds the one remaining instance.
-  - **N4.** "The" before "metrics" is dropped in §8, which removes the
-    underfull box.
-- **Left for the author (#72, /anti-ai):**
-  - "no language model" appears in both the §1.1 head and its first sentence;
-  - the one fail is stated both before and after Table 4;
-  - the AI statement's closing sentence runs to about 45 words.
-- **[CHECK] outside the paper:**
-  - `README.md:50` has the over-broad template claim; it is for the §16
-    README rewrite.
-  - `paper/ARXIV_SUBMISSION.md:102` holds an old abstract; §16 moves it and
-    §17 regenerates it.
+**Facts for the audit and the freeze read.** These are records, not
+instructions to change anything.
+- **Open author decision (#72, #73):** the AI statement's closing sentence
+  keeps the clause form ("…: in the rendering pipeline of Section 4, all
+  text comes from fixed templates, with no language model at inference,
+  which is one of the contributions claimed here."). WRITING_RULES §8 gives
+  it as a standalone sentence. The statement's first three sentences match
+  §8 word for word.
+- **Recorded departures from the briefs:**
+  - #71: the A4 wording and the A2 propagation sites;
+  - #72: the AI-statement clause, the N3 counts, the N2 head and the N4
+    "the";
+  - #73: §7 "every string can be regenerated", made under the propagation
+    rule for B1.
+- **/anti-ai items left as prescribed (#73):**
+  - §1.1 "All text comes from …" followed by "No text is generated …";
+  - §5.2 "Two of those gaps";
+  - "the final wording" in both of the AI statement's split sentences.
+- **Outside the paper, for §16 step 2 (the README rewrite) and step 3:**
+  - **O2.** `README.md:126-128` gives Patil's role as "Clinical domain
+    expertise" and "Validation". The paper says "clinical domain input" and
+    "Writing – review & editing". `.zenodo.json` must not copy the README
+    line.
+  - **O3.** These README lines are stale:
+    - `:7` old values;
+    - `:29` "20 pp";
+    - `:30` cs.LG;
+    - `:50` the template claim;
+    - `:81` byte-identical;
+    - `:103` "36 entries";
+    - `:106`.
+  - `paper/ARXIV_SUBMISSION.md:102` holds an old abstract, which §17
+    regenerates.
 - **Allowed exceptions to the WRITING_RULES §3 greps:**
   - the card header "ELEVATED — needs follow-up" (verbatim artifact quote);
   - the CRediT role names "Writing – original draft" and "Writing – review &
@@ -340,17 +353,18 @@ anything.
   RED count at margin 0.20, which is correct. The `%` history comments at
   the top of `three_tiers.tex` still carry old values (#71, correcting #70).
   §16 step 1b removes them.
-- **Abstract:** batch F changed it (N1). It is 200 words and 1229 characters.
-  `ABSTRACT_ARXIV.txt` (repo root, untracked) was regenerated and equals the
+- **Abstract:** batch G did not change it. It is 200 words and 1229
+  characters. `ABSTRACT_ARXIV.txt` (repo root, untracked) equals the
   `abstract.tex` body after whitespace normalisation.
-- **Last build** (in place, `2a3d0b6`):
+- **Last build** (in place, `f68c1d6`):
   - 21 pages, 0 errors, 0 undefined references or citations, 0 overfull
     boxes, 0 bibtex warnings.
-  - 2 underfull boxes, both from before batch E (`lines 142--142`, and
-    `reproducibility.tex` `58--62`).
+  - 2 underfull boxes, both from before batch E.
   - 37 bibitems.
   - `pdfinfo` title and author match `main.tex`.
   - A cold build from `git archive HEAD` gives the same `.bbl` and PDF text.
+  - Floats: Table 1 is on p6, Table 2 on p7, Figure 1 on p9, Table 3 on
+    p11 and Table 4 on p12. §6 starts on p13.
 
 **Committed in this revision** (on top of `c657617`, #57/#58):
 
@@ -409,6 +423,14 @@ anything.
 | `dd420c9` | #72 back matter |
 | `2a3d0b6` | #72 `paper/main.pdf` rebuilt (`main.bbl` byte-identical) |
 | `d9f3a60` | #72 Decision Log entry |
+| `03a3808` | #72 handoff (the batch F re-check ran at this HEAD) |
+| `520fdd9` | #73 Section 1 |
+| `9877096` | #73 Section 5 |
+| `e579928` | #73 Section 7 |
+| `f1b281b` | #73 back matter |
+| `f68c1d6` | #73 `paper/main.pdf` rebuilt (`main.bbl` byte-identical) |
+| `8f44592` | #73 Decision Log entry |
+| `0784244` | #74 correction to #73 |
 
 **Known untracked files.** Leave them untracked:
 - `.claude/agents/` and three `.claude/commands/*.md` files.
@@ -419,37 +441,34 @@ anything.
   Widyawati double space is not.
 
 **Open items, in order.**
-1. **Batch F re-check** by the verifier session: the §19 procedure, limited
-   to `d62c376..HEAD`. It is report only and appends to `VERIFICATION.md`.
-   Afterwards the reviewer runs the arXiv moderation check on the final PDF.
-2. **Author decisions:**
-   - the AI statement's closing sentence (#72): keep the clause form, or use
-     WRITING_RULES §8's standalone sentence;
-   - the three #72 /anti-ai items.
-
-   Batch F resolved the three #71 items (N2 and the A6 remainder). Any
-   change goes through a small batch with the same checks (brief §20).
-3. **`/anti-ai` before every prose commit** (CLAUDE.md rule 8). The pattern
-   that held: the audit runs report-only, the author decides each item, and
-   the decisions are applied before the commit.
-4. **Text freeze** (brief §20):
+1. **The reviewer's arXiv moderation audit** of the final PDF. It is report
+   only. Any fix it needs goes through a small batch with the same checks
+   (brief §20).
+2. **Text freeze** (brief §20):
    - **Both authors read and approve the final PDF** (brief §10). No
      end-to-end human read has happened yet (old Gate A), and Patil's read is
      outstanding.
-   - The cold run is now §16 step 0, which closes A9.
-5. **Repo and Zenodo** (brief §16, RECON A1), fresh session, cold run first
-   (step 0). Nothing is
-   pushed or tagged without the author.
+   - The authors decide the AI statement's closing sentence (#72, #73).
+   - Fixes only, each through a small batch. Then the text is frozen, and
+     §16 tags the frozen text.
+3. **`/anti-ai` before every prose commit** (CLAUDE.md rule 8). The pattern
+   that held: the audit runs report-only, the author decides each item, and
+   the decisions are applied before the commit.
+4. **Repo and Zenodo** (brief §16, RECON A1), in a fresh session with the
+   cold run first (step 0, which closes A9). Nothing is pushed or tagged
+   without the author.
    - The concept DOI 10.5281/zenodo.22252076 resolves only to v1.0.0, which
      is tag `v1.0.0` = `b8853a5`, the P3 commit. That snapshot has no
      `src/evaluate.py`, no `paper/` and several missing tables.
    - The next release is **v1.1.0**, because `v1.0.0` is taken.
    - The Zenodo licence is MIT, while `ARXIV_SUBMISSION.md` claims CC BY
      4.0, and the Zenodo creators list one author.
+   - Step 2's README rewrite also fixes O2 and O3 (see above). Step 3's
+     `.zenodo.json` uses the paper's CRediT wording.
    - `origin/main` is stale.
    - Decide what is public before pushing: the tracked STATE.md holds the
      enrollment-number address and moderation notes (RECON).
-6. **Upload package** (brief §17, same session as item 5):
+5. **Upload package** (brief §17, same session as item 4):
    - Regenerate `paper/ARXIV_SUBMISSION.md` and `arxiv/`, scripted off
      `main.tex`'s `\input` lines (#57). Both are stale: the paper is now
      21 pp, with 4 tables and 37 bib entries.
