@@ -8,6 +8,14 @@ _Last updated: 2026-10-11_
 
 ## Current phase
 
+**2026-10-12: batch H is committed and the text is FROZEN (#75, #76).**
+The moderation audit returned LIKELY PASS, the 11 Oct cold run reproduced
+the pipeline (#75), and both authors approved the 11 Oct PDF without
+changes. Batch H (REVISION_BRIEF §23 step 2) made the last text change. The
+tracked `paper/main.pdf` and `main.bbl` are rebuilt (`ec4bb3e`, `0b25ccb`;
+21 pp, clean log). **Next: §16 steps 1 to 6 (step 0 done), then §17.** See
+"Next step".
+
 **2026-10-11: batch G is committed (#73; #74 corrects one page number).**
 The batch F re-check found B1-B3. REVISION_BRIEF §22 fixed B1 and B2, and B3
 closed with them; the `[tb]` attempt changed nothing. The tracked
@@ -269,63 +277,68 @@ Since Decision Log #11 the SAME band also drives the ASHA card header —
 GREEN → "LOW — routine care", AMBER → "ELEVATED — needs follow-up",
 RED → "HIGH — needs follow-up".
 
-## Next step — handoff (rewritten 2026-10-11, after batch G)
+## Next step — handoff (rewritten 2026-10-12, after batch H)
 
-**Phase.** P6, pre-submission. The prose is final except for fixes made
-under §20.
-- Batches A to G are committed (#64-#73; #74 corrects a page number in #73).
-  - The batch F re-check (`VERIFICATION.md`, at `03a3808`) passed batch F. It
-    reported B1-B3 in the paper and O2-O3 in `README.md`.
-  - Batch G (REVISION_BRIEF §22, #73) fixed B1 and B2.
-  - B3 (the blank quarter page) closed as a side effect of B1 and B2. The
-    one `[tb]` attempt changed nothing, so it was not kept.
-  - As §22 says, batch G gets no verifier round.
-- The tracked `paper/main.pdf` was rebuilt in place from the batch G sources
-  (`f68c1d6`). `paper/main.bbl` was rebuilt as well and came out
-  byte-identical.
-- **Next, in order:**
-  1. **The reviewer's arXiv moderation audit** of the full PDF. It is report
-     only, and it also serves as the read of batch G. The tools on disk are
-     `.claude/commands/arxiv-audit.md` and the `arxiv-moderator` agent.
-  2. **Both authors' freeze read (§20).** Both authors read the final PDF end
-     to end. Fixes only, each through a small batch with the same checks.
-     Then the text is frozen.
-  3. **§16** (repo and Zenodo, with the cold run first as step 0), then §17
-     (the upload package).
-- Nothing has been pushed.
+**Phase.** P6, pre-submission. **The text is FROZEN.** No prose change is
+allowed after batch H (#76). Any later fix becomes a v1.1.1 release (brief
+§23 step 3).
+- **Done:**
+  - Batches A to H are committed (#64-#76).
+  - The reviewer's moderation audit returned LIKELY PASS (11 Oct).
+  - The cold run reproduced the pipeline (#75; §16 step 0 is done, A9 is
+    closed).
+  - Both authors read the 11 Oct PDF and approved it without changes (#76,
+    H6 NONE). That approval is the §20 freeze read.
+- The tracked `paper/main.pdf` (`ec4bb3e`) and `paper/main.bbl` (`0b25ccb`)
+  were rebuilt in place from the batch H sources, five passes.
+- **Next, in order, in a fresh session:**
+  1. **§16 steps 1 to 6** (step 0 is done; the brief says "1b to 6", the
+     author said 1 to 6, see #76):
+     - 1: move internal working files out of tracking into a gitignored
+       `notes/`;
+     - 1b: strip the non-source `%` comments from the public `paper/*.tex`
+       and `refs.bib`. The proof is identical `pdftotext` output before and
+       after;
+     - 2: rewrite the README. This closes O2 and O3 and adds the Windows
+       long-path note (#75);
+     - 3: `.zenodo.json` and `CITATION.cff`;
+     - 4: grep for personal data;
+     - 5: merge, push and tag `v1.1.0`, then STOP for the author's GitHub
+       release;
+     - 6: verify the Zenodo record.
+  2. **§17**, the upload package built from tag v1.1.0.
+  3. **The reviewer checks** the upload package and `ARXIV_FORM.txt` (brief
+     §23 step 4). Then submit to arXiv, cs.HC.
+- Nothing has been pushed or tagged.
 
 **Branch and commits.** Branch `revision/sncs-framing`.
-- The last commit before this handoff is `0784244` (#74). The handoff itself
+- The last commit before this handoff is `21ac0c4` (#76). The handoff itself
   is the next commit; `git log -1` gives its hash.
-- With the handoff, the branch is 63 commits ahead of
+- With the handoff, the branch is 73 commits ahead of
   `origin/revision/sncs-framing`, which sits at `ea4aa99`.
 - `origin/main` is stale at `f41c4ab`.
 
-**Read first (moderation audit and freeze read), in this order.**
-1. `paper/main.pdf` at HEAD (21 pp).
-2. `VERIFICATION.md`: the §15 run, §19, and the batch F re-check. Together
-   they show what has been verified and what has not: A1 (archive), A9 (cold
-   run), and the Nielsen 1994 text, which has not been read.
-3. Decision Log #71-#74, which cover the last three batches.
+**Read first (§16 session), in this order.**
+1. Brief §16 and §17, and §23 steps 3 and 4.
+2. Decision Log #75 and #76.
+3. The "Facts for §16 and §17" below.
 
-**Facts for the audit and the freeze read.** These are records, not
-instructions to change anything.
-- **Open author decision (#72, #73):** the AI statement's closing sentence
-  keeps the clause form ("…: in the rendering pipeline of Section 4, all
-  text comes from fixed templates, with no language model at inference,
-  which is one of the contributions claimed here."). WRITING_RULES §8 gives
-  it as a standalone sentence. The statement's first three sentences match
-  §8 word for word.
-- **Recorded departures from the briefs:**
-  - #71: the A4 wording and the A2 propagation sites;
-  - #72: the AI-statement clause, the N3 counts, the N2 head and the N4
-    "the";
-  - #73: §7 "every string can be regenerated", made under the propagation
-    rule for B1.
-- **/anti-ai items left as prescribed (#73):**
-  - §1.1 "All text comes from …" followed by "No text is generated …";
-  - §5.2 "Two of those gaps";
-  - "the final wording" in both of the AI statement's split sentences.
+**Facts for §16 and §17.** These are records, not instructions to change
+the paper.
+- **Frozen text.** §16 step 1b may only remove `%` comments. The typeset
+  text must not change, and `pdftotext` before and after must be identical.
+- **§8.1 claims** (#75, #76):
+  - a clean run on Windows 11 with Python 3.12 reproduced 17 PNGs byte for
+    byte and 18 text outputs with identical content;
+  - the text outputs' line endings follow the platform;
+  - the fresh download was byte-identical to the cached copy.
+
+  The README's reproducibility wording must match §8.1 exactly (§16 step
+  2). README line 81 says "byte-identical", and that is now wrong for the
+  text outputs.
+- **Data SHA-256:**
+  `aadb4175212de4d47b44c4ed141fc73dee988beaf09b5e6af6b5ffb63111b690` (1014
+  records).
 - **Outside the paper, for §16 step 2 (the README rewrite) and step 3:**
   - **O2.** `README.md:126-128` gives Patil's role as "Clinical domain
     expertise" and "Validation". The paper says "clinical domain input" and
@@ -341,7 +354,8 @@ instructions to change anything.
     - `:106`.
   - `paper/ARXIV_SUBMISSION.md:102` holds an old abstract, which §17
     regenerates.
-- **Allowed exceptions to the WRITING_RULES §3 greps:**
+- **Allowed exceptions to the WRITING_RULES §3 greps** (for §17's firewall
+  grep):
   - the card header "ELEVATED — needs follow-up" (verbatim artifact quote);
   - the CRediT role names "Writing – original draft" and "Writing – review &
     editing" (en dash; official names);
@@ -349,22 +363,24 @@ instructions to change anything.
     `\paragraph{}` heads, the CRediT names included;
   - "novelty" only as Hendrickx's term;
   - one contrast per paragraph where it carries design content.
-- **Old-values grep (brief §0):** the one expected typeset hit is `102`, the
+- **Old-values grep (brief §0).** The one expected typeset hit is `102`, the
   RED count at margin 0.20, which is correct. The `%` history comments at
-  the top of `three_tiers.tex` still carry old values (#71, correcting #70).
-  §16 step 1b removes them.
-- **Abstract:** batch G did not change it. It is 200 words and 1229
-  characters. `ABSTRACT_ARXIV.txt` (repo root, untracked) equals the
-  `abstract.tex` body after whitespace normalisation.
-- **Last build** (in place, `f68c1d6`):
+  the top of `three_tiers.tex` still carry old values (#71); §16 step 1b
+  removes them.
+- **Abstract.** Unchanged since #72: 200 words, 1229 characters.
+  `ABSTRACT_ARXIV.txt` (repo root, untracked) equals the `abstract.tex` body
+  after whitespace normalisation.
+- **Last build** (in place, `ec4bb3e` and `0b25ccb`):
   - 21 pages, 0 errors, 0 undefined references or citations, 0 overfull
-    boxes, 0 bibtex warnings.
-  - 2 underfull boxes, both from before batch E.
-  - 37 bibitems.
-  - `pdfinfo` title and author match `main.tex`.
-  - A cold build from `git archive HEAD` gives the same `.bbl` and PDF text.
-  - Floats: Table 1 is on p6, Table 2 on p7, Figure 1 on p9, Table 3 on
-    p11 and Table 4 on p12. §6 starts on p13.
+    boxes, 0 bibtex warnings, 37 bibitems;
+  - 2 underfull boxes, both from before batch E;
+  - `pdfinfo` title and author match `main.tex`;
+  - a cold build from `git archive HEAD` gives the same `.bbl` and PDF
+    text;
+  - floats: Table 1 p6, Table 2 p7, Figure 1 p9, Table 3 p11, Table 4 p12;
+    §6 starts on p13.
+
+  §17 step 2 must reproduce the 21 pages.
 
 **Committed in this revision** (on top of `c657617`, #57/#58):
 
@@ -431,6 +447,16 @@ instructions to change anything.
 | `f68c1d6` | #73 `paper/main.pdf` rebuilt (`main.bbl` byte-identical) |
 | `8f44592` | #73 Decision Log entry |
 | `0784244` | #74 correction to #73 |
+| `b8ba15e` | #73 handoff (the moderation audit and the freeze read ran on this PDF) |
+| `fefb236` | #76 Section 1 (H1) |
+| `c667cce` | #76 Section 5 (H2) |
+| `fa9c318` | #76 back matter (H3) |
+| `74e07e2` | #76 Section 8 (H4) |
+| `812af03` | #76 `refs.bib` (H5) |
+| `ec4bb3e` | #76 `paper/main.pdf` rebuilt |
+| `0b25ccb` | #76 `paper/main.bbl` rebuilt |
+| `69d5326` | #75 Decision Log entry (cold run) |
+| `21ac0c4` | #76 Decision Log entry |
 
 **Known untracked files.** Leave them untracked:
 - `.claude/agents/` and three `.claude/commands/*.md` files.
@@ -441,21 +467,10 @@ instructions to change anything.
   Widyawati double space is not.
 
 **Open items, in order.**
-1. **The reviewer's arXiv moderation audit** of the final PDF. It is report
-   only. Any fix it needs goes through a small batch with the same checks
-   (brief §20).
-2. **Text freeze** (brief §20):
-   - **Both authors read and approve the final PDF** (brief §10). No
-     end-to-end human read has happened yet (old Gate A), and Patil's read is
-     outstanding.
-   - The authors decide the AI statement's closing sentence (#72, #73).
-   - Fixes only, each through a small batch. Then the text is frozen, and
-     §16 tags the frozen text.
-3. **`/anti-ai` before every prose commit** (CLAUDE.md rule 8). The pattern
-   that held: the audit runs report-only, the author decides each item, and
-   the decisions are applied before the commit.
-4. **Repo and Zenodo** (brief §16, RECON A1), in a fresh session with the
-   cold run first (step 0, which closes A9). Nothing is pushed or tagged
+1. **Text frozen** (#76). Prose changes stop here. A later fix is a v1.1.1
+   release, through a small batch with the same checks.
+2. **Repo and Zenodo** (brief §16 steps 1 to 6, RECON A1), in a fresh
+   session. Step 0, the cold run, is done (#75). Nothing is pushed or tagged
    without the author.
    - The concept DOI 10.5281/zenodo.22252076 resolves only to v1.0.0, which
      is tag `v1.0.0` = `b8853a5`, the P3 commit. That snapshot has no
@@ -463,31 +478,43 @@ instructions to change anything.
    - The next release is **v1.1.0**, because `v1.0.0` is taken.
    - The Zenodo licence is MIT, while `ARXIV_SUBMISSION.md` claims CC BY
      4.0, and the Zenodo creators list one author.
-   - Step 2's README rewrite also fixes O2 and O3 (see above). Step 3's
-     `.zenodo.json` uses the paper's CRediT wording.
+   - Step 2's README rewrite:
+     - fixes O2 and O3;
+     - adds the Windows long-path note (#75);
+     - matches §8.1 exactly.
+
+     Step 3's `.zenodo.json` uses the paper's CRediT wording.
    - `origin/main` is stale.
-   - Decide what is public before pushing: the tracked STATE.md holds the
-     enrollment-number address and moderation notes (RECON).
-5. **Upload package** (brief §17, same session as item 4):
-   - Regenerate `paper/ARXIV_SUBMISSION.md` and `arxiv/`, scripted off
-     `main.tex`'s `\input` lines (#57). Both are stale: the paper is now
-     21 pp, with 4 tables and 37 bib entries.
+   - Decide what is public before pushing. The tracked STATE.md holds the
+     enrollment-number address and moderation notes (RECON); step 1 moves it
+     out of tracking, but git history is not rewritten.
+3. **Upload package** (brief §17, same session as item 2):
+   - Build `arxiv_upload/` from tag v1.1.0.
+   - Regenerate `paper/ARXIV_SUBMISSION.md`, scripted off `main.tex`'s
+     `\input` lines (#57). It is stale: the paper is now 21 pp, with 4
+     tables and 37 bib entries.
    - Ship `main.bbl`.
    - Compile standalone.
    - Run a final firewall grep.
    - The plain-text abstract for the form is `ABSTRACT_ARXIV.txt`.
-   - Submit to arXiv, cs.HC.
+4. **The reviewer checks** the upload package and `ARXIV_FORM.txt` (brief
+   §23 step 4). Then submit to arXiv, cs.HC.
 
-**Cold-run recipe** (from #55; re-run because `src/` moved in #60-#63).
-Brief §16 step 0 now governs: install from `requirements-lock.txt`, compare
-SHA-256 of every file under `results/`, and re-derive the 57 of 71.
-1. Fresh clone, and a fresh venv on Python 3.12 from `requirements.txt`.
-   Compare it with `requirements-lock.txt`.
-2. Delete `results/audio/*.mp3` first.
-3. Run `python -m src.{data,model,explain,render,evaluate}`.
-4. Every PNG, CSV and TXT must come back byte-identical. The MP3s are the
-   documented exception: same length, different bytes.
-5. Rebuild the PDF.
+**Cold-run recipe** (done 11 Oct, #75; kept for v1.1.1 or a re-check).
+Brief §16 step 0 governs.
+1. Fresh clone to a short path, or enable Windows long paths.
+2. A fresh Python 3.12 venv from `requirements-lock.txt`.
+3. Delete `results/audio/*.mp3` first.
+4. Run `python -m src.{data,model,explain,render,evaluate}`.
+5. Expected results:
+   - every PNG is byte-identical;
+   - every CSV, MD and TXT is identical in content, with line endings
+     following the platform (CRLF on Windows);
+   - the MP3s are the documented exception, compared by count and duration
+     only.
+
+   Re-derive the 57 of 71.
+6. Rebuild the PDF.
 
 Out-of-fold scoring (`out_of_fold()`) runs with `n_jobs=1`, so the
 out-of-fold CSVs are byte-stable (#60). `evaluate()` still predicts with
@@ -497,7 +524,8 @@ out-of-fold path only (#69).
 **Do not reopen:** the calibration sentence (#24a); the `failure_mode`
 triptych cut (#33, #38); Clark et al. stays quarantined (WRITING_RULES §6);
 no p-value (brief §0); `RED_MARGIN = 0.15` as a design constant; the abstract
-text (#70, with the N1 sentence from #72).
+text (#70, with the N1 sentence from #72); the whole manuscript text, frozen
+after batch H (#76).
 
 **Working method that held.**
 - Build only in a scratch copy, never in `paper/`, except for the deliberate
