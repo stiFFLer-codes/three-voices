@@ -3343,3 +3343,34 @@ Decision Log entries named.
   `03a3808`), Table 4 is on p12 (it was on p13), and §6 starts on p13. The
   rest of #73 stands; its `\clearpage` statement is `main.tex:219`, before
   the reference list.
+- **2026-10-12 #75 — The 11 Oct cold run (REVISION_BRIEF §16 step 0, §23
+  step 1a): the pipeline reproduces.** The run was a fresh clone in a
+  temporary directory, in a separate session. It changed no tracked file.
+  The facts below are as the author reported them on 12 Oct, except where a
+  line says "confirmed here".
+  - **Platform:** Windows 11, Python 3.12.10, an environment installed from
+    `requirements-lock.txt`. (The writer session's `.venv` is 3.12.13.)
+  - **Dataset:** `src.data` downloaded the file fresh from UCI. Its SHA-256 is
+    `aadb4175212de4d47b44c4ed141fc73dee988beaf09b5e6af6b5ffb63111b690`, the
+    same as the cached `data/raw/maternal_health_risk.csv`.
+    - Confirmed here: the cached file's SHA-256 is that value. The file has
+      1015 lines, a header and 1014 records.
+  - **PNGs:** 17, all byte-identical to the committed files.
+  - **Text outputs:** 18 (9 CSV, 1 Markdown, 8 TXT), all identical in
+    content. They differ from the committed files only in line endings:
+    Python writes CRLF on Windows, and git stores LF through
+    `core.autocrlf`.
+  - **MP3s:** 4, with matching durations. Their bytes are not compared, as
+    §8.2 says.
+  - **57 of 71:** confirmed two ways.
+  - **Counts confirmed here:** `git ls-files results` gives 17 `.png`, 9
+    `.csv`, 1 `.md`, 8 `.txt` and 4 `.mp3`.
+  - **Windows long paths:** pip install can fail because NumPy's OpenBLAS
+    DLL path can exceed 260 characters. The fix is to clone to a short path
+    or enable long paths. §16 step 2 puts this note in the README.
+  - **Consequences:**
+    - §8.1's "Re-running the pipeline reproduces every PNG, CSV and text
+      output byte for byte" is false for the text outputs on Windows. #76
+      (H4) replaces it with the measured result.
+    - The cold-run recipe in the handoff is corrected to match.
+    - This closes A9. §16 step 0 is done.
