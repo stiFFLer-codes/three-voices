@@ -1,65 +1,12 @@
-% SOURCE: STATE.md Decision Log #5 (deterministic templates, no LLM),
-% #6 (mother tier caps at an ACTION, never a number), #7 (the 0.15 top-2
-% margin gate; GREEN/AMBER/RED band rule), #8 (LOCAL drivers, not global),
-% #11 (band computed once and shared; sign-aware driver ranking, which
-% supersedes #8's "top-2 by |SHAP|"), #14 (Hindi authored and clinically
-% reviewed by the co-author), #17 (per-tier claim).
-% Novelty framed per related_work.md §2 — audience-aware SUPPRESSION, the
-% intersection only, mechanism not reclaimed.
-% Numbers (current, out-of-fold; see the 2026-10-09 note below):
-% results/tables/shap_case_summary.csv (row 426: 0.233/0.382/0.384;
-% row 325: 0.411/0.148/0.441), p1_oof_predictions.csv (margins 0.002, 0.029),
-% shap_case_contributions.csv (row 426: BS +0.227, Age +0.052, Systolic -0.072,
-% HeartRate -0.050, BodyTemp -0.026, Diastolic +0.007; row 325: BodyTemp
-% +0.253), p1_gate_summary.csv (gate counts, Table in 4.5), and the rendered
-% artifacts tier_asha_boundary_mid.txt and tier_mother_boundary_mid_hi.txt.
-% BUDGET: 2 pp including the figure. If it runs long, cut prose, not the rule.
-%
-% 2026-09-15 consolidated edit pass (see STATE.md). Four changes:
-%   (a) NEW paragraph in 4.2 naming the gate's one-sidedness: the margin test
-%       guards the high boundary only, GREEN follows the argmax untested.
-%       Framed as unhandled, with the symmetric extension as future work.
-%       Paired entry in limitations.tex 6.2. No rule changed in code.
-%   (b) NEW 4.4 "When the gate prevents a false alarm", on row 382
-%       (0.451/0.097/0.453, true low, predicted high, margin 0.002). Numbers
-%       from shap_case_summary.csv. Keeps both honesty sentences: amber on a
-%       true-low record is still a false referral; the gate made the error
-%       smaller, not correct.
-%   (c) The entitlement defence for stripping magnitude MOVED here from
-%       related_work.tex 2.4, into the mother-tier paragraph it defends.
-%       related_work.tex keeps the literature, the tension and a pointer.
-%   (d) 4.5 opener now points to Section 2 for the three literatures instead
-%       of restating them with the same cites; figure caption cut to what the
-%       figure needs; closing paragraph no longer re-narrates row 66.
-%
-% 2026-10-09 revision (REVISION_BRIEF §1): out-of-fold re-grounding.
-%   - 4.2: one sentence saying all probabilities are out of fold (points to
-%     sec:data-model); one sentence in the one-sidedness paragraph with the 22
-%     ungated near-ties and the 3 true-high among them; label sec:tiers-band.
-%   - 4.3: case re-grounded from row 66 to row 426 (figure caption, clinician,
-%     ASHA and icon-array paragraphs); ASHA absolute-value clause; mother
-%     provenance sentence replaced; "entitled" removed.
-%   - 4.4: re-grounded from row 382 (13-year-old) to row 325 (17-year-old).
-%   - 4.5: old "What we claim" deleted in full; new "The gate across all 451
-%     records" with the gate table (tab:gate), typeset by hand from
-%     p1_gate_summary.csv.
-%   - Rule-forced (WRITING_RULES §3): \textbf{} removed from 4.1, "---" removed
-%     from the band list, "not entitled"/"is entitled" removed from 4.1.
-%   - Then REVISION_BRIEF §1a (author-approved fixes, Decision Log #64): 4.1
-%     reworded; "what do I do next, not how likely is this" and "smaller, not
-%     correct" restored (design-content contrasts, allowed by the revised
-%     WRITING_RULES §3); gate-table row for the 22 ungated low-risk near-ties;
-%     4.5 gains the inside-vs-outside accuracy sentence and its caveat, the
-%     threshold sentence, and "outside the 0.15 margin, with margins from
-%     0.230 to 0.880" (min/max margin of the 11 true-high GREEN records with
-%     margin >= 0.15, p1_oof_predictions.csv).
-%   - Then REVISION_BRIEF §1b (polish from the /anti-ai report, Decision Log
-%     #66): "The gate is one-sided."; "Computing the band once also
-%     matters."; "two different bands" (the "two identities" phrase now only
-%     in Section 5); the card sentence; "can support" varied and the
-%     imperative made a statement; "It changed only what the mother was
-%     told."; 4.5 "only 3 are", the "far less often" sentence deleted, "The 3
-%     derated high-risk records are the cost of the rule".
+% SOURCE (out-of-fold numbers): results/tables/shap_case_summary.csv (row
+% 426: 0.233/0.382/0.384; row 325: 0.411/0.148/0.441), p1_oof_predictions.csv
+% (margins 0.002, 0.029), shap_case_contributions.csv (row 426: BS +0.227,
+% Age +0.052, Systolic -0.072, HeartRate -0.050, BodyTemp -0.026, Diastolic
+% +0.007; row 325: BodyTemp +0.253), p1_gate_summary.csv (gate counts, the
+% table in 4.5), and the rendered artifacts tier_asha_boundary_mid.txt and
+% tier_mother_boundary_mid_hi.txt. "Margins from 0.230 to 0.880": min and max
+% margin of the 11 true-high GREEN records with margin >= 0.15,
+% p1_oof_predictions.csv.
 \section{Three Tiers from One Prediction}
 \label{sec:tiers}
 

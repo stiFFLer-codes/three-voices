@@ -1,65 +1,8 @@
-% SOURCE: STATE.md "Key data facts" and "Model"; Decision Log #1 (dedup
-% before the split), #2 (macro-recall primary), #3 (RF/none hardcoded),
-% #12 (the measured dedup penalty), #20 (adolescent ages retained),
-% #21 (generic maternal-health risk only); related_work.md §5 (leakage
-% wording: quantification, not discovery); results/tables/p1_model_metrics.csv
-% and results/tables/p1_duplicate_leakage.csv.
-% Every number below is traceable to one of those two committed tables or
-% to a counted property of the cached raw CSV.
-%
-% 2026-09-15 consolidated edit pass (see STATE.md). Three changes:
-%   (a) NEW Table 2 (tab:models), typeset from p1_model_metrics.csv: the six
-%       configurations, macro-recall, accuracy and per-class recall. The
-%       comparison was prose-only and surfaced three numbers.
-%   (b) NEW measurement sentence in 3.4: mid-risk recall 0.227 +/- 0.057 for
-%       the selected model, no higher than 0.302 in any configuration, tied
-%       to the 35 conflicting feature vectors already in 3.2. Turns "a model
-%       right 99% of the time would not need this machinery" from a general
-%       remark into a number. 0.580 now stated as the operating figure.
-%   (c) 3.3 disambiguated: the like-for-like comparator against the published
-%       accuracies (83.74 / 99.51 / 88.67) is ACCURACY 0.854, not macro-recall
-%       0.859. Same fix applied in intro.tex.
-% No locked number changed. Data spine re-verified from the raw cache:
-% 1014 / 2 at HR=7 / 1012 / 561 / 451 (233 low, 106 mid, 112 high) / 35 / 95
-% under 18 / min age 10.
-%
-% 2026-10-09 revision (REVISION_BRIEF §2). Changes:
-%   3.1 dataset cited as ahmed2020maternal; the file holds 1014 records, the
-%       repository metadata lists 1013. SOURCE OF 1013: STATE.md Decision Log
-%       #60 ("Raw-file side check": UCI API /api/dataset?id=863 reports
-%       num_instances: 1013). It is in no results/tables file.
-%   3.2 order of the two cleaning steps named (heart-rate filter first).
-%   3.3 Mamun / Maisoon sentence replaced with the verified facts (author
-%       read of both full texts, 9 Oct 2026: no duplicate removal in either).
-%   3.4 conflicting-vector explanation of the mid-high near-ties removed (it
-%       was an in-sample effect); out-of-fold paragraph added; global SHAP
-%       labelled as the final model.
-%   3.5 failure case re-grounded on row 325 (out of fold, BodyTemp +0.253,
-%       Age -0.001); "over-weighting a demographic feature" deleted.
-%   Also: five bold spans in prose removed (WRITING_RULES §3); the "rather
-%   than" contrast in the SHAP-naming sentence reworded so the paragraph
-%   holds one contrast.
-%   Then REVISION_BRIEF §2a (author decisions, Decision Log #66): 1013 cited
-%   to the repository page; counts replace "confidently and often wrongly";
-%   in-sample mechanism reworded as a property of the forest; \textsc{red};
-%   overfull box in 3.4 reworded away; "on all 1014 records"; ten /anti-ai
-%   rewordings ("inflate the scores", "the range reported by the papers
-%   below", one "exactly", "rarely reported", "Our contribution here",
-%   "removing duplicates", "because", "must handle", "stable and
-%   unremarkable" dropped, the retention reason, "like this one").
-%
-% 2026-10-09 claim-audit fixes (REVISION_BRIEF §12a, CLAIM_AUDIT row 35):
-%   3.3 Eltawil / Young sentence: Eltawil et al. re-analyse an inflated
-%       result; Young et al. is a scoping review comparing accuracy by
-%       leakage risk, so it is no longer described as a re-analysis.
-%   3.4 conflicting-vector sentence: author's wording, 68 of the 71 outside
-%       the 0.15 margin, 66 mispredicted, 10 RED, none for true high ("68 of
-%       the 71" is tied to the 35 vectors by the existing antecedent).
-% 2026-10-09 (REVISION_BRIEF §13a, decision 2 and /anti-ai): the 3.4
-%   sentence split in two as the author wrote it (the table pointer kept);
-%   Young et al. named as a scoping review (the refs.bib title says so);
-%   "exactly our situation" -> "our situation". The literal "exactly
-%   repeated" stays.
+% SOURCE: results/tables/p1_model_metrics.csv, p1_duplicate_leakage.csv
+% and p1_cohort_summary.csv. Data counts (p1_cohort_summary.csv, re-checked
+% on the cached raw CSV): 1014 records / 2 at HeartRate 7 / 1012 / 561 exact
+% duplicates / 451 (233 low, 106 mid, 112 high) / 35 conflicting feature
+% vectors / 95 under 18 / minimum age 10.
 \section{Data and the Model Vehicle}
 \label{sec:data}
 
@@ -71,8 +14,7 @@ We use the UCI Maternal Health Risk dataset~\citep{ahmed2020maternal}
 1014 records collected in rural Bangladesh, while the repository page lists
 1013 instances~\citep{ahmed2020maternal}.
 % 1013: read off the UCI repository page and API for id 863 on 2026-10-09
-% ("Instances": 1013; num_instances 1013). External fact, cited per
-% WRITING_RULES §5; also recorded in STATE.md Decision Log #60.
+% ("Instances": 1013; num_instances 1013). External fact, cited.
 Each record has six features (age, systolic and
 diastolic blood pressure, blood sugar, body temperature and heart rate) and a
 three-level risk label: low, mid, high. It is public data and no other data

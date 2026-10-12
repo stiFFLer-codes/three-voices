@@ -1,9 +1,9 @@
-% SOURCE: RECEIPTS ONLY — every command, path and constant verified against
-% the committed source this session.
+% SOURCE: every command, path and constant checked against the committed
+% source.
 %   src/config.py: RANDOM_SEED = 42; set_seeds() seeds PYTHONHASHSEED,
 %     random, numpy. Called first in model.py, explain.py, render.py,
-%     evaluate.py. data.py contains no random component at all (verified by
-%     grep), so the loader needs no seeding — do NOT claim it calls it.
+%     evaluate.py. data.py contains no random component, so the loader
+%     needs no seeding.
 %   requirements.txt: exact-version pins on 11 packages. Derivation: lines
 %     containing "==" that are not comments = 11 (ucimlrepo, numpy, pandas,
 %     scikit-learn, joblib, imbalanced-learn, xgboost, shap, matplotlib, gTTS,
@@ -16,22 +16,12 @@
 %     writes three CSVs (global, case summary, case contributions: 3 to_csv
 %     calls) and five figures (shap_global_high.png + one waterfall per case
 %     in a loop over the four cases).
-%   2026-10-09 revision (REVISION_BRIEF §6): new CSVs and fold-model SHAP
-%     named; pin sentence replaced.
-%   2026-10-09 (REVISION_BRIEF §13a): the single-threaded sentence is scoped
-%     to out-of-fold scoring, the only path that sets clf__n_jobs=1
-%     (out_of_fold() in src/model.py). evaluate() still predicts with
-%     n_jobs=-1 for Table 2 and is deliberately unchanged, so the sentence
-%     must not be widened to "prediction". The three-"which" sentence in the
-%     src.model item is split; "rather than rounding it to either extreme" is
-%     deleted from the exception.
-%   Decision Log #10/#18 (gTTS not reliably byte-reproducible), #19 (a cold
-%     run must clear results/audio/ first).
+%   Single-threaded: out_of_fold() in src/model.py is the only path that
+%     sets clf__n_jobs=1; evaluate() predicts with n_jobs=-1 for Table 2.
 %   Zenodo concept DOI 10.5281/zenodo.22252076, confirmed via the Zenodo API.
 %   Clean-run counts: git ls-files results gives 17 .png and 18 text outputs
-%     (9 .csv, 1 .md, 8 .txt). The 11 Oct cold run and the dataset SHA-256
-%     are recorded in Decision Log #75.
-% No new claim. No new citation.
+%     (9 .csv, 1 .md, 8 .txt). Dataset SHA-256, cached and freshly downloaded:
+%     aadb4175212de4d47b44c4ed141fc73dee988beaf09b5e6af6b5ffb63111b690
 \section{Reproducibility}
 \label{sec:repro}
 

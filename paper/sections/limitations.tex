@@ -1,75 +1,6 @@
-% SOURCE: COLLECTION ONLY — no limitation here is new. Each traces to
-% heuristic_evaluation.md "Inherent limitations" (six entries), to
-% related_work.md §4 concessions (six entries), or to a Decision Log entry:
-% #7 (0.15 as design choice), #10/#18 (gTTS), #17 (ASHA English-only),
-% #20 (adolescent ages), #21 (no named condition), #24a (calibration).
+% SOURCE: results/tables/heuristic_evaluation.md "Inherent limitations".
 % Numbers: 451 / 35 conflicting vectors / 0.580 macro-recall, all from
 % results/tables/p1_model_metrics.csv and the cached frame.
-% RULE: state each once, name what resolves it, do not re-litigate. A
-% limitation hedged three times reads weaker than one stated cleanly.
-% 2026-09-11: two subsection headings renamed to describe their content
-% instead of confessing an absence ("Nobody has used this" -> "Evaluation
-% without users"; "Nothing is deployed" -> "Evaluated on a
-% workstation"). Two independent external reviews read the old headings as
-% an incompleteness signal at ToC skim. NOT ONE SENTENCE OF BODY TEXT
-% MOVED: every limitation is stated exactly as before.
-%
-% 2026-09-15 consolidated edit pass (see STATE.md). Section 6 is a declared
-% collection point and its cross-section repetition was deliberately NOT
-% touched. Two changes only:
-%   (a) NEW entry in 6.2: the gate is one-sided, the low boundary is
-%       unprotected, extending the rule symmetrically is future work and this
-%       version does not do it. Pairs with the new paragraph in 4.2.
-%   (b) One framing sentence trimmed in 6.3. No limitation added, removed or
-%       reworded.
-%
-% 2026-09-15 REPOSITIONING PASS. The section is now "Limitations and Future
-% Work" and owns every forward-looking claim in the manuscript. Structural,
-% not substantive: NO LIMITATION WAS REMOVED.
-%   (a) The three scattered "is future work" tails — one in three_tiers.tex,
-%       two here — are gone. The factual half of each statement stays exactly
-%       where it was; only the forward-looking half moves into the new final
-%       subsection. arXiv lists "proposals for future research" among content
-%       types it does not accept, and future work scattered as three apologies
-%       leans that way where one bounded subsection is ordinary convention.
-%   (b) NEW final subsection "Future work": user studies (pulled from 6.1's
-%       closing paragraph), the symmetric gate and calibration (pulled from
-%       6.2). Sections 6.3 and 6.4 already name their own forward paths and
-%       are pointed at rather than restated.
-%   (c) "Evaluated on a workstation" folded into 6.1 — same limitation family
-%       (what the evaluation did not cover), one fewer heading. Its
-%       "design and feasibility artifact" opening is dropped per the
-%       contribution-type reframe; the no-field-claim content is unchanged.
-%   (d) Line-level compression throughout, ~45 words, entirely grammatical:
-%       clause joins, dropped auxiliaries, one possessive. No limitation, no
-%       number, no citation and no cross-reference touched.
-% (Body word count after this pass was 719 words, equal to the pre-pass figure.)
-%
-% 2026-10-09 revision (REVISION_BRIEF §4, §12; CLAIM_AUDIT row 39):
-%   (a) 6.1: the CHW sentence is replaced by the §12 wording (Okolo and
-%       Solano-Kamaiko find CHWs can struggle with AI explanations and that
-%       explanation design changes understanding). The count "four claims"
-%       is unchanged.
-%   (b) 6.2: "35 of the 451 distinct records are feature vectors" becomes
-%       "35 feature vectors, covering 71 of the 451 records"; "the honest
-%       figure rather than the inflated one" becomes "the leak-free figure"
-%       and "rather than calibrated posteriors" becomes "uncalibrated as
-%       posteriors" (one contrast per paragraph, WRITING_RULES §3).
-%   (c) 6.2: the one-sided-gate paragraph now carries the out-of-fold count
-%       (22 low-risk predictions inside the margin, 3 true high-risk); its
-%       old "near-tie resolving to low risk" sentence is merged into it.
-%   (d) 6.2: NEW paragraph, the 14 true high-risk records that receive
-%       GREEN (3 inside the margin, 11 outside, margins 0.230 to 0.880).
-%   (e) 6.5: the symmetric extension would move those 22 records to AMBER
-%       (reported analysis, not implemented); one clause on an explorable
-%       health-worker card as future work (Solano-Kamaiko et al.).
-% Body word count was 802 words after this pass (718 before; the earlier 719
-% ceiling is exceeded, all from items (a), (c), (d), (e)).
-% 2026-10-09 (REVISION_BRIEF §13a): growth accepted (Decision 3). /anti-ai
-%   items applied: "which are vote fractions and are not calibrated"; the 6.5
-%   "22 near-ties" sentence now points at 6.2 (new label sec:lim-data); the
-%   explorable-card clause is "A third direction", without "is future work".
-% Counted with: grep -v '^\s*%' limitations.tex | wc -w.
 \section{Limitations and Future Work}
 \label{sec:limitations}
 
@@ -114,7 +45,7 @@ feature vectors, covering 71 of the 451 records, carry more than one risk
 label, an ambiguity no model can resolve from six features. That is a ceiling
 on the data, not a shortfall in the classifier.
 
-% Derivations (WRITING_RULES §5), all from results/tables/:
+% Derivations, all from results/tables/:
 %  35 = p1_cohort_summary.csv conflicting_label_feature_vectors; 451 = n_clean.
 %  71 = rows of p1_oof_predictions.csv with conflict_vector == True.
 

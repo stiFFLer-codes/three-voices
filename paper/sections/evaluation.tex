@@ -1,61 +1,11 @@
-% SOURCE: results/tables/heuristic_evaluation.md — "Defects found and
-% corrected" (C1-C5) and the Synthesis; results/tables/heuristic_matrix.csv.
-% ORDERING RULE, non-negotiable: DEFECTS FIRST. The distribution is reported
-% once, in passing, and never as a headline or a score.
-% Framing: single-evaluator, author-conducted, formative. Not user testing,
-% not validation. Okolo/Solano-Kamaiko cited as why the user study is needed.
-% BUDGET: 1 p. Cut prose before cutting a defect.
-%
-% 2026-09-08 framing pass (Decision Log #47). One paragraph added, giving the
-% two instruments their own citations — the section named WCAG 2.1 and
-% Nielsen's heuristics and cited neither, which left a methods claim standing
-% on nothing. refs.bib gains nielsen1990heuristic, nielsen1994enhancing and
-% w3c2025wcag21; all three resolved in-session. The "not user testing and not
-% validation" paragraph below is UNCHANGED and must stay that way: the new
-% paragraph gives the method standing, it does not upgrade what the method
-% proves, and it says so in its own last two sentences.
-%
-% 2026-09-15 consolidated edit pass (see STATE.md):
-%   (a) NEW table tab:matrix (Table 4 since 2026-10-09, when the gate table,
-%       now Table 3, was added to Section 4; references use \ref), the 16 x 3
-%       grid from heuristic_matrix.csv,
-%       symbols only, rationales left in the CSV. The abstract already named
-%       this matrix as archived and the paper had never shown it.
-%   (b) Four/five disambiguated. Both numbers were right and referred to
-%       different things: four Fail RATINGS on the first pass, arising from
-%       five distinct DEFECTS (C1-C5 in heuristic_evaluation.md). "Four" is
-%       NOT changed to "five"; a clause now says which is which.
-%   (c) One editorial tail cut. The single-evaluator / not-user-testing /
-%       not-validation paragraph is UNCHANGED, as its own header requires.
-%
-% 2026-10-09 revision (REVISION_BRIEF §3). 5.1 now says the first pass ran on
-% the original renderer with cases selected from in-sample probabilities, and
-% that the re-render scores the cases out of fold (Decision Log #62; the
-% in-sample/out-of-fold argument is in sec:data-model). "On the false-positive
-% case" became "On the original false-positive case". Counts in 5.2 are
-% unchanged (29 / 12 / 1 / 6, heuristic_matrix.csv); the author's four
-% re-rate decisions (Decision Log #63) kept every rating, so the matrix
-% symbols are unchanged. WRITING_RULES §3 fixes in kept text: the five defect
-% run-in heads were \textbf (now \paragraph, as in Section 4) and one em dash
-% became a colon. The single-evaluator paragraph is still unchanged.
-% Then REVISION_BRIEF §2a and §12 (author decisions, Decision Log #66): the
-% CHW sentence replaced with the §12 wording (the old "even after they have
-% been simplified" was not supported by either abstract); "Both were built to
-% find defects early" replaced; matrix caption trimmed so it no longer repeats
-% the paragraph after the table; "could have shown it, because metrics never
-% read the card"; "met by the three tiers together, and by no single one".
-%
-% 2026-10-09 claim-audit fix (REVISION_BRIEF §12a, CLAIM_AUDIT row 37). The
-% Nielsen sentence in the instruments paragraph is cut back to what the
-% sources support: Nielsen 1990 describes "an informal method of usability
-% analysis where a number of evaluators are presented with an interface design
-% and asked to comment on it"; the 1994 abstract was not retrievable, so the
-% sentence now says "revised heuristics" and gives no count.
-% 2026-10-09 (REVISION_BRIEF §13a): "Heuristic evaluation was designed to
-% find usability problems without users; WCAG conformance inspection checks an
-% artifact against stated success criteria." deleted; the sentence before it
-% covers both instruments. The matrix keeps the standard Nielsen labels
-% (1, 2, 4, 5, 6, 8, 10).
+% SOURCE: results/tables/heuristic_evaluation.md ("Defects found and
+% corrected", C1-C5, and the Synthesis) and results/tables/heuristic_matrix.csv
+% (Table 4, the 16 x 3 grid; counts 29 / 12 / 1 / 6). The four Fail ratings
+% of the first pass arise from five distinct defects (C1-C5).
+% Nielsen 1990 describes "an informal method of usability analysis where a
+% number of evaluators are presented with an interface design and asked to
+% comment on it"; the 1994 abstract was not retrievable, so the text says
+% "revised heuristics" and gives no count.
 \section{Formative Heuristic Evaluation}
 \label{sec:eval}
 
