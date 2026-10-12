@@ -28,6 +28,9 @@
 %   Decision Log #10/#18 (gTTS not reliably byte-reproducible), #19 (a cold
 %     run must clear results/audio/ first).
 %   Zenodo concept DOI 10.5281/zenodo.22252076, confirmed via the Zenodo API.
+%   Clean-run counts: git ls-files results gives 17 .png and 18 text outputs
+%     (9 .csv, 1 .md, 8 .txt). The 11 Oct cold run and the dataset SHA-256
+%     are recorded in Decision Log #75.
 % No new claim. No new citation.
 \section{Reproducibility}
 \label{sec:repro}
@@ -74,8 +77,12 @@ floating-point sums are added in a fixed order. All eleven packages in
 The pins require Python 3.12, since the NumPy and scikit-learn releases named
 in \texttt{requirements.txt} predate the 3.13 and 3.14 wheels and will not
 build on a newer interpreter. The dataset is cached after first download rather
-than re-fetched. Re-running the pipeline reproduces every PNG, CSV and text
-output byte for byte.
+than re-fetched. A clean run from a fresh clone (Windows 11, Python 3.12, the
+locked environment, the dataset downloaded afresh) reproduced all 17 PNGs
+byte for byte and all 18 CSV, Markdown and text outputs with identical
+content; the text outputs differ from the committed copies only in line
+endings, which follow the platform. The freshly downloaded dataset was
+byte-identical to our cached copy.
 
 \subsection{The exception}
 
