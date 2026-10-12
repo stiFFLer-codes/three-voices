@@ -23,13 +23,12 @@ desktop.ini
 *.swp
 *~
 
-# Assistant working notes. Untracked from 2026-09-03 for the public release;
-# the full history is still in git, so the constraints this repo was built
-# under stay auditable. STATE.md is the record that stays tracked.
+# Internal working notes (decision log, revision briefs, audits, assistant
+# configuration), kept locally and not tracked. Moved out of tracking on
+# 2026-10-12; earlier versions remain in git history.
+notes/
 CLAUDE.md
-
-# Packaged skill zip (the live copy is .claude/commands/anti-ai.md)
-.claude/anti-ai.skill
+.claude/
 
 # Summer-school binaries (kept locally, not tracked). Do NOT add *.pdf —
 # a future manuscript PDF must stay trackable.
