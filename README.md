@@ -102,6 +102,7 @@ Please also cite the dataset (its CC BY 4.0 licence requires attribution):
 ## Licences
 
 - Code: MIT, see [`LICENSE`](LICENSE).
+- Paper: the text and figures of paper/main.pdf and its LaTeX sources are licensed CC BY 4.0, the same licence as the arXiv version.
 - Dataset: UCI Maternal Health Risk (id 863) by Marzia Ahmed (2020), CC BY
   4.0. It is not redistributed here; `python -m src.data` downloads it. See
   [`data/README.md`](data/README.md).
