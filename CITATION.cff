@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "Three Voices: code and artifacts for Uncertainty-Gated Rendering of a Maternal-Health Risk Alarm"
+authors:
+  - family-names: Sapariya
+    given-names: Maitreya
+    affiliation: "A. D. Patel Institute of Technology (ADIT)"
+    orcid: "https://orcid.org/0009-0003-9346-3775"
+  - family-names: Patil
+    given-names: Aditi
+    affiliation: "Smt. B. K. Shah Medical Institute & Research Centre"
+version: 1.1.0
+date-released: "2026-10-12"
+doi: 10.5281/zenodo.22252076
+license: MIT
+repository-code: "https://github.com/stiFFLer-codes/three-voices"
+references:
+  - type: data
+    title: "Maternal Health Risk"
+    authors:
+      - family-names: Ahmed
+        given-names: Marzia
+    year: 2020
+    doi: 10.24432/C5DP5D
+    publisher:
+      name: "UCI Machine Learning Repository"
+    license: CC-BY-4.0

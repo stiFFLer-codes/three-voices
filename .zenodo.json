@@ -1,0 +1,23 @@
+{
+  "title": "Three Voices: code and artifacts for Uncertainty-Gated Rendering of a Maternal-Health Risk Alarm",
+  "upload_type": "software",
+  "description": "Three Voices renders one maternal-health risk prediction as three action signals: a decomposition for a clinician, a referral card for a community health worker, and a three-lamp visual with one spoken Hindi sentence for the mother. The work uses only the public UCI Maternal Health Risk dataset and makes no claim to predict real patients' outcomes; no user study has been run.",
+  "creators": [
+    {
+      "name": "Sapariya, Maitreya",
+      "affiliation": "A. D. Patel Institute of Technology (ADIT)",
+      "orcid": "0009-0003-9346-3775"
+    },
+    {
+      "name": "Patil, Aditi",
+      "affiliation": "Smt. B. K. Shah Medical Institute & Research Centre"
+    }
+  ],
+  "license": "MIT",
+  "related_identifiers": [
+    {
+      "identifier": "10.24432/C5DP5D",
+      "relation": "references"
+    }
+  ]
+}
