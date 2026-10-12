@@ -3374,3 +3374,124 @@ Decision Log entries named.
       (H4) replaces it with the measured result.
     - The cold-run recipe in the handoff is corrected to match.
     - This closes A9. §16 step 0 is done.
+- **2026-10-12 #76 — Batch H (REVISION_BRIEF §23 step 2), the last text
+  change, and the authors' approval. The text is now frozen.**
+  - **Context.** On 11 Oct the reviewer's moderation audit returned LIKELY
+    PASS (the §23 heading). Both authors then read the 11 Oct PDF end to end
+    on 11–12 Oct and approved it without changes, so **H6 is NONE**. That
+    approval is the §20 freeze read, and it closes old Gate A.
+  - **H1 (§1.1).** "All text comes from fixed templates, with no language
+    model at inference. No text is generated, so every string can be
+    regenerated and checked line by line." now reads "All text comes from
+    fixed templates, with no language model at inference, so every string can
+    be regenerated and checked line by line." This is word for word the
+    sentence in §7.
+  - **H2 (§5.2).** "Two of those gaps sit where …" now reads "Two of those
+    partial ratings sit where …".
+    - [CHECK, not changed] Later in the sentence, "neither gap" no longer has
+      an earlier "gaps" to point back to. It reads as the two needs just
+      named.
+  - **H3 (AI statement).**
+    - Second sentence: "The research design, the analyses, every reported
+      number, the selection and verification of every citation, and the
+      final wording were determined and checked by the authors." now reads
+      "The research design, the analyses, every reported number and the
+      selection and verification of every citation were determined and
+      checked by the authors."
+    - Closing: "This is a statement about how the paper was written and not
+      about the system it describes: in the rendering pipeline of Section 4,
+      all text comes from fixed templates, with no language model at
+      inference, which is one of the contributions claimed here." now reads
+      "This is a statement about how the paper was written, not about the
+      system it describes. In the rendering pipeline of Section 4, all text
+      comes from fixed templates, with no language model at inference."
+    - This settles the closing-sentence decision left open in #72 and #73.
+    - The statement now matches WRITING_RULES §8 word for word, checked by
+      script after whitespace normalisation. §8 was edited to mirror H3, and
+      its "Its closing sentence reads" became "Its two closing sentences
+      read". `WRITING_RULES.md` is untracked and was not committed.
+    - The `backmatter.tex` comment that said "the closing sentence is kept
+      as it was" was updated.
+  - **H4 (§8.1).** "Re-running the pipeline reproduces every PNG, CSV and
+    text output byte for byte." now reads "A clean run from a fresh clone
+    (Windows 11, Python 3.12, the locked environment, the dataset downloaded
+    afresh) reproduced all 17 PNGs byte for byte and all 18 CSV, Markdown and
+    text outputs with identical content; the text outputs differ from the
+    committed copies only in line endings, which follow the platform. The
+    freshly downloaded dataset was byte-identical to our cached copy."
+    - This is the brief's text exactly. A `%` source line gives the
+      derivation of 17 and 18 (`git ls-files results`) and points to #75.
+    - §8.2 is unchanged, as the brief says.
+  - **H5 (`refs.bib`).**
+    - All 21 `pages` fields with a Unicode en dash now use `--`. No other en
+      dash was in the file.
+    - Rahman: `pages={0013–0018}` is now `pages={13--18}`. The value was
+      checked against Crossref this session:
+      api.crossref.org/works/10.1109/aiiot58121.2023.10174540 gives page
+      "0013-0018". A `%` note records this.
+    - nielsen1990heuristic: `series={CHI ’90}` was dropped. `collection` is
+      kept, and bibtex ignores it.
+    - In `main.bbl`, 11 proceedings entries now print "pages" instead of
+      "page". Nielsen 1990 loses its second "CHI ’90", and Rahman reads
+      "pages 13–18". Bibtex reports 0 warnings and 37 bibitems.
+  - **Propagation (WRITING_RULES §10.5)**, run on the typeset text.
+    - H1: §7 has the identical sentence. §2.1 ("Nothing is generated at
+      inference time …"), §4.3 ("the card can be regenerated and compared
+      line by line") and the abstract's template sentence are consistent.
+      "No text is generated" no longer appears anywhere.
+    - H2: "gaps" no longer appears in the paper; "gap" remains only in
+      "neither gap" and in the Yesmin et al. title.
+    - H3: "final wording" appears once. "contributions claimed" no longer
+      appears. "language model" is consistent at all six sites.
+    - H4: these are consistent:
+      - §8's opening ("regenerates from five commands");
+      - the abstract ("Five commands regenerate every table and rendering");
+      - the §1 roadmap;
+      - Data availability;
+      - "The pins require Python 3.12";
+      - "Every later run reads the cache";
+      - §8.2: "byte-identical and sometimes not" for audio, the cold-run
+        `results/audio/` note, and "the Hindi source string … reproduces
+        exactly". That last one is about content, which the run found
+        identical; the line endings of the `.txt` file are what §8.1 now
+        describes.
+
+      "Windows" and "platform" each appear once. No sentence makes a claim
+      about another platform.
+  - **/anti-ai** (use case 3.1, report only). Nothing was applied. All four
+    items concern prescribed wording:
+    - the H1 sentence is repeated in §1.1 and §7;
+    - "neither gap" (see H2);
+    - the back matter's single contrast, which carries content;
+    - "fresh clone", "downloaded afresh" and "freshly downloaded" appear in
+      two sentences.
+  - **Checks (WRITING_RULES §10).**
+    - New numbers: 17, 18 and 3.12. 17 and 18 come from `git ls-files
+      results` (`%` line); 3.12 is already stated in §8.1. Rahman's 13–18
+      comes from Crossref.
+    - No citation sentence changed.
+    - The §3 grep finds no new hit in the four `.tex` files.
+  - **Build.**
+    - A scratch build, then the tracked files in place, five passes: 21 pp,
+      0 errors, 0 undefined references or citations, 0 overfull, 0 bibtex
+      warnings, 37 bibitems.
+    - 2 underfull, both from before batch E. The `reproducibility.tex` one
+      is now at lines 61–65 because the `%` lines shifted it.
+    - `pdfinfo` title and author match `main.tex`.
+    - A cold build from `git archive HEAD` gives the same `.bbl` and PDF
+      text.
+    - The word diff against the previous PDF shows the batch H sentences,
+      the bibliography changes above and reflow, and nothing else.
+    - Floats are unchanged from #74: Table 1 p6, Table 2 p7, Figure 1 p9,
+      Table 3 p11, Table 4 p12; §6 starts on p13.
+  - **Brief wording.** §23 step 3 says "§16 (steps 1b to 6; step 0 is
+    already done)". The author's instruction for this batch says steps 1 to
+    6. The handoff follows the author: step 1 (move internal files out of
+    tracking) has not been done and comes first.
+  - **Commits:**
+    - `fefb236` Section 1, `c667cce` Section 5, `fa9c318` back matter,
+      `74e07e2` Section 8, `812af03` `refs.bib`;
+    - `ec4bb3e` `main.pdf`, `0b25ccb` `main.bbl`.
+
+    #75 is its own commit. This entry is the next commit, and the handoff
+    follows in its own commit.
