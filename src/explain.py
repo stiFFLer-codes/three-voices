@@ -16,11 +16,12 @@ consume it without re-running SHAP:
   results/figures/shap_case_<tag>.png       local waterfall per case
 
 Global SHAP is the FINAL model fitted on all 451 rows. The four cases are
-scored OUT OF FOLD (Decision Log #61): probabilities and local SHAP come from
-the fold model that held the row out (``src.model.out_of_fold``), and the
-criteria below pick the cases from those scores. Each criterion is what
-reproduces; the rows it resolves to are recorded in STATE.md (#62) and move
-if the data or model changes. See ``select_cases`` for the full definitions.
+scored OUT OF FOLD (Section 3.4 of the paper gives the reason): probabilities
+and local SHAP come from the fold model that held the row out
+(``src.model.out_of_fold``), and the criteria below pick the cases from those
+scores. Each criterion is what reproduces; the rows it resolves to are written
+to the row_index column of shap_case_summary.csv and move if the data or
+model changes. See ``select_cases`` for the full definitions.
   * confident_low   — highest P(low risk)
   * confident_high  — highest P(high risk)
   * boundary_mid    — true-mid, smallest top-2 margin, #1 SHAP driver is

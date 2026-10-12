@@ -396,10 +396,12 @@ def out_of_fold(X: pd.DataFrame, y: pd.Series) -> dict[str, np.ndarray]:
 def oof_gate_analysis(X: pd.DataFrame, y: pd.Series, expected_cm: np.ndarray) -> None:
     """Out-of-fold probabilities for FINAL_MODEL, and what the gate does with them.
 
-    Pre-registered in STATE.md Decision Log #59: each record is scored by the
-    fold model that never saw it (``out_of_fold``), the same scoring src.explain
-    uses for the illustrative cases since #61. Reporting only: no threshold,
-    rule or model changes because of it.
+    Specified and committed during development before any of its results were
+    computed: each record is scored by the fold model that never saw it
+    (``out_of_fold``), the same scoring src.explain uses for the illustrative
+    cases. Reporting only: no threshold, rule or model changes because of it.
+    The paper gives the reason for out-of-fold scoring in Section 3.4 and the
+    results in Section 4.5.
 
     Same pipeline and splitter as ``evaluate()``, so the pooled confusion matrix
     must equal ``expected_cm``; that is asserted before anything is written.
